@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Your long videos, cut into daily Shorts. Clipping for YouTube creators and podcasts. Get 5 free clips from your latest video.">
+<meta property="og:title" content="Clipline Studio: 5 free clips for your channel">
+<meta property="og:description" content="Your long videos, cut into daily Shorts, TikToks and Reels. 3M+ views on our own clip accounts in September.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://cliplinestudio.com/media/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Cpath d='M12 7h7l-5 18H7z' fill='%231d5cff'/%3E%3C/svg%3E">
+<title>Clipline Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f7f8fa; --surface:#ffffff; --surface-2:#eef1f6; --line:#dfe3ea; --ink:#0b0d12; --ink-2:#4a5160; --ink-3:#646b7b;
+  --accent:#1d5cff; --accent-ink:#ffffff; --accent-soft:#eef3ff; --good:#177a3b;
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a0b0f;--surface:#13151b;--surface-2:#1c2029;--line:#2a2f3a;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--accent:#4d8dff;--accent-ink:#0a0b0f;--accent-soft:#16213a;--good:#4cc27a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0a0b0f;--surface:#13151b;--surface-2:#1c2029;--line:#2a2f3a;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--accent:#4d8dff;--accent-ink:#0a0b0f;--accent-soft:#16213a;--good:#4cc27a}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+nav{display:flex;justify-content:space-between;align-items:center;padding-block:22px}
+.logo{font-family:var(--display);font-weight:800;font-size:20px;display:flex;align-items:center;gap:8px}
+.logo i{display:inline-block;width:12px;height:20px;border-radius:3px;background:var(--accent);transform:skewX(-12deg)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;border-radius:999px;padding:11px 20px;text-decoration:none;font-size:15px;border:0}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding-block:36px 56px}
+@media (max-width:820px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero>div{min-width:0}
+.cta{white-space:normal;text-align:center}
+.hero h1{font-size:clamp(34px,5.6vw,60px);font-weight:800;line-height:1.02}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{font-size:18px;color:var(--ink-2);max-width:54ch;margin-top:18px}
+.hero .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.phones{display:flex;gap:12px;justify-content:center}
+.phone{width:150px;aspect-ratio:9/19;border-radius:22px;background:var(--ink);padding:6px;display:flex;box-shadow:0 20px 40px -24px rgba(0,0,0,.45)}
+.phone:nth-child(2){transform:translateY(-22px)}
+.screen{flex:1;border-radius:17px;background:linear-gradient(170deg,var(--surface-2),var(--line));position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:10px}
+.phone{aspect-ratio:auto}
+.screen{flex:none;width:100%;aspect-ratio:9/16}
+.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#000}
+@media (max-width:420px){.phone{width:30%}}
+.screen .bar{height:5px;border-radius:3px;background:var(--accent);width:60%;margin-bottom:6px}
+.screen .cap{font-family:var(--display);font-weight:800;font-size:11px;line-height:1.15;color:var(--ink);background:var(--surface);border-radius:6px;padding:5px 6px}
+.screen .views{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:9.5px;background:rgba(0,0,0,.55);color:#fff;border-radius:4px;padding:2px 5px}
+section{padding-block:44px;border-top:1px solid var(--line)}
+section h2{font-size:clamp(24px,3.2vw,34px);font-weight:700;margin-bottom:22px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.step{display:flex;flex-direction:column;gap:8px}
+.step .n{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.step h3{font-size:19px;font-weight:700}
+.step p{color:var(--ink-2)}
+.proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.proof{grid-template-columns:1fr}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.stat .v{font-family:var(--display);font-weight:800;font-size:38px;line-height:1}
+.stat .l{color:var(--ink-2);font-size:14px;margin-top:6px}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px;max-width:80ch}
+.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 28px;margin:0;padding:0;list-style:none}
+@media (max-width:640px){.list{grid-template-columns:1fr}}
+.list li{display:flex;gap:10px;align-items:baseline}
+.list li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent);flex:none;transform:translateY(-1px)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:860px){.plans{grid-template-columns:1fr}}
+.plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.plan.pick{border:2px solid var(--accent)}
+.plan .tag{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 10px}
+.plan h3{font-size:22px}
+.price{font-family:var(--display);font-weight:800;font-size:40px;line-height:1}
+.price small{font-family:var(--body);font-weight:500;font-size:14px;color:var(--ink-3)}
+.plan ul{margin:0;padding-left:18px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px;font-size:15px}
+.plan .cta{justify-content:center;margin-top:auto}
+.trial{background:var(--ink);color:var(--bg);border-radius:18px;padding:32px;display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
+@media (max-width:760px){.trial{grid-template-columns:1fr}}
+.trial h2{color:var(--bg);margin:0 0 10px}
+.trial p{color:color-mix(in srgb,var(--bg) 78%,transparent)}
+.trial .contact{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:18px 0 0}
+.trial .contact span{font-size:14px;color:color-mix(in srgb,var(--bg) 78%,transparent)}
+.trial .contact span a,footer a,.faq a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.trial .cta.copy{background:transparent;color:var(--bg);border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);cursor:pointer;font-family:inherit}
+.trial ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.faq{display:grid;gap:0}
+details{border-bottom:1px solid var(--line);padding-block:14px}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font-family:var(--mono);color:var(--ink-3)}
+details[open] summary::after{content:"–"}
+details p{color:var(--ink-2);margin-top:8px;max-width:72ch}
+footer{padding-block:28px;color:var(--ink-3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line)}
+a:focus-visible,summary:focus-visible,.cta:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="logo"><i></i>Clipline Studio</div>
+    <a class="cta ghost" href="#trial">Get 5 free clips</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">Short-form clipping for YouTube creators &amp; podcasts</span>
+      <h1 style="margin-top:12px">Your long videos, cut into <em>daily Shorts</em> that bring viewers back.</h1>
+      <p class="sub">We find the best moments in every episode, cut them vertical with captions and a hook, and post them to TikTok, Instagram Reels and YouTube Shorts on a schedule. You keep filming. We keep your channel in the feed.</p>
+      <div class="actions">
+        <a class="cta" href="#trial">Try it free: 5 clips from your latest video</a>
+        <a class="cta ghost" href="#pricing">See pricing</a>
+      </div>
+    </div>
+    <div class="phones" aria-hidden="true">
+      <div class="phone"><div class="screen"><video poster="media/v1.jpg" autoplay muted loop playsinline preload="auto"><source src="media/v1.mp4" type="video/mp4"><source src="media/v1.webm" type="video/webm"></video></div></div>
+      <div class="phone"><div class="screen"><video poster="media/v2.jpg" autoplay muted loop playsinline preload="auto"><source src="media/v2.mp4" type="video/mp4"><source src="media/v2.webm" type="video/webm"></video></div></div>
+      <div class="phone"><div class="screen"><video poster="media/v3.jpg" autoplay muted loop playsinline preload="auto"><source src="media/v3.mp4" type="video/mp4"><source src="media/v3.webm" type="video/webm"></video></div></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="n">Step 1</span><h3>You upload as usual</h3><p>Every new long video or episode on your channel goes straight into our clipping pipeline. Nothing to send, no extra work.</p></div>
+      <div class="step"><span class="n">Step 2</span><h3>We cut the moments</h3><p>Hooks, reactions, stories and one-liners are picked, reframed to 9:16, captioned word by word and branded to your channel.</p></div>
+      <div class="step"><span class="n">Step 3</span><h3>They go out daily</h3><p>Clips are scheduled across TikTok, Reels and Shorts, or delivered as ready-to-post files if you'd rather post yourself.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What our own clip channels did in September</h2>
+    <div class="proof">
+      <div class="stat"><div class="v">3M+</div><div class="l">views in September across Instagram and TikTok, 98% from non-followers</div></div>
+      <div class="stat"><div class="v">500+</div><div class="l">clips posted in September across TikTok and Instagram</div></div>
+      <div class="stat"><div class="v">14.5K</div><div class="l">followers across our clip accounts</div></div>
+    </div>
+    <p class="note">Numbers from our own clip accounts, read from Instagram Insights and TikTok on 28–29 Sep 2026. One outdoor clip account alone reached 2.85M views and 700K people on Instagram. Your results depend on your content and audience.</p>
+  </section>
+
+  <section>
+    <h2>Every clip includes</h2>
+    <ul class="list">
+      <li>Vertical 9:16 reframe that keeps faces and action in frame</li>
+      <li>Word-by-word burned-in captions</li>
+      <li>An on-screen hook title written for the first second</li>
+      <li>Your handle and branding, subtle and consistent</li>
+      <li>Captions and hashtags written for each platform</li>
+      <li>No duplicate or near-duplicate posts</li>
+      <li>A monthly report: what got views and what to film more of</li>
+      <li>You own everything. Files are yours to keep.</li>
+    </ul>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price">$299 <small>/ month · €299</small></div>
+        <ul><li>20 clips a month</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul>
+        <a class="cta ghost" href="#trial">Start with 5 free clips</a>
+      </div>
+      <div class="plan pick">
+        <span class="tag">Most popular</span>
+        <h3>Growth</h3>
+        <div class="price">$499 <small>/ month · €499</small></div>
+        <ul><li>60 clips a month (2 a day)</li><li>We post to TikTok, Reels and Shorts</li><li>Scheduled at your audience's peak times</li><li>Monthly performance report</li></ul>
+        <a class="cta" href="#trial">Start with 5 free clips</a>
+      </div>
+      <div class="plan">
+        <h3>Scale</h3>
+        <div class="price">$1,099 <small>/ month · €1,099</small></div>
+        <ul><li>120 clips a month (4 a day)</li><li>All three platforms, posted for you</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul>
+        <a class="cta ghost" href="#trial">Start with 5 free clips</a>
+      </div>
+    </div>
+    <p class="note">Founding clients: the first three creators get 30% off for their first three months. Month-to-month, cancel anytime.</p>
+  </section>
+
+  <section id="trial" style="border-top:0">
+    <div class="trial">
+      <div>
+        <h2>5 free clips from your latest video</h2>
+        <p>No call, no card. Email us your channel link, or reply to the message you got from us, and you'll have 5 finished clips within 48 hours. Keep them and post them either way.</p>
+        <p class="contact"><a class="cta" href="mailto:cliplines.studio@gmail.com?subject=5%20free%20clips%20for%20my%20channel&body=Hi%20Vasil%2C%0A%0AMy%20channel%3A%20" target="_blank" rel="noopener">Email us your channel</a> <button type="button" class="cta copy" data-copy="cliplines.studio@gmail.com">Copy email</button> <span>or write to <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></p>
+      </div>
+      <ol>
+        <li>Email us your channel link</li>
+        <li>Get 5 clips in 48 hours</li>
+        <li>Like them? Pick a plan.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions</h2>
+    <div class="faq">
+      <details><summary>Do you post to my accounts, or do I?</summary><p>Either. On Growth and Scale we post for you with scheduling access you grant. On Starter we deliver finished files and captions, and you post.</p></details>
+      <details><summary>Who owns the clips?</summary><p>You do. They're cut from your videos and delivered to you. We never post your clips anywhere except the accounts you choose.</p></details>
+      <details><summary>How do you pick the moments?</summary><p>Our pipeline scans the whole video for hooks, reactions, stories and payoffs, then scores them. Each clip must make sense to someone who has never seen your channel.</p></details>
+      <details><summary>What if a video has nothing clip-worthy?</summary><p>We'd rather post fewer good clips than padding. Unused clips roll over to the next video.</p></details>
+      <details><summary>Can I cancel?</summary><p>Yes, any time. Plans are month to month.</p></details>
+      <details><summary>I have another question</summary><p>Email <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a> and we'll get back to you within 24 hours.</p></details>
+    </div>
+  </section>
+
+  <footer><span>Clipline Studio · short-form clipping for creators</span><span>Questions? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></footer>
+<script>
+if(matchMedia('(prefers-reduced-motion: reduce)').matches){document.querySelectorAll('.phones video').forEach(function(v){v.removeAttribute('autoplay');v.pause()})}
+document.querySelectorAll('.phones video').forEach(function(v){var p=v.play&&v.play();if(p&&p.catch)p.catch(function(){})});
+</script>
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-copy'),l=b.textContent;function ok(){b.textContent='Copied!';setTimeout(function(){b.textContent=l},1800)}
+try{navigator.clipboard.writeText(v).then(ok,function(){fb()})}catch(e){fb()}
+function fb(){var r=document.createRange(),s=b.parentNode.querySelector('span a');if(s){r.selectNodeContents(s);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);var c=false;try{c=document.execCommand('copy')}catch(e){}if(c){ok()}else{b.textContent='Selected: press Cmd+C';setTimeout(function(){b.textContent=l},4000)}}}})});
+</script>
+</div>
+
+</body>
+</html>
