@@ -3,16 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Your long videos, cut into daily Shorts. Clipping for YouTube creators and podcasts. Get 5 free clips from your latest video.">
+<meta name="description" content="Clipping service for YouTubers, podcasts and streamers. We cut your long videos into captioned Shorts, TikToks and Reels and post them daily. Get 5 free clips.">
+<link rel="canonical" href="https://cliplinestudio.com/">
 <meta property="og:title" content="Clipline Studio: 5 free clips for your channel">
 <meta property="og:description" content="Your long videos, cut into daily Shorts, TikToks and Reels. 3M+ views on our own clip accounts in September.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://cliplinestudio.com/">
+<meta property="og:site_name" content="Clipline Studio">
 <meta property="og:image" content="https://cliplinestudio.com/media/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0b0f" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Cpath d='M12 7h7l-5 18H7z' fill='%231d5cff'/%3E%3C/svg%3E">
-<title>Clipline Studio</title>
+<title>Clipline Studio · Clipping service for YouTubers, podcasts and streamers</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Clipline Studio","url":"https://cliplinestudio.com/","email":"cliplines.studio@gmail.com","image":"https://cliplinestudio.com/media/og.jpg","description":"Short-form clipping for YouTubers, podcasts and streamers: vertical clips with captions and hooks, posted to TikTok, Instagram Reels and YouTube Shorts.","areaServed":"Worldwide","serviceType":"Video clipping and short-form editing",
+"hasOfferCatalog":{"@type":"OfferCatalog","name":"Clipping plans","itemListElement":[
+{"@type":"Offer","name":"Starter","description":"20 clips a month, delivered as ready-to-post files","price":"299","priceCurrency":"USD"},
+{"@type":"Offer","name":"Growth","description":"60 clips a month, posted to TikTok, Reels and Shorts","price":"499","priceCurrency":"USD"},
+{"@type":"Offer","name":"Scale","description":"120 clips a month on all three platforms","price":"1099","priceCurrency":"USD"}]}}
+</script>
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +44,7 @@
 :root[data-theme="dark"]{color-scheme:dark;--bg:#0a0b0f;--surface:#13151b;--surface-2:#1c2029;--line:#2a2f3a;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--accent:#4d8dff;--accent-ink:#0a0b0f;--accent-soft:#16213a;--good:#4cc27a;--violet:#9d86ff;--cyan:#22d3ee;--glass:rgba(10,11,15,.7);--dot:rgba(243,245,249,.12)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
+html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 64px;margin:0;position:relative;overflow-x:clip}
 .wrap{max-width:1040px;margin:0 auto}
 h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
@@ -128,6 +138,7 @@ section{padding-block:56px;border-top:1px solid var(--line)}
 .band+section{border-top:0}
 section h2{font-size:clamp(26px,3.4vw,38px);font-weight:700;margin-bottom:8px}
 .lead{color:var(--ink-2);margin-bottom:26px;max-width:60ch}
+.lead a{color:var(--accent);text-underline-offset:3px}
 .kicker{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
 
 /* Magic UI: magic-card (pointer spotlight + glowing border) */
@@ -260,7 +271,10 @@ details p{color:var(--ink-2);margin-top:10px;max-width:72ch}
   details[open]::details-content{height:auto}
 }
 
-footer{padding-block:28px;color:var(--ink-3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line)}
+footer{padding-block:28px;color:var(--ink-3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 18px;border-top:1px solid var(--line)}
+footer .flinks{display:flex;flex-wrap:wrap;gap:6px 16px}
+footer .flinks a{text-decoration:none}
+footer .flinks a:hover{color:var(--accent);text-decoration:underline}
 a:focus-visible,summary:focus-visible,.cta:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* ---------- Demo: one episode -> clips ---------- */
@@ -568,7 +582,7 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     </div>
   </section>
 
-  <footer><span>Clipline Studio · short-form clipping for creators</span><span>Questions? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></footer>
+  <footer><span>Clipline Studio · short-form clipping for creators</span><nav class="flinks" aria-label="Clipping services"><a href="/podcast-clipping/">Podcast clipping</a><a href="/stream-clipping/">Stream clipping</a><a href="/youtube-clipping/">YouTube Shorts clipping</a></nav><span>Questions? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></footer>
 </div>
 
 <script>
@@ -672,6 +686,9 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
   var lf=document.getElementById('lf');
   if(lf){
     var ENDPOINT='https://formsubmit.co/ajax/cliplines.studio@gmail.com';
+    var SRC='';
+    try{var q=new URLSearchParams(location.search);SRC=(q.get('ref')||q.get('utm_source')||'').slice(0,40);if(SRC)sessionStorage.setItem('cl_ref',SRC);else SRC=sessionStorage.getItem('cl_ref')||''}catch(e){}
+    if(!SRC){try{if(document.referrer){var rh=new URL(document.referrer).hostname;if(rh&&rh!==location.hostname){SRC='site: '+rh.replace(/^www\./,'');try{sessionStorage.setItem('cl_ref',SRC)}catch(e){}}}}catch(e){}}
     var box=document.getElementById('leadForm'),st=document.getElementById('lfStatus'),done=document.getElementById('lfDone'),btn=lf.querySelector('.send'),lbl=btn.querySelector('.lbl');
     var planIn=document.getElementById('plan'),chip=document.getElementById('planChip'),planName=document.getElementById('planName');
     function setPlan(p){planIn.value=p||'';chip.hidden=!p;if(p)planName.textContent=p}
@@ -695,8 +712,8 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
       var v=validate();if(!v){var b=lf.querySelector('.fld.bad input');if(b)b.focus();return}
       if(lf._honey.value){showDone('');return}
       var name=lf.name.value.trim(),msg=lf.message.value.trim(),plan=planIn.value;
-      var payload={_subject:'New free-clips request'+(name?' from '+name:'')+(plan?' ('+plan+')':''),_template:'table',_captcha:'false',_replyto:v.email,_honey:'',
-        Channel:v.channel,Email:v.email,Name:name||'(not given)',Plan:plan||'(not chosen)',Message:msg||'(none)',Page:location.href.split('#')[0]};
+      var payload={_subject:'New free-clips request'+(name?' from '+name:'')+(plan?' ('+plan+')':'')+(SRC?' · via '+SRC:''),_template:'table',_captcha:'false',_replyto:v.email,_honey:'',
+        Channel:v.channel,Email:v.email,Name:name||'(not given)',Plan:plan||'(not chosen)',Message:msg||'(none)',Source:SRC||'direct / unknown',Page:location.pathname};
       box.classList.add('sending');btn.disabled=true;lbl.textContent='Sending…';
       var ctl=('AbortController' in window)?new AbortController():null,to=setTimeout(function(){if(ctl)ctl.abort()},15000);
       fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload),signal:ctl?ctl.signal:undefined})
