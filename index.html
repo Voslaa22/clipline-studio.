@@ -225,12 +225,9 @@ a:focus-visible,summary:focus-visible,.cta:focus-visible,button:focus-visible{ou
 .rec{width:8px;height:8px;border-radius:50%;background:var(--rec);flex:none;animation:blink 1.6s steps(2,start) infinite}
 @keyframes blink{to{visibility:hidden}}
 .frame{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:#0d1018}
-.frame .wide{position:absolute;inset:-8%;background-size:cover;background-position:center;filter:blur(16px) brightness(.5) saturate(1.2);transition:background-image .5s ease}
-.crop{position:absolute;top:0;bottom:0;width:31.6%;left:34.2%;border:2px solid var(--accent);border-radius:6px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 0 40px -6px var(--accent);background:#000}
-.crop video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.crop{--cx:50%;position:absolute;top:0;bottom:0;width:37.5%;left:calc(var(--cx) - 18.75%);border:2px solid var(--accent);border-radius:6px;box-shadow:0 0 0 999px rgba(5,7,12,.5),0 0 34px -6px var(--accent);transition:left .8s cubic-bezier(.5,0,.2,1)}
 .crop span{position:absolute;top:6px;left:6px;z-index:1;font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;border-radius:4px;padding:1px 5px}
-.frame .guide{position:absolute;top:50%;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 4px,transparent 4px 8px)}
-.frame .guide.l{left:4%;right:66%}.frame .guide.r{left:66%;right:4%}
 .frame .flash{position:absolute;inset:0;background:color-mix(in srgb,var(--accent) 35%,transparent);opacity:0;pointer-events:none}
 .frame.hit .flash{animation:flash .6s ease-out}
 @keyframes flash{0%{opacity:.9}100%{opacity:0}}
@@ -255,7 +252,7 @@ a:focus-visible,summary:focus-visible,.cta:focus-visible,button:focus-visible{ou
 @media (min-width:861px){.outs .clip:nth-child(2){translate:0 -16px}}
 .clip{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:14px;overflow:hidden;background:#0d1018;color:#fff;box-shadow:0 18px 30px -20px rgba(0,0,0,.7);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1),filter .6s ease}
 .clip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.clip .ready{position:absolute;top:6px;right:6px;z-index:1;width:18px;height:18px;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--good);color:#fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4);opacity:0;transform:scale(.7);transition:opacity .3s ease .25s,transform .35s cubic-bezier(.3,1.6,.5,1) .25s}
+.clip .ready{position:absolute;bottom:9px;right:7px;z-index:1;width:18px;height:18px;display:grid;place-items:center;font-size:11px;font-weight:700;background:var(--good);color:#fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4);opacity:0;transform:scale(.7);transition:opacity .3s ease .25s,transform .35s cubic-bezier(.3,1.6,.5,1) .25s}
 .clip.on .ready{opacity:1;transform:none}
 .clip .prog{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--accent);transform-origin:0 50%}
 .clip.on .prog{animation:prog 8s linear infinite}
@@ -364,19 +361,19 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     <div class="demo reveal" role="img" aria-label="Animated illustration: a long podcast episode is scanned, three moments are found, reframed to vertical and turned into captioned clips">
       <div class="ep">
         <div class="ep-head"><span class="rec"></span><span>episode_142.mp4</span><span class="dim">1:24:10</span></div>
-        <div class="frame"><div class="wide" style="background-image:url(media/v1.jpg)"></div><div class="guide l"></div><div class="guide r"></div><div class="crop"><video muted loop playsinline preload="metadata" poster="media/v1.jpg" src="media/v1.mp4"></video><span>9:16</span></div><div class="flash"></div></div>
+        <div class="frame"><video muted loop playsinline autoplay preload="metadata" poster="media/d1w.jpg" src="media/d1w.mp4"></video><div class="crop"><span>9:16</span></div><div class="flash"></div></div>
         <div class="tl"><div class="done"></div><div class="wave"></div><div class="mk" style="--x:18%"></div><div class="mk" style="--x:47%"></div><div class="mk" style="--x:76%"></div><div class="head"></div></div>
         <div class="tl-labels"><span class="found" style="--x:18%">Hook<em> · 15:09</em></span><span class="found" style="--x:47%">Reaction<em> · 39:33</em></span><span class="found" style="--x:76%">Story<em> · 1:03:58</em></span></div>
         <div class="log"><b style="font-weight:400">3 clips cut, captioned and scheduled</b></div>
       </div>
       <div class="flow" aria-hidden="true"><svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h40"/><path d="M36 5l7 7-7 7" style="stroke-dasharray:none;animation:none"/></svg></div>
       <div class="outs">
-        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/v1.jpg" src="media/v1.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
-        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/v2.jpg" src="media/v2.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
-        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/v3.jpg" src="media/v3.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
+        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/d1v.jpg" src="media/d1v.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
+        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/d2v.jpg" src="media/d2v.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
+        <div class="clip on"><video muted loop playsinline autoplay preload="metadata" poster="media/d3v.jpg" src="media/d3v.mp4"></video><span class="ready" aria-hidden="true">✓</span><div class="prog"></div></div>
       </div>
     </div>
-    <p class="note reveal">Illustration of how the pipeline works. The clips are real clips from our own accounts; file name and timestamps are examples.</p>
+    <p class="note reveal">Illustration of how the pipeline works, using footage from our own clips. File name and timestamps are examples.</p>
   </section>
 
   <section>
@@ -547,15 +544,15 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
   if(demo){
     var wave=demo.querySelector('.wave'),tl=demo.querySelector('.tl'),frame=demo.querySelector('.frame'),log=demo.querySelector('.log b');
     var mks=demo.querySelectorAll('.mk'),lbls=demo.querySelectorAll('.tl-labels span'),clips=demo.querySelectorAll('.clip');
-    var xs=[0.18,0.47,0.76],cxs=['28%','72%','28%'],N=72,html='';
+    var xs=[0.18,0.47,0.76],N=72,html='';
     for(var i=0;i<N;i++){var x=i/N,near=xs.some(function(m){return Math.abs(m-x)<0.03});var h=22+Math.abs(Math.sin(i*0.61)*Math.cos(i*0.23))*48+(i*7%5)*3+(near?28:0);html+='<i style="--h:'+Math.min(h,100).toFixed(0)+'%"></i>'}
     wave.innerHTML=html;
     if(!reduce&&'IntersectionObserver' in window){
       demo.classList.add('anim');
       var vis=false,raf=0,t0=0,phase='scan',DUR=7000,HOLD=4200;
       var reset=function(now){t0=now;phase='scan';demo.classList.remove('complete');[].forEach.call(mks,function(m){m.classList.remove('found')});[].forEach.call(lbls,function(m){m.classList.remove('found')});[].forEach.call(clips,function(c){c.classList.remove('on')});cv.forEach(function(v){v.pause()});setSrc(0)};
-      var srcs=['media/v1','media/v2','media/v3'],fv=frame.querySelector('video'),wide=frame.querySelector('.wide'),cv=[].map.call(clips,function(c){return c.querySelector('video')});
-      var setSrc=function(i){wide.style.backgroundImage='url('+srcs[i]+'.jpg)';fv.poster=srcs[i]+'.jpg';if(fv.getAttribute('src')!==srcs[i]+'.mp4'){fv.src=srcs[i]+'.mp4'}var q=fv.play();if(q&&q.catch)q.catch(function(){})};
+      var srcs=['media/d1w','media/d2w','media/d3w'],cxs=['50%','50%','53%'],crop=frame.querySelector('.crop'),fv=frame.querySelector('video'),cv=[].map.call(clips,function(c){return c.querySelector('video')});
+      var setSrc=function(i){crop.style.setProperty('--cx',cxs[i]);fv.poster=srcs[i]+'.jpg';if(fv.getAttribute('src')!==srcs[i]+'.mp4'){fv.src=srcs[i]+'.mp4'}var q=fv.play();if(q&&q.catch)q.catch(function(){})};
       var found=function(i){mks[i].classList.add('found');lbls[i].classList.add('found');clips[i].classList.add('on');var v=cv[i];try{v.currentTime=0}catch(e){}var q=v.play();if(q&&q.catch)q.catch(function(){});frame.classList.remove('hit');void frame.offsetWidth;frame.classList.add('hit');if(i<2)setTimeout(function(){if(phase==='scan')setSrc(i+1)},700)};
       var loop=function(now){
         if(!vis){raf=0;return}
