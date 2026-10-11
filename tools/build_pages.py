@@ -24,7 +24,7 @@ def grab(pattern):
 
 
 STYLE = grab(r"<style>.*?</style>")
-FONTS = grab(r'<link rel="preconnect" href="https://fonts.googleapis.com">.*?display=swap">')
+FONTS = grab(r'<link rel="preload" href="/fonts/bricolage-grotesque.woff2"[^>]*>\n<link rel="preload" href="/fonts/figtree.woff2"[^>]*>')
 ICON = grab(r'<link rel="icon"[^>]*>')
 PROOF = grab(r'  <section id="proof">.*?\n  </section>\n')
 PRICING = grab(r'  <section id="pricing">.*?\n  </section>\n')
