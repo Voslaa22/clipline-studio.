@@ -3,16 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Your long videos, cut into daily Shorts. Clipping for YouTube creators and podcasts. Get 5 free clips from your latest video.">
+<meta name="description" content="Clipping service for YouTubers, podcasts and streamers. We cut your long videos into captioned Shorts, TikToks and Reels and post them daily. Get 5 free clips.">
+<link rel="canonical" href="https://cliplinestudio.com/">
 <meta property="og:title" content="Clipline Studio: 5 free clips for your channel">
 <meta property="og:description" content="Your long videos, cut into daily Shorts, TikToks and Reels. 3M+ views on our own clip accounts in September.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://cliplinestudio.com/">
+<meta property="og:site_name" content="Clipline Studio">
 <meta property="og:image" content="https://cliplinestudio.com/media/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0b0f" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Cpath d='M12 7h7l-5 18H7z' fill='%231d5cff'/%3E%3C/svg%3E">
-<title>Clipline Studio</title>
+<title>Clipline Studio · Clipping service for YouTubers, podcasts and streamers</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Clipline Studio","url":"https://cliplinestudio.com/","email":"cliplines.studio@gmail.com","image":"https://cliplinestudio.com/media/og.jpg","description":"Short-form clipping for YouTubers, podcasts and streamers: vertical clips with captions and hooks, posted to TikTok, Instagram Reels and YouTube Shorts.","areaServed":"Worldwide","serviceType":"Video clipping and short-form editing",
+"hasOfferCatalog":{"@type":"OfferCatalog","name":"Clipping plans","itemListElement":[
+{"@type":"Offer","name":"Starter","description":"20 clips a month, delivered as ready-to-post files","price":"299","priceCurrency":"USD"},
+{"@type":"Offer","name":"Growth","description":"60 clips a month, posted to TikTok, Reels and Shorts","price":"499","priceCurrency":"USD"},
+{"@type":"Offer","name":"Scale","description":"120 clips a month on all three platforms","price":"1099","priceCurrency":"USD"}]}}
+</script>
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +43,8 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0a0b0f;--surface:#13151b;--surface-2:#1c2029;--line:#2a2f3a;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--accent:#4d8dff;--accent-ink:#0a0b0f;--accent-soft:#16213a;--good:#4cc27a;--violet:#9d86ff;--cyan:#22d3ee;--glass:rgba(10,11,15,.7);--dot:rgba(243,245,249,.12)}}
 :root[data-theme="dark"]{color-scheme:dark;--bg:#0a0b0f;--surface:#13151b;--surface-2:#1c2029;--line:#2a2f3a;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--accent:#4d8dff;--accent-ink:#0a0b0f;--accent-soft:#16213a;--good:#4cc27a;--violet:#9d86ff;--cyan:#22d3ee;--glass:rgba(10,11,15,.7);--dot:rgba(243,245,249,.12)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 64px;margin:0;position:relative;overflow-x:clip}
 .wrap{max-width:1040px;margin:0 auto}
 h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
@@ -127,6 +138,7 @@ section{padding-block:56px;border-top:1px solid var(--line)}
 .band+section{border-top:0}
 section h2{font-size:clamp(26px,3.4vw,38px);font-weight:700;margin-bottom:8px}
 .lead{color:var(--ink-2);margin-bottom:26px;max-width:60ch}
+.lead a{color:var(--accent);text-underline-offset:3px}
 .kicker{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
 
 /* Magic UI: magic-card (pointer spotlight + glowing border) */
@@ -194,9 +206,55 @@ section h2{font-size:clamp(26px,3.4vw,38px);font-weight:700;margin-bottom:8px}
 .trial .contact span a,footer a,.faq a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .trial .cta.copy{background:rgba(255,255,255,.04);color:#fff;border:1px solid rgba(255,255,255,.28);cursor:pointer;box-shadow:none}
 .trial .cta.copy:hover{border-color:rgba(255,255,255,.6)}
-.trial ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;counter-reset:s}
-.trial ol li{counter-increment:s;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.trial ol li::before{content:counter(s);font-family:var(--mono);font-size:12px;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;background:rgba(77,141,255,.18);color:#8db4ff}
+
+/* ---------- Contact form (inside trial card) ---------- */
+.trial{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:start}
+@media (max-width:860px){.trial{grid-template-columns:minmax(0,1fr)}}
+.trial .mini{list-style:none;margin:22px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.trial .mini li{display:flex;align-items:center;gap:12px;color:rgba(243,245,249,.86);font-size:15px}
+.trial .mini li b{font-family:var(--mono);font-weight:400;font-size:12px;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;background:rgba(77,141,255,.18);color:#8db4ff}
+.trial .alt{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px;color:rgba(243,245,249,.66)}
+.trial .alt .cta.copy{padding:7px 14px;font-size:13px}
+.trial .alt a{color:#cfe0ff;text-decoration:underline;text-underline-offset:3px}
+.lead-form{position:relative;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:clamp(18px,2.6vw,26px);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 30px 60px -40px rgba(0,0,0,.8)}
+.lead-form form{display:flex;flex-direction:column;gap:14px}
+.lead-form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.lead-form .row{grid-template-columns:1fr}}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fld label{font-size:13px;font-weight:600;color:rgba(243,245,249,.9);display:flex;justify-content:space-between;gap:8px}
+.fld label small{font-weight:400;color:rgba(243,245,249,.5)}
+.fld input,.fld textarea{width:100%;font:500 15px var(--body);color:#fff;background:rgba(5,7,12,.55);border:1px solid rgba(255,255,255,.16);border-radius:11px;padding:12px 13px;transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease;-webkit-appearance:none;appearance:none}
+.fld textarea{resize:vertical;min-height:84px;line-height:1.45}
+.fld input::placeholder,.fld textarea::placeholder{color:rgba(243,245,249,.38)}
+.fld input:hover,.fld textarea:hover{border-color:rgba(255,255,255,.3)}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:#4d8dff;box-shadow:0 0 0 4px rgba(77,141,255,.22);background:rgba(5,7,12,.75)}
+.fld.bad input{border-color:#f87171;box-shadow:0 0 0 4px rgba(248,113,113,.16)}
+.fld .err{font-size:12.5px;color:#fca5a5;min-height:0}
+.fld .err:empty{display:none}
+.plan-chip{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#cfe0ff;background:rgba(77,141,255,.16);border:1px solid rgba(77,141,255,.35);border-radius:999px;padding:5px 6px 5px 12px}
+.plan-chip button{border:0;background:rgba(255,255,255,.1);color:#fff;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:grid;place-items:center}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+.lead-form .send{width:100%;padding-block:14px;font-size:16px;cursor:pointer}
+.lead-form .send[disabled]{opacity:.75;cursor:progress}
+.lead-form .send .spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(6,8,13,.3);border-top-color:#06080d;animation:spin .7s linear infinite;display:none}
+.lead-form.sending .send .spin{display:inline-block}
+.lead-form.sending .send .arrow{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lead-form .fine{font-size:12.5px;color:rgba(243,245,249,.55);line-height:1.5}
+.lead-form .status{font-size:14px;border-radius:10px;padding:10px 12px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35);color:#fecaca}
+.lead-form .status:empty{display:none}
+.lead-form .status a{color:inherit}
+.done{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding-block:8px}
+.done[hidden]{display:none}
+.done h3{color:#fff;font-size:24px}
+.done p{color:rgba(243,245,249,.8)}
+.done .tick{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:rgba(34,197,94,.16);box-shadow:0 0 0 1px rgba(34,197,94,.45),0 0 40px -6px rgba(34,197,94,.7)}
+.done .tick svg{width:28px;height:28px;color:#4ade80}
+.done .tick path{stroke-dasharray:30;stroke-dashoffset:30;animation:draw .6s .15s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done .again{background:transparent;border:1px solid rgba(255,255,255,.28);color:#fff;cursor:pointer;box-shadow:none}
+.lead-form.flash{animation:formpop .5s ease}
+@keyframes formpop{40%{box-shadow:0 0 0 2px #4d8dff,0 30px 60px -30px rgba(77,141,255,.6)}}
 
 /* ---------- FAQ ---------- */
 .faq{display:grid;gap:0}
@@ -213,7 +271,10 @@ details p{color:var(--ink-2);margin-top:10px;max-width:72ch}
   details[open]::details-content{height:auto}
 }
 
-footer{padding-block:28px;color:var(--ink-3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line)}
+footer{padding-block:28px;color:var(--ink-3);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 18px;border-top:1px solid var(--line)}
+footer .flinks{display:flex;flex-wrap:wrap;gap:6px 16px}
+footer .flinks a{text-decoration:none}
+footer .flinks a:hover{color:var(--accent);text-decoration:underline}
 a:focus-visible,summary:focus-visible,.cta:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* ---------- Demo: one episode -> clips ---------- */
@@ -428,20 +489,20 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
         <h3>Starter</h3>
         <div class="price">$299 <small>/ month · €299</small></div>
         <ul><li>20 clips a month</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul>
-        <a class="cta ghost" href="#trial">Start with 5 free clips</a>
+        <a class="cta ghost" href="#trial" data-plan-pick="Starter">Start with 5 free clips</a>
       </div>
       <div class="plan spot pick beam reveal" style="--bw:2px;--beam-speed:5s">
         <span class="tag">Most popular</span>
         <h3>Growth</h3>
         <div class="price">$499 <small>/ month · €499</small></div>
         <ul><li>60 clips a month (2 a day)</li><li>We post to TikTok, Reels and Shorts</li><li>Scheduled at your audience's peak times</li><li>Monthly performance report</li></ul>
-        <a class="cta shimmer" href="#trial"><span class="spark" aria-hidden="true"><span></span></span>Start with 5 free clips</a>
+        <a class="cta shimmer" href="#trial" data-plan-pick="Growth"><span class="spark" aria-hidden="true"><span></span></span>Start with 5 free clips</a>
       </div>
       <div class="plan spot reveal">
         <h3>Scale</h3>
         <div class="price">$1,099 <small>/ month · €1,099</small></div>
         <ul><li>120 clips a month (4 a day)</li><li>All three platforms, posted for you</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul>
-        <a class="cta ghost" href="#trial">Start with 5 free clips</a>
+        <a class="cta ghost" href="#trial" data-plan-pick="Scale">Start with 5 free clips</a>
       </div>
     </div>
     <div class="month reveal" id="month">
@@ -461,14 +522,50 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
       <div class="shine" aria-hidden="true"></div>
       <div>
         <h2>5 free clips from your latest video</h2>
-        <p>No call, no card. Email us your channel link, or reply to the message you got from us, and you'll have 5 finished clips within 48 hours. Keep them and post them either way.</p>
-        <p class="contact"><a class="cta shimmer" href="mailto:cliplines.studio@gmail.com?subject=5%20free%20clips%20for%20my%20channel&body=Hi%20Vasil%2C%0A%0AMy%20channel%3A%20" target="_blank" rel="noopener"><span class="spark" aria-hidden="true"><span></span></span>Email us your channel <span class="arrow" aria-hidden="true">→</span></a> <button type="button" class="cta copy" data-copy="cliplines.studio@gmail.com">Copy email</button> <span>or write to <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></p>
+        <p>No call, no card. Send us your channel link and you'll have 5 finished clips within 48 hours. Keep them and post them either way.</p>
+        <ol class="mini">
+          <li><b>1</b>Send your channel link</li>
+          <li><b>2</b>Get 5 clips in 48 hours</li>
+          <li><b>3</b>Like them? Pick a plan.</li>
+        </ol>
+        <p class="alt"><span>Prefer email? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span> <button type="button" class="cta copy" data-copy="cliplines.studio@gmail.com">Copy email</button></p>
       </div>
-      <ol>
-        <li>Email us your channel link</li>
-        <li>Get 5 clips in 48 hours</li>
-        <li>Like them? Pick a plan.</li>
-      </ol>
+      <div class="lead-form" id="leadForm">
+        <form id="lf" novalidate>
+          <div class="fld" id="f-channel">
+            <label for="channel">Your channel link</label>
+            <input id="channel" name="channel" type="text" inputmode="url" autocomplete="url" placeholder="youtube.com/@yourchannel" required>
+            <span class="err" aria-live="polite"></span>
+          </div>
+          <div class="row">
+            <div class="fld" id="f-email">
+              <label for="email">Your email</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+              <span class="err" aria-live="polite"></span>
+            </div>
+            <div class="fld" id="f-name">
+              <label for="name">Name <small>optional</small></label>
+              <input id="name" name="name" type="text" autocomplete="name" placeholder="Alex">
+            </div>
+          </div>
+          <div class="fld" id="f-msg">
+            <label for="message">Anything we should know? <small>optional</small></label>
+            <textarea id="message" name="message" rows="3" placeholder="Which video to clip, your style, platforms you post on…"></textarea>
+          </div>
+          <span class="plan-chip" id="planChip" hidden>Interested in <strong id="planName">Growth</strong><button type="button" id="planClear" aria-label="Remove plan">×</button></span>
+          <input type="hidden" id="plan" name="plan" value="">
+          <div class="hp" aria-hidden="true"><label for="_honey">Leave this empty</label><input id="_honey" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>
+          <div class="status" id="lfStatus" role="alert"></div>
+          <button type="submit" class="cta shimmer send"><span class="spark" aria-hidden="true"><span></span></span><span class="spin" aria-hidden="true"></span><span class="lbl">Get my 5 free clips</span> <span class="arrow" aria-hidden="true">→</span></button>
+          <p class="fine">We only use your details to reply and send your clips. No newsletter, no spam.</p>
+        </form>
+        <div class="done" id="lfDone" hidden tabindex="-1">
+          <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3 id="doneTitle">Got it, thanks!</h3>
+          <p id="doneText">Your 5 free clips are on the way. We'll email them to you within 48 hours.</p>
+          <button type="button" class="cta again" id="lfAgain">Send another channel</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -481,11 +578,11 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
       <details class="reveal"><summary>How do you pick the moments?</summary><p>Our pipeline scans the whole video for hooks, reactions, stories and payoffs, then scores them. Each clip must make sense to someone who has never seen your channel.</p></details>
       <details class="reveal"><summary>What if a video has nothing clip-worthy?</summary><p>We'd rather post fewer good clips than padding. Unused clips roll over to the next video.</p></details>
       <details class="reveal"><summary>Can I cancel?</summary><p>Yes, any time. Plans are month to month.</p></details>
-      <details class="reveal"><summary>I have another question</summary><p>Email <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a> and we'll get back to you within 24 hours.</p></details>
+      <details class="reveal"><summary>I have another question</summary><p>Send it through the <a href="#trial">form above</a> or email <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a> and we'll get back to you within 24 hours.</p></details>
     </div>
   </section>
 
-  <footer><span>Clipline Studio · short-form clipping for creators</span><span>Questions? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></footer>
+  <footer><span>Clipline Studio · short-form clipping for creators</span><nav class="flinks" aria-label="Clipping services"><a href="/podcast-clipping/">Podcast clipping</a><a href="/stream-clipping/">Stream clipping</a><a href="/youtube-clipping/">YouTube Shorts clipping</a></nav><span>Questions? <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></span></footer>
 </div>
 
 <script>
@@ -583,6 +680,54 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     [].forEach.call(btns,function(b){b.addEventListener('click',function(){render(b.dataset.plan)})});
     if(matchMedia('(hover:hover)').matches){var keys=['starter','growth','scale'];document.querySelectorAll('.plans .plan').forEach(function(pl,i){pl.addEventListener('pointerenter',function(){render(keys[i])})})}
     shown=0;render('growth');addEventListener('resize',movePill);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(movePill);
+  }
+
+  /* Contact form -> FormSubmit (AJAX, stays on page) */
+  var lf=document.getElementById('lf');
+  if(lf){
+    var ENDPOINT='https://formsubmit.co/ajax/cliplines.studio@gmail.com';
+    var SRC='';
+    try{var q=new URLSearchParams(location.search);SRC=(q.get('ref')||q.get('utm_source')||'').slice(0,40);if(SRC)sessionStorage.setItem('cl_ref',SRC);else SRC=sessionStorage.getItem('cl_ref')||''}catch(e){}
+    if(!SRC){try{if(document.referrer){var rh=new URL(document.referrer).hostname;if(rh&&rh!==location.hostname){SRC='site: '+rh.replace(/^www\./,'');try{sessionStorage.setItem('cl_ref',SRC)}catch(e){}}}}catch(e){}}
+    var box=document.getElementById('leadForm'),st=document.getElementById('lfStatus'),done=document.getElementById('lfDone'),btn=lf.querySelector('.send'),lbl=btn.querySelector('.lbl');
+    var planIn=document.getElementById('plan'),chip=document.getElementById('planChip'),planName=document.getElementById('planName');
+    function setPlan(p){planIn.value=p||'';chip.hidden=!p;if(p)planName.textContent=p}
+    document.querySelectorAll('[data-plan-pick]').forEach(function(a){a.addEventListener('click',function(){setPlan(a.getAttribute('data-plan-pick'));box.classList.remove('flash');void box.offsetWidth;box.classList.add('flash');setTimeout(function(){try{document.getElementById('channel').focus({preventScroll:true})}catch(e){}},700)})});
+    document.getElementById('planClear').addEventListener('click',function(){setPlan('')});
+    function fieldErr(id,msg){var f=document.getElementById(id),e=f.querySelector('.err');f.classList.toggle('bad',!!msg);if(e)e.textContent=msg||'';return !msg}
+    function normChannel(v){v=v.trim();if(!v)return '';if(/^@[\w.\-]{2,}$/.test(v))return 'https://www.youtube.com/'+v;if(!/^https?:\/\//i.test(v))v='https://'+v;return v}
+    function validChannel(v){try{var u=new URL(v);return /\./.test(u.hostname)&&u.hostname.length>3}catch(e){return false}}
+    function validate(){
+      var ch=normChannel(lf.channel.value),em=lf.email.value.trim(),ok=true;
+      if(!lf.channel.value.trim())ok=fieldErr('f-channel','Add your channel link so we know what to clip.')&&ok;
+      else if(!validChannel(ch))ok=fieldErr('f-channel','That doesn’t look like a link. Try youtube.com/@yourchannel.')&&ok;
+      else fieldErr('f-channel','');
+      if(!em)ok=fieldErr('f-email','Add your email so we can send the clips.')&&ok;
+      else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em))ok=fieldErr('f-email','Check your email address for typos.')&&ok;
+      else fieldErr('f-email','');
+      return ok?{channel:ch,email:em}:null}
+    ['channel','email'].forEach(function(n){lf[n].addEventListener('input',function(){if(document.getElementById('f-'+n).classList.contains('bad'))validate()})});
+    lf.addEventListener('submit',function(ev){
+      ev.preventDefault();st.textContent='';
+      var v=validate();if(!v){var b=lf.querySelector('.fld.bad input');if(b)b.focus();return}
+      if(lf._honey.value){showDone('');return}
+      var name=lf.name.value.trim(),msg=lf.message.value.trim(),plan=planIn.value;
+      var payload={_subject:'New free-clips request'+(name?' from '+name:'')+(plan?' ('+plan+')':'')+(SRC?' · via '+SRC:''),_template:'table',_captcha:'false',_replyto:v.email,_honey:'',
+        Channel:v.channel,Email:v.email,Name:name||'(not given)',Plan:plan||'(not chosen)',Message:msg||'(none)',Source:SRC||'direct / unknown',Page:location.pathname};
+      box.classList.add('sending');btn.disabled=true;lbl.textContent='Sending…';
+      var ctl=('AbortController' in window)?new AbortController():null,to=setTimeout(function(){if(ctl)ctl.abort()},15000);
+      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload),signal:ctl?ctl.signal:undefined})
+        .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {ok:r.ok,j:j}})})
+        .then(function(res){if(res.ok&&(res.j.success===true||res.j.success==='true')){showDone(name)}else{fail()}})
+        .catch(fail)
+        .then(function(){clearTimeout(to);box.classList.remove('sending');btn.disabled=false;lbl.textContent='Get my 5 free clips'});
+    });
+    function fail(){st.innerHTML='Your message didn’t go through. Check your connection and try again, or email us at <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a>.'}
+    function showDone(name){
+      document.getElementById('doneTitle').textContent=name?'Got it, '+name.split(' ')[0]+'!':'Got it, thanks!';
+      var em=lf.email.value.trim();document.getElementById('doneText').textContent='Your 5 free clips are on the way. We’ll send them to '+(em||'your email')+' within 48 hours.';
+      lf.hidden=true;done.hidden=false;try{done.focus({preventScroll:true})}catch(e){}}
+    document.getElementById('lfAgain').addEventListener('click',function(){lf.reset();setPlan('');done.hidden=true;lf.hidden=false;try{lf.channel.focus()}catch(e){}});
   }
 
   /* Copy email */
