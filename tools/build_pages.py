@@ -42,6 +42,12 @@ ICONS = {
     "door": '<path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/><path d="M10 17l5-5-5-5M15 12H3"/>',
     "archive": '<rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9M10 13h4"/>',
     "bolt": '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+    "film": '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4M3 16h4M17 8h4M17 16h4M3 12h18"/>',
+    "mic": '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',
+    "phone": '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+    "send": '<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+    "tag": '<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+    "repeat": '<path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/>',
 }
 
 
@@ -279,6 +285,7 @@ def niche(p):
 
 def not_found():
     links = "".join(f'<a class="cta ghost" href="/{p["slug"]}/">{html.escape(p["eyebrow"])}</a>' for p in PAGES)
+    links += '<a class="cta ghost" href="/video-editing/">Video editing</a>'
     body = f"""
 <div class="wrap">
   <header class="hero" id="top" style="grid-template-columns:minmax(0,1fr)">
@@ -305,7 +312,220 @@ def not_found():
     print("wrote 404.html")
 
 
+# ---------------------------------------------------------------------------
+# Video editing page (added 2026-10-14). Not a clipping niche: own hero, services,
+# process and FAQ; reuses the home contact form with editing wording; no pricing
+# table (every project gets a quote).
+# ---------------------------------------------------------------------------
+EDIT = {
+    "slug": "video-editing",
+    "title": "Video Editing for YouTubers & Podcasts · Clipline Studio",
+    "desc": "Video editing for YouTube videos, podcasts and short-form. Cuts, pacing, captions, sound and colour, delivered ready to upload. Get a free quote within 24 hours.",
+    "services": [
+        ("film", "YouTube videos", "Your raw footage turned into a finished long-form video: tight cuts, pacing that holds attention, zooms, on-screen text, b-roll, music and sound."),
+        ("mic", "Podcast episodes", "Full episodes edited for YouTube and Spotify: camera switching, cleaned and levelled audio, intro and outro, and chapters."),
+        ("phone", "Short-form from raw footage", "TikToks, Reels and Shorts edited from your own clips or footage, with captions, a hook in the first second and fast pacing."),
+    ],
+    "included": [
+        "Cuts that remove pauses, mistakes and dead air",
+        "Pacing, zooms and on-screen text that keep people watching",
+        "Captions or subtitles, burned in or as a file",
+        "Audio cleanup and levelling so every voice is clear",
+        "Colour correction for a consistent look",
+        "Royalty-free music and sound effects",
+        "Revision rounds included in every quote",
+        "You own the finished video. Files are yours to keep.",
+    ],
+    "steps": [
+        ("send", "Step 1", "Send your footage", "Share a Drive, Dropbox or WeTransfer link and tell us what you need: length, style and an example you like."),
+        ("tag", "Step 2", "Get a fixed quote", "Within 24 hours you get a fixed price and delivery date. Nothing starts until you say yes."),
+        ("repeat", "Step 3", "Review and revise", "You get the finished edit, ready to upload. Ask for changes until it's right, within the revision rounds in your quote."),
+    ],
+    "faq": [
+        ("How much does editing cost?", "It depends on the length of the footage and the style you want, so every project gets a fixed quote within 24 hours. You know the full price before any work starts."),
+        ("How do I send my footage?", "Upload it to Google Drive, Dropbox or WeTransfer and paste the link in the form. Large files are fine."),
+        ("How long does an edit take?", "It depends on the project. Your quote includes a delivery date, and we stick to it."),
+        ("Can you match my channel's style?", "Yes. Send a link to a video you like, yours or someone else's, and we'll edit to that style."),
+        ("Which languages can you caption?", "English, German, Serbian, Croatian, Bosnian, Macedonian and Russian."),
+        ("Who owns the edited video?", "You do. It's your footage and your video, delivered to you to publish wherever you want."),
+    ],
+}
+
+EDIT_CSS = """<style>
+.ed-mock{border:1px solid var(--line);border-radius:20px;padding:14px;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 60%,var(--bg)));box-shadow:0 30px 70px -50px color-mix(in srgb,var(--accent) 80%,transparent)}
+.ed-mock .scr{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#05070c}
+.ed-mock .scr video{width:100%;height:100%;object-fit:cover;display:block}
+.ed-mock .ed-frame{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(120% 90% at 30% 20%,color-mix(in srgb,var(--accent) 55%,#05070c),#05070c 70%),#05070c}
+.ed-mock .ed-frame::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 64px);pointer-events:none}
+.ed-mock .ed-play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);position:relative}
+.ed-mock .ed-play::after{content:"";position:absolute;left:26px;top:20px;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+.ed-mock .ed-cap{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font:800 clamp(14px,1.6vw,18px)/1 var(--display);color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);white-space:nowrap}
+.ed-mock .ed-cap b{color:#ffd23f}
+.ed-mock .ed-tc{z-index:2;white-space:nowrap;position:absolute;left:10px;top:10px;font:500 11px/1 var(--mono);color:#fff;background:rgba(5,7,12,.6);padding:6px 8px;border-radius:6px;letter-spacing:.04em}
+.ed-mock .tracks{margin-top:12px;display:grid;gap:6px;position:relative}
+.ed-mock .trk{display:flex;gap:4px;height:22px}
+.ed-mock .trk i{display:block;height:100%;border-radius:5px;flex:none}
+.ed-mock .v i{background:color-mix(in srgb,var(--accent) 75%,transparent)}
+.ed-mock .t i{background:color-mix(in srgb,var(--violet) 70%,transparent);height:60%;align-self:center}
+.ed-mock .a i{background:color-mix(in srgb,var(--cyan) 55%,transparent)}
+.ed-mock .ph{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ef4444;left:8%;border-radius:2px;box-shadow:0 0 10px #ef4444;animation:edph 8s linear infinite}
+@keyframes edph{to{left:96%}}
+@media (prefers-reduced-motion:reduce){.ed-mock .ph{animation:none;left:42%}}
+.ed-mock .lbl{display:flex;justify-content:space-between;margin-top:8px;font:500 11px/1 var(--mono);color:var(--ink-3)}
+.quote-note{margin-top:18px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;color:var(--ink-2);max-width:62ch}
+.quote-note b{color:var(--ink)}
+</style>"""
+
+
+def editing_trial():
+    t = absolutize(TRIAL)
+    reps = [
+        ("<h2>5 free clips from your latest video</h2>", "<h2>Get a free quote for your edit</h2>"),
+        ("No call, no card. Send us your channel link and you'll have 5 finished clips within 48 hours. Keep them and post them either way.",
+         "No call needed. Send a link to your footage and a few words about what you need. You'll get a fixed price and delivery date within 24 hours."),
+        ("<li><b>1</b>Send your channel link</li>", "<li><b>1</b>Send your footage link</li>"),
+        ("<li><b>2</b>Get 5 clips in 48 hours</li>", "<li><b>2</b>Get a quote in 24 hours</li>"),
+        ("<li><b>3</b>Like them? Pick a plan.</li>", "<li><b>3</b>Say yes, get your edit</li>"),
+        ('<label for="channel">Your channel link</label>', '<label for="channel">Link to your footage or channel</label>'),
+        ('placeholder="youtube.com/@yourchannel"', 'placeholder="drive.google.com/… or youtube.com/@yourchannel"'),
+        ('<label for="message">Anything we should know? <small>optional</small></label>', '<label for="message">What do you need edited? <small>optional</small></label>'),
+        ('placeholder="Which video to clip, your style, platforms you post on…"', 'placeholder="Type of video, length, style, deadline, an example you like…"'),
+        ('<span class="lbl">Get my 5 free clips</span>', '<span class="lbl">Get my free quote</span>'),
+        ("We only use your details to reply and send your clips. No newsletter, no spam.", "We only use your details to reply with your quote. No newsletter, no spam."),
+        ('<p id="doneText">Your 5 free clips are on the way. We\'ll email them to you within 48 hours.</p>', '<p id="doneText">We\'ll reply with your quote within 24 hours.</p>'),
+        ('Send another channel', 'Send another project'),
+    ]
+    for a, b in reps:
+        if a not in t:
+            raise SystemExit(f"editing trial: text not found: {a[:50]}")
+        t = t.replace(a, b, 1)
+    return t
+
+
+def editing_script():
+    sc = absolutize(SCRIPT)
+    reps = [
+        ("_subject:'New free-clips request'", "_subject:'New video-editing request'"),
+        ("lbl.textContent='Get my 5 free clips'", "lbl.textContent='Get my free quote'"),
+        ("'Add your channel link so we know what to clip.'", "'Add a link to your footage or channel.'"),
+        ("'Add your email so we can send the clips.'", "'Add your email so we can send your quote.'"),
+        ("'Your 5 free clips are on the way. We’ll send them to '+(em||'your email')+' within 48 hours.'",
+         "'We’ll reply to '+(em||'your email')+' with a fixed quote within 24 hours.'"),
+    ]
+    for a, b in reps:
+        if a not in sc:
+            raise SystemExit(f"editing script: text not found: {a[:50]}")
+        sc = sc.replace(a, b, 1)
+    return sc
+
+
+def editing():
+    e = EDIT
+    canonical = f"{SITE}/{e['slug']}/"
+    services = "\n".join(
+        f'      <div class="step spot reveal"><div class="ic">{icon(ic)}</div><h3>{html.escape(h)}</h3><p>{html.escape(t)}</p></div>'
+        for ic, h, t in e["services"])
+    steps = "\n".join(
+        f'      <div class="step spot reveal"><div class="ic">{icon(ic)}</div><span class="n">{n}</span><h3>{html.escape(h)}</h3><p>{html.escape(t)}</p></div>'
+        for ic, n, h, t in e["steps"])
+    tick = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" '
+            'stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>')
+    included = "\n".join(f'      <li class="reveal">{tick}{html.escape(x)}</li>' for x in e["included"])
+    faq = "\n".join(
+        f'      <details class="reveal"><summary>{html.escape(q)}</summary><p>{html.escape(a)}</p></details>'
+        for q, a in e["faq"])
+    faq += ('\n      <details class="reveal"><summary>I have another question</summary><p>Send it through the '
+            '<a href="#trial">form above</a> or email <a href="mailto:cliplines.studio@gmail.com" target="_blank" '
+            'rel="noopener">cliplines.studio@gmail.com</a> and we\'ll get back to you within 24 hours.</p></details>')
+    v = lambda w: [6, 14, 9, 18, 7, 12, 10, 8][w % 8]
+    vtrack = "".join(f'<i style="width:{v(i)}%"></i>' for i in range(8))
+    ttrack = "".join(f'<i style="width:{w}%;margin-left:{m}%"></i>' for w, m in [(10, 4), (14, 9), (8, 12), (12, 10)])
+    atrack = '<i style="width:46%"></i><i style="width:52%"></i>'
+    body = f"""
+<div class="wrap">
+  <header class="hero" id="top">
+    <div>
+      <span class="badge reveal" style="--d:.02s"><span class="live"></span><span class="eyebrow shiny">Video editing service</span></span>
+      <h1>{h1_words("Your raw footage, edited into", "videos people finish", "watching.")}</h1>
+      <p class="sub reveal" style="--d:.66s">Send us your recording and we send back a finished video, ready to upload: tight cuts, pacing that holds attention, captions, clean sound and colour. For YouTube videos, podcast episodes and short-form.</p>
+      <div class="actions reveal" style="--d:.76s">
+        <a class="cta shimmer" href="#trial"><span class="spark" aria-hidden="true"><span></span></span>Get a free quote <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="cta ghost" href="/">Looking for clips? See clipping</a>
+      </div>
+      <div class="trust reveal" style="--d:.86s">
+        <span>{TICK}Quote within 24 hours</span>
+        <span>{TICK}Fixed price up front</span>
+        <span>{TICK}Revisions included</span>
+      </div>
+    </div>
+    <div class="ed-mock reveal" style="--d:.4s" aria-hidden="true">
+      <div class="scr"><div class="ed-frame"><span class="ed-play"></span><span class="ed-cap"><b>Your</b> footage, <b>edited</b></span></div><span class="ed-tc">EDIT · 00:14:32</span></div>
+      <div class="tracks">
+        <div class="trk v">{vtrack}</div>
+        <div class="trk t">{ttrack}</div>
+        <div class="trk a">{atrack}</div>
+        <span class="ph"></span>
+      </div>
+      <div class="lbl"><span>V1 · cuts</span><span>T1 · text</span><span>A1 · audio</span></div>
+    </div>
+  </header>
+
+  <section>
+    <span class="kicker reveal">What we edit</span>
+    <h2 class="reveal">Editing for creators who'd rather keep filming</h2>
+    <p class="lead reveal">Editing takes hours you could spend making the next video. Hand it off and keep a steady upload schedule.</p>
+    <div class="steps">
+{services}
+    </div>
+  </section>
+
+  <section>
+    <span class="kicker reveal">Included</span>
+    <h2 class="reveal">Every edit includes</h2>
+    <p class="lead reveal">Standard on every project.</p>
+    <ul class="list">
+{included}
+    </ul>
+  </section>
+
+  <section>
+    <span class="kicker reveal">How it works</span>
+    <h2 class="reveal">From footage to finished video</h2>
+    <p class="lead reveal">Three steps, and only the first one is yours.</p>
+    <div class="steps">
+{steps}
+    </div>
+    <p class="quote-note reveal"><b>Pricing:</b> every project is different, so instead of a price list you get a fixed quote within 24 hours. You know the full price and delivery date before any work starts.</p>
+  </section>
+
+{editing_trial()}
+  <section>
+    <span class="kicker reveal">FAQ</span>
+    <h2 class="reveal" style="margin-bottom:18px">Questions</h2>
+    <div class="faq">
+{faq}
+    </div>
+  </section>
+
+{FOOTER}
+</div>
+
+{editing_script()}
+</body>
+</html>
+"""
+    page = head(e["title"], e["desc"], canonical, ld=faq_ld(e["faq"]))
+    page = page.replace("</head>", EDIT_CSS + "\n</head>", 1)
+    page = page.replace('<a class="cta ghost" href="#trial">Get 5 free clips</a>', '<a class="cta ghost" href="#trial">Get a free quote</a>', 1)
+    page += body
+    out = ROOT / e["slug"] / "index.html"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(page)
+    print("wrote", out.relative_to(ROOT))
+
+
 if __name__ == "__main__":
     for p in PAGES:
         niche(p)
+    editing()
     not_found()
