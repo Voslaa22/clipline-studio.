@@ -376,8 +376,8 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
 .ed-hero h1{font-size:clamp(34px,4vw,54px)}
 .ed-mock{border:1px solid var(--line);border-radius:20px;padding:14px;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 60%,var(--bg)));box-shadow:0 30px 70px -50px color-mix(in srgb,var(--accent) 80%,transparent)}
 .ed-mock .scr{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#0b0f18}
-.ed-mock .scene{position:absolute;inset:0;width:100%;height:100%;display:block;filter:grayscale(.85) brightness(.7) contrast(.82);transform:scale(1);transform-origin:47% 45%;transition:filter 1s ease,transform 1.3s cubic-bezier(.2,.7,.2,1)}
-.ed-mock[data-step="grade"] .scene{filter:none;transform:scale(1.1)}
+.ed-mock .scene{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;filter:grayscale(.9) brightness(.72) contrast(.8);transform:scale(1);transform-origin:47% 45%;transition:filter 1s ease,transform 1.3s cubic-bezier(.2,.7,.2,1)}
+.ed-mock[data-step="grade"] .scene{filter:saturate(1.15) contrast(1.06) brightness(1.03);transform:scale(1.08)}
 .ed-mock .grain{position:absolute;inset:0;opacity:.32;mix-blend-mode:overlay;pointer-events:none;transition:opacity 1s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .ed-mock[data-step="grade"] .grain{opacity:0}
 .ed-mock .tag{position:absolute;left:10px;top:10px;z-index:3;font:500 11px/1 var(--mono);color:#fff;background:rgba(5,7,12,.65);padding:6px 8px;border-radius:6px;letter-spacing:.06em;white-space:nowrap}
@@ -385,9 +385,12 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
 .ed-mock .ed-hook{position:absolute;top:7%;left:50%;z-index:2;transform:translate(-50%,-8px);background:#fff;color:#0b0d12;font:800 clamp(11px,1.45vw,15px)/1.15 var(--display);padding:7px 11px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .5s,transform .5s;box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
 .ed-mock[data-step="cap"] .ed-hook,.ed-mock[data-step="grade"] .ed-hook{opacity:1;transform:translate(-50%,0)}
 .ed-mock .ed-words{position:absolute;left:0;right:0;bottom:6%;z-index:2;text-align:center;font:800 clamp(13px,1.6vw,20px)/1.15 var(--display);color:#fff;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.7);padding:0 8%}
-.ed-mock .ed-words span{display:inline-block;opacity:0;transform:translateY(6px) scale(.88);transition:opacity .2s,transform .25s cubic-bezier(.3,1.6,.5,1)}
-.ed-mock .ed-words span.on{opacity:1;transform:none}
+.ed-mock .ed-words .ln{display:inline-block;opacity:0;transition:opacity .2s}
+.ed-mock[data-step="cap"] .ed-words .ln,.ed-mock[data-step="grade"] .ed-words .ln{opacity:1}
+.ed-mock .ed-words .ln.pop{animation:edpop .28s cubic-bezier(.3,1.6,.5,1)}
+@keyframes edpop{from{transform:translateY(5px) scale(.9)}to{transform:none}}
 .ed-mock .ed-words .k{color:#ffd23f}
+.ed-mock .ed-note{margin:10px 0 0;font-size:12px;color:var(--ink-3)}
 .ed-mock .tracks{margin-top:12px;display:grid;gap:6px;position:relative}
 .ed-mock .trk{display:flex;gap:3px;height:22px}
 .ed-mock .v i{display:block;flex:none;border-radius:5px;background:color-mix(in srgb,var(--accent) 75%,transparent);transition:width .7s cubic-bezier(.5,0,.2,1),opacity .5s,margin .7s}
@@ -440,40 +443,10 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     </div>
     <div class="ed-mock reveal" style="--d:.4s" data-step="raw">
       <div class="scr" aria-hidden="true">
-        <svg class="scene" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <linearGradient id="edWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324f"/><stop offset="1" stop-color="#101827"/></linearGradient>
-          <radialGradient id="edLamp" cx="84%" cy="26%" r="42%"><stop offset="0" stop-color="#ffb35c" stop-opacity=".6"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient>
-          <radialGradient id="edKey" cx="40%" cy="40%" r="45%"><stop offset="0" stop-color="#7aa7ff" stop-opacity=".22"/><stop offset="1" stop-color="#7aa7ff" stop-opacity="0"/></radialGradient>
-        </defs>
-        <rect width="640" height="360" fill="url(#edWall)"/>
-        <g fill="#fff" opacity=".035"><rect x="30" width="64" height="360"/><rect x="118" width="64" height="360"/><rect x="458" width="64" height="360"/><rect x="546" width="64" height="360"/></g>
-        <rect width="640" height="360" fill="url(#edLamp)"/>
-        <rect width="640" height="360" fill="url(#edKey)"/>
-        <rect x="36" y="118" width="150" height="6" rx="2" fill="#33476b"/>
-        <g><rect x="48" y="84" width="12" height="34" fill="#c4583e"/><rect x="62" y="90" width="10" height="28" fill="#d9a441"/><rect x="74" y="80" width="13" height="38" fill="#4f7cac"/><rect x="89" y="88" width="9" height="30" fill="#6aa36f"/><rect x="110" y="96" width="30" height="22" rx="3" fill="#8d6e9e"/></g>
-        <rect x="36" y="196" width="150" height="6" rx="2" fill="#33476b"/>
-        <g><rect x="52" y="166" width="11" height="30" fill="#4f7cac"/><rect x="65" y="160" width="12" height="36" fill="#d9a441"/><circle cx="120" cy="184" r="12" fill="#c4583e"/></g>
-        <g transform="translate(548 236)"><path d="M-22 0h44l-6 46h-32z" fill="#7a4b37"/><g fill="#3f8f5a"><ellipse cx="-14" cy="-26" rx="10" ry="30" transform="rotate(-25 -14 -26)"/><ellipse cx="12" cy="-30" rx="10" ry="32" transform="rotate(22 12 -30)"/><ellipse cx="0" cy="-40" rx="9" ry="34"/></g></g>
-        <path d="M188 360c0-74 48-112 112-112s112 38 112 112z" fill="#2f5486"/>
-        <path d="M262 262l38 34 38-34" fill="none" stroke="#24426b" stroke-width="6" stroke-linecap="round"/>
-        <rect x="284" y="212" width="32" height="44" rx="10" fill="#c98f6f"/>
-        <ellipse cx="300" cy="182" rx="46" ry="54" fill="#d9a07e"/>
-        <g fill="#2a1d17"><ellipse cx="283" cy="186" rx="4.5" ry="5.5"/><ellipse cx="317" cy="186" rx="4.5" ry="5.5"/></g>
-        <path d="M274 172q9-6 18-1M308 171q9-5 18 1" fill="none" stroke="#2a1d17" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M287 210q13 11 26 0" fill="none" stroke="#8a4b3a" stroke-width="4" stroke-linecap="round"/>
-        <ellipse cx="270" cy="200" rx="7" ry="4" fill="#e7887a" opacity=".35"/><ellipse cx="330" cy="200" rx="7" ry="4" fill="#e7887a" opacity=".35"/>
-        <path d="M254 182c-4-52 24-74 48-74 30 0 50 22 46 72-6-26-22-40-46-40-26 0-42 14-48 42z" fill="#2a1d17"/>
-        <path d="M252 168c0-50 22-78 48-78s48 28 48 78" fill="none" stroke="#11141b" stroke-width="7"/>
-        <rect x="240" y="160" width="18" height="34" rx="8" fill="#11141b"/><rect x="342" y="160" width="18" height="34" rx="8" fill="#11141b"/>
-        <path d="M560 40L470 120 392 196" fill="none" stroke="#11141b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="rotate(-38 380 214)"><rect x="362" y="186" width="36" height="58" rx="17" fill="#181c25"/><rect x="368" y="194" width="24" height="26" rx="10" fill="#2a303c"/></g>
-        <rect y="316" width="640" height="44" fill="#151c2b"/>
-        <rect x="430" y="300" width="70" height="16" rx="3" fill="#232c40"/>
-      </svg>
+        <video class="scene" poster="/media/e1.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/e1.mp4" type="video/mp4"></video>
         <div class="grain"></div>
-        <span class="ed-hook">Why most people give up too early</span>
-        <div class="ed-words"><span>Most</span> <span>people</span> <span>quit</span> <span>right</span> <span>before</span> <span>it</span> <span class="k">works.</span></div>
+        <span class="ed-hook">Car repossessed the week he went all in</span>
+        <div class="ed-words"><span class="ln"></span></div>
       </div>
       <div class="tracks" aria-hidden="true">
         <div class="trk v"><i style="width:11%"></i><i class="gap" style="width:6%"><b>um</b></i><i style="width:15%"></i><i style="width:8%"></i><i class="gap" style="width:8%"><b>pause</b></i><i style="width:13%"></i><i class="gap" style="width:6%"><b>uh</b></i><i style="width:10%"></i><i style="width:9%"></i></div>
@@ -483,8 +456,9 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
       </div>
       <div class="ed-foot">
         <div class="ed-steps" role="group" aria-label="Editing steps"><button type="button" aria-pressed="true">1 · Raw</button><button type="button" aria-pressed="false">2 · Cut</button><button type="button" aria-pressed="false">3 · Captions</button><button type="button" aria-pressed="false">4 · Colour &amp; sound</button></div>
-        <span class="ed-rt">Example edit · runtime <b>14:32</b></span>
+        <span class="ed-rt">Runtime <b>14:32</b></span>
       </div>
+      <p class="ed-note">Example edit, using footage from our own clip accounts.</p>
     </div>
   </header>
 
@@ -751,16 +725,18 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
 <script>
 (function(){var m=document.querySelector('.ed-mock');if(!m)return;
   var S=['raw','cut','cap','grade'],RT=['14:32','11:05','11:05','11:05'],i=0,t=null,
-      chips=m.querySelectorAll('.ed-steps button'),words=m.querySelectorAll('.ed-words span'),rt=m.querySelector('.ed-rt b'),
-      reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,timers=[];
+      chips=m.querySelectorAll('.ed-steps button'),rt=m.querySelector('.ed-rt b'),v=m.querySelector('video.scene'),ln=m.querySelector('.ed-words .ln'),
+      reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,
+      CAP=[[0,1,'I was like, all','right,'],[1,2,'now I\u2019m locked','in.'],[2,2.9,'This is','it.'],[3,4,'I\u2019m all','in.'],[4,5,'I have no other','option.'],[5,7.2,'There\u2019s no other','plan.'],[7.2,8.1,'Immediately my car','gets\u2026']],cur=-1;
+  function cap(){var tt=v?v.currentTime:0,k=-1;for(var j=0;j<CAP.length;j++){if(tt>=CAP[j][0]&&tt<CAP[j][1]){k=j;break}}
+    if(k!==cur){cur=k;if(k<0){ln.innerHTML=''}else{ln.innerHTML=CAP[k][2]+' <span class="k">'+CAP[k][3]+'</span>';ln.classList.remove('pop');void ln.offsetWidth;ln.classList.add('pop')}}}
+  if(v){v.addEventListener('timeupdate',cap);(function tick(){cap();requestAnimationFrame(tick)})()}
   function set(k){i=k;m.setAttribute('data-step',S[k]);rt.textContent=RT[k];
-    for(var j=0;j<chips.length;j++)chips[j].setAttribute('aria-pressed',j===k?'true':'false');
-    timers.forEach(clearTimeout);timers=[];
-    for(var w=0;w<words.length;w++)words[w].classList.remove('on');
-    if(k>=2){for(var w2=0;w2<words.length;w2++)(function(el,d){timers.push(setTimeout(function(){el.classList.add('on')},reduce?0:d))})(words[w2],140*w2)}}
+    for(var j=0;j<chips.length;j++)chips[j].setAttribute('aria-pressed',j===k?'true':'false')}
   function loop(){if(t)clearInterval(t);if(!reduce)t=setInterval(function(){set((i+1)%S.length)},2600)}
   for(var c=0;c<chips.length;c++)(function(k){chips[k].addEventListener('click',function(){set(k);loop()})})(c);
-  if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){loop()}else if(t){clearInterval(t);t=null}})});io.observe(m)}else{loop()}
+  if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){loop();if(v&&v.paused)v.play().catch(function(){})}else{if(t){clearInterval(t);t=null}if(v)v.pause()}})});io.observe(m)}else{loop()}
+  if(reduce&&v){v.removeAttribute('autoplay');v.pause()}
   set(reduce?3:0);
 })();
 </script>
