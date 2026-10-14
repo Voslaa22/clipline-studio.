@@ -143,7 +143,16 @@ PAGES = [
 ]
 
 
-def head(title, desc, canonical, noindex=False, ld=None):
+def svc_nav(active, cta_href, cta_text):
+    clip = ' aria-current="page"' if active == "clip" else ""
+    edit = ' aria-current="page"' if active == "edit" else ""
+    return (f'<span class="navr"><span class="svc" role="navigation" aria-label="Services">'
+            f'<a href="/"{clip}><span class="s-long">Clipping</span><span class="s-short">Clips</span></a>'
+            f'<a href="/video-editing/"{edit}><span class="s-long">Video editing</span><span class="s-short">Editing</span></a></span>'
+            f'<a class="cta ghost" href="{cta_href}">{cta_text}</a></span>')
+
+
+def head(title, desc, canonical, noindex=False, ld=None, active="clip", cta_href="#trial", cta_text="Get 5 free clips"):
     t, d = html.escape(title), html.escape(desc)
     robots = '<meta name="robots" content="noindex">\n' if noindex else ""
     ld_block = f'<script type="application/ld+json">{ld}</script>\n' if ld else ""
@@ -176,7 +185,7 @@ def head(title, desc, canonical, noindex=False, ld=None):
 
 <nav class="wrap">
   <a class="logo" href="/" aria-label="Clipline Studio home"><i></i>Clipline Studio</a>
-  <a class="cta ghost" href="#trial">Get 5 free clips</a>
+  {svc_nav(active, cta_href, cta_text)}
 </nav>
 """
 
@@ -306,8 +315,7 @@ def not_found():
 </body>
 </html>
 """
-    page = head("Page not found · Clipline Studio", "This page doesn't exist.", f"{SITE}/404.html", noindex=True) + body
-    page = page.replace('<a class="cta ghost" href="#trial">Get 5 free clips</a>', '<a class="cta ghost" href="/#trial">Get 5 free clips</a>', 1)
+    page = head("Page not found · Clipline Studio", "This page doesn't exist.", f"{SITE}/404.html", noindex=True, active=None, cta_href="/#trial") + body
     (ROOT / "404.html").write_text(page)
     print("wrote 404.html")
 
@@ -450,7 +458,7 @@ def editing():
       <p class="sub reveal" style="--d:.66s">Send us your recording and we send back a finished video, ready to upload: tight cuts, pacing that holds attention, captions, clean sound and colour. For YouTube videos, podcast episodes and short-form.</p>
       <div class="actions reveal" style="--d:.76s">
         <a class="cta shimmer" href="#trial"><span class="spark" aria-hidden="true"><span></span></span>Get a free quote <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="cta ghost" href="/">Looking for clips? See clipping</a>
+        <a class="cta ghost" href="#included">See what's included</a>
       </div>
       <div class="trust reveal" style="--d:.86s">
         <span>{TICK}Quote within 24 hours</span>
@@ -479,7 +487,7 @@ def editing():
     </div>
   </section>
 
-  <section>
+  <section id="included">
     <span class="kicker reveal">Included</span>
     <h2 class="reveal">Every edit includes</h2>
     <p class="lead reveal">Standard on every project.</p>
@@ -514,9 +522,8 @@ def editing():
 </body>
 </html>
 """
-    page = head(e["title"], e["desc"], canonical, ld=faq_ld(e["faq"]))
+    page = head(e["title"], e["desc"], canonical, ld=faq_ld(e["faq"]), active="edit", cta_text="Get a free quote")
     page = page.replace("</head>", EDIT_CSS + "\n</head>", 1)
-    page = page.replace('<a class="cta ghost" href="#trial">Get 5 free clips</a>', '<a class="cta ghost" href="#trial">Get a free quote</a>', 1)
     page += body
     out = ROOT / e["slug"] / "index.html"
     out.parent.mkdir(exist_ok=True)
