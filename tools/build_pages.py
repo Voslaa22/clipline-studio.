@@ -360,29 +360,65 @@ EDIT = {
 }
 
 EDIT_CSS = """<style>
+.ed-hero{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr)}
+@media (max-width:820px){.ed-hero{grid-template-columns:minmax(0,1fr)}}
+.ed-hero h1{font-size:clamp(34px,4vw,54px)}
 .ed-mock{border:1px solid var(--line);border-radius:20px;padding:14px;background:linear-gradient(180deg,var(--surface),color-mix(in srgb,var(--surface) 60%,var(--bg)));box-shadow:0 30px 70px -50px color-mix(in srgb,var(--accent) 80%,transparent)}
-.ed-mock .scr{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#05070c}
-.ed-mock .scr video{width:100%;height:100%;object-fit:cover;display:block}
-.ed-mock .ed-frame{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(120% 90% at 30% 20%,color-mix(in srgb,var(--accent) 55%,#05070c),#05070c 70%),#05070c}
-.ed-mock .ed-frame::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 64px);pointer-events:none}
-.ed-mock .ed-play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);position:relative}
-.ed-mock .ed-play::after{content:"";position:absolute;left:26px;top:20px;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
-.ed-mock .ed-cap{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font:800 clamp(14px,1.6vw,18px)/1 var(--display);color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);white-space:nowrap}
-.ed-mock .ed-cap b{color:#ffd23f}
-.ed-mock .ed-tc{z-index:2;white-space:nowrap;position:absolute;left:10px;top:10px;font:500 11px/1 var(--mono);color:#fff;background:rgba(5,7,12,.6);padding:6px 8px;border-radius:6px;letter-spacing:.04em}
+.ed-mock .scr{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#0b0f18}
+.ed-mock .scene{position:absolute;inset:0;width:100%;height:100%;display:block;filter:grayscale(.85) brightness(.7) contrast(.82);transform:scale(1);transform-origin:47% 45%;transition:filter 1s ease,transform 1.3s cubic-bezier(.2,.7,.2,1)}
+.ed-mock[data-step="grade"] .scene{filter:none;transform:scale(1.1)}
+.ed-mock .grain{position:absolute;inset:0;opacity:.32;mix-blend-mode:overlay;pointer-events:none;transition:opacity 1s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.ed-mock[data-step="grade"] .grain{opacity:0}
+.ed-mock .tag{position:absolute;left:10px;top:10px;z-index:3;font:500 11px/1 var(--mono);color:#fff;background:rgba(5,7,12,.65);padding:6px 8px;border-radius:6px;letter-spacing:.06em;white-space:nowrap}
+.ed-mock .tag::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ef4444;margin-right:6px;vertical-align:1px}
+.ed-mock .ed-hook{position:absolute;top:7%;left:50%;z-index:2;transform:translate(-50%,-8px);background:#fff;color:#0b0d12;font:800 clamp(11px,1.45vw,15px)/1.15 var(--display);padding:7px 11px;border-radius:8px;white-space:nowrap;opacity:0;transition:opacity .5s,transform .5s;box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
+.ed-mock[data-step="cap"] .ed-hook,.ed-mock[data-step="grade"] .ed-hook{opacity:1;transform:translate(-50%,0)}
+.ed-mock .ed-words{position:absolute;left:0;right:0;bottom:6%;z-index:2;text-align:center;font:800 clamp(13px,1.6vw,20px)/1.15 var(--display);color:#fff;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.7);padding:0 8%}
+.ed-mock .ed-words span{display:inline-block;opacity:0;transform:translateY(6px) scale(.88);transition:opacity .2s,transform .25s cubic-bezier(.3,1.6,.5,1)}
+.ed-mock .ed-words span.on{opacity:1;transform:none}
+.ed-mock .ed-words .k{color:#ffd23f}
 .ed-mock .tracks{margin-top:12px;display:grid;gap:6px;position:relative}
-.ed-mock .trk{display:flex;gap:4px;height:22px}
-.ed-mock .trk i{display:block;height:100%;border-radius:5px;flex:none}
-.ed-mock .v i{background:color-mix(in srgb,var(--accent) 75%,transparent)}
-.ed-mock .t i{background:color-mix(in srgb,var(--violet) 70%,transparent);height:60%;align-self:center}
-.ed-mock .a i{background:color-mix(in srgb,var(--cyan) 55%,transparent)}
-.ed-mock .ph{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ef4444;left:8%;border-radius:2px;box-shadow:0 0 10px #ef4444;animation:edph 8s linear infinite}
-@keyframes edph{to{left:96%}}
-@media (prefers-reduced-motion:reduce){.ed-mock .ph{animation:none;left:42%}}
-.ed-mock .lbl{display:flex;justify-content:space-between;margin-top:8px;font:500 11px/1 var(--mono);color:var(--ink-3)}
+.ed-mock .trk{display:flex;gap:3px;height:22px}
+.ed-mock .v i{display:block;flex:none;border-radius:5px;background:color-mix(in srgb,var(--accent) 75%,transparent);transition:width .7s cubic-bezier(.5,0,.2,1),opacity .5s,margin .7s}
+.ed-mock .v .gap{display:grid;place-items:center;overflow:hidden;background:repeating-linear-gradient(135deg,rgba(239,68,68,.6) 0 4px,rgba(239,68,68,.22) 4px 8px)}
+.ed-mock .v .gap b{font:600 9px/1 var(--mono);color:#fff;letter-spacing:.02em}
+.ed-mock:not([data-step="raw"]) .v .gap{width:0!important;opacity:0;margin-left:-3px}
+.ed-mock .t i{display:block;flex:none;height:60%;align-self:center;border-radius:5px;background:color-mix(in srgb,var(--violet) 70%,transparent);opacity:0;transform:scaleX(.4);transform-origin:left;transition:opacity .4s,transform .5s}
+.ed-mock[data-step="cap"] .t i,.ed-mock[data-step="grade"] .t i{opacity:1;transform:none}
+.ed-mock .a{height:26px;gap:2px;align-items:center}
+.ed-mock .a i{flex:1;border-radius:2px;height:var(--h);background:color-mix(in srgb,var(--cyan) 60%,transparent);transition:height .9s cubic-bezier(.4,0,.2,1)}
+.ed-mock[data-step="grade"] .a i{height:var(--e)}
+.ed-mock .ph{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ef4444;left:2%;border-radius:2px;box-shadow:0 0 10px #ef4444;animation:edph 10.4s linear infinite}
+@keyframes edph{to{left:97%}}
+.ed-mock .ed-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+.ed-mock .ed-steps{display:flex;gap:6px;flex-wrap:wrap}
+.ed-mock .ed-steps button{font:600 12px/1 var(--body);padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:background-color .25s,color .25s,border-color .25s}
+.ed-mock .ed-steps button:hover{color:var(--ink)}
+.ed-mock .ed-steps button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ed-mock .ed-rt{font:500 11px/1 var(--mono);color:var(--ink-3);white-space:nowrap}
+.ed-mock .ed-rt b{color:var(--ink);font-weight:500}
+@media (prefers-reduced-motion:reduce){.ed-mock .ph{animation:none;left:60%}.ed-mock *{transition:none!important}}
 .quote-note{margin-top:18px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;color:var(--ink-2);max-width:62ch}
 .quote-note b{color:var(--ink)}
 </style>"""
+
+
+EDIT_JS = """<script>
+(function(){var m=document.querySelector('.ed-mock');if(!m)return;
+  var S=['raw','cut','cap','grade'],RT=['14:32','11:05','11:05','11:05'],i=0,t=null,
+      chips=m.querySelectorAll('.ed-steps button'),words=m.querySelectorAll('.ed-words span'),rt=m.querySelector('.ed-rt b'),
+      reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,timers=[];
+  function set(k){i=k;m.setAttribute('data-step',S[k]);rt.textContent=RT[k];
+    for(var j=0;j<chips.length;j++)chips[j].setAttribute('aria-pressed',j===k?'true':'false');
+    timers.forEach(clearTimeout);timers=[];
+    for(var w=0;w<words.length;w++)words[w].classList.remove('on');
+    if(k>=2){for(var w2=0;w2<words.length;w2++)(function(el,d){timers.push(setTimeout(function(){el.classList.add('on')},reduce?0:d))})(words[w2],140*w2)}}
+  function loop(){if(t)clearInterval(t);if(!reduce)t=setInterval(function(){set((i+1)%S.length)},2600)}
+  for(var c=0;c<chips.length;c++)(function(k){chips[k].addEventListener('click',function(){set(k);loop()})})(c);
+  if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){loop()}else if(t){clearInterval(t);t=null}})});io.observe(m)}else{loop()}
+  set(reduce?3:0);
+})();
+</script>"""
 
 
 def editing_trial():
@@ -445,13 +481,53 @@ def editing():
     faq += ('\n      <details class="reveal"><summary>I have another question</summary><p>Send it through the '
             '<a href="#trial">form above</a> or email <a href="mailto:cliplines.studio@gmail.com" target="_blank" '
             'rel="noopener">cliplines.studio@gmail.com</a> and we\'ll get back to you within 24 hours.</p></details>')
-    v = lambda w: [6, 14, 9, 18, 7, 12, 10, 8][w % 8]
-    vtrack = "".join(f'<i style="width:{v(i)}%"></i>' for i in range(8))
-    ttrack = "".join(f'<i style="width:{w}%;margin-left:{m}%"></i>' for w, m in [(10, 4), (14, 9), (8, 12), (12, 10)])
-    atrack = '<i style="width:46%"></i><i style="width:52%"></i>'
+    vseq = [("c", 11), ("g", 6, "um"), ("c", 15), ("c", 8), ("g", 8, "pause"), ("c", 13), ("g", 6, "uh"), ("c", 10), ("c", 9)]
+    vtrack = "".join(f'<i style="width:{x[1]}%"></i>' if x[0] == "c" else f'<i class="gap" style="width:{x[1]}%"><b>{x[2]}</b></i>' for x in vseq)
+    ttrack = "".join(f'<i style="width:{w}%;margin-left:{m}%"></i>' for w, m in [(12, 3), (16, 6), (10, 8), (13, 6)])
+    import math
+    bars = []
+    for k in range(46):
+        raw = 18 + abs(math.sin(k * 1.7) * math.cos(k * .37)) * 78
+        if k in (9, 10, 11, 23, 24, 33, 34):
+            raw = 6
+        even = 52 + abs(math.sin(k * 2.3)) * 16
+        bars.append(f'<i style="--h:{raw:.0f}%;--e:{even:.0f}%"></i>')
+    atrack = "".join(bars)
+    scene = """<svg class="scene" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="edWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22324f"/><stop offset="1" stop-color="#101827"/></linearGradient>
+          <radialGradient id="edLamp" cx="84%" cy="26%" r="42%"><stop offset="0" stop-color="#ffb35c" stop-opacity=".6"/><stop offset="1" stop-color="#ffb35c" stop-opacity="0"/></radialGradient>
+          <radialGradient id="edKey" cx="40%" cy="40%" r="45%"><stop offset="0" stop-color="#7aa7ff" stop-opacity=".22"/><stop offset="1" stop-color="#7aa7ff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="640" height="360" fill="url(#edWall)"/>
+        <g fill="#fff" opacity=".035"><rect x="30" width="64" height="360"/><rect x="118" width="64" height="360"/><rect x="458" width="64" height="360"/><rect x="546" width="64" height="360"/></g>
+        <rect width="640" height="360" fill="url(#edLamp)"/>
+        <rect width="640" height="360" fill="url(#edKey)"/>
+        <rect x="36" y="118" width="150" height="6" rx="2" fill="#33476b"/>
+        <g><rect x="48" y="84" width="12" height="34" fill="#c4583e"/><rect x="62" y="90" width="10" height="28" fill="#d9a441"/><rect x="74" y="80" width="13" height="38" fill="#4f7cac"/><rect x="89" y="88" width="9" height="30" fill="#6aa36f"/><rect x="110" y="96" width="30" height="22" rx="3" fill="#8d6e9e"/></g>
+        <rect x="36" y="196" width="150" height="6" rx="2" fill="#33476b"/>
+        <g><rect x="52" y="166" width="11" height="30" fill="#4f7cac"/><rect x="65" y="160" width="12" height="36" fill="#d9a441"/><circle cx="120" cy="184" r="12" fill="#c4583e"/></g>
+        <g transform="translate(548 236)"><path d="M-22 0h44l-6 46h-32z" fill="#7a4b37"/><g fill="#3f8f5a"><ellipse cx="-14" cy="-26" rx="10" ry="30" transform="rotate(-25 -14 -26)"/><ellipse cx="12" cy="-30" rx="10" ry="32" transform="rotate(22 12 -30)"/><ellipse cx="0" cy="-40" rx="9" ry="34"/></g></g>
+        <path d="M188 360c0-74 48-112 112-112s112 38 112 112z" fill="#2f5486"/>
+        <path d="M262 262l38 34 38-34" fill="none" stroke="#24426b" stroke-width="6" stroke-linecap="round"/>
+        <rect x="284" y="212" width="32" height="44" rx="10" fill="#c98f6f"/>
+        <ellipse cx="300" cy="182" rx="46" ry="54" fill="#d9a07e"/>
+        <g fill="#2a1d17"><ellipse cx="283" cy="186" rx="4.5" ry="5.5"/><ellipse cx="317" cy="186" rx="4.5" ry="5.5"/></g>
+        <path d="M274 172q9-6 18-1M308 171q9-5 18 1" fill="none" stroke="#2a1d17" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M287 210q13 11 26 0" fill="none" stroke="#8a4b3a" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="270" cy="200" rx="7" ry="4" fill="#e7887a" opacity=".35"/><ellipse cx="330" cy="200" rx="7" ry="4" fill="#e7887a" opacity=".35"/>
+        <path d="M254 182c-4-52 24-74 48-74 30 0 50 22 46 72-6-26-22-40-46-40-26 0-42 14-48 42z" fill="#2a1d17"/>
+        <path d="M252 168c0-50 22-78 48-78s48 28 48 78" fill="none" stroke="#11141b" stroke-width="7"/>
+        <rect x="240" y="160" width="18" height="34" rx="8" fill="#11141b"/><rect x="342" y="160" width="18" height="34" rx="8" fill="#11141b"/>
+        <path d="M560 40L470 120 392 196" fill="none" stroke="#11141b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <g transform="rotate(-38 380 214)"><rect x="362" y="186" width="36" height="58" rx="17" fill="#181c25"/><rect x="368" y="194" width="24" height="26" rx="10" fill="#2a303c"/></g>
+        <rect y="316" width="640" height="44" fill="#151c2b"/>
+        <rect x="430" y="300" width="70" height="16" rx="3" fill="#232c40"/>
+      </svg>"""
+    wspans = " ".join(f"<span>{w}</span>" for w in "Most people quit right before it".split()) + ' <span class="k">works.</span>'
     body = f"""
 <div class="wrap">
-  <header class="hero" id="top">
+  <header class="hero ed-hero" id="top">
     <div>
       <span class="badge reveal" style="--d:.02s"><span class="live"></span><span class="eyebrow shiny">Video editing service</span></span>
       <h1>{h1_words("Your raw footage, edited into", "videos people finish", "watching.")}</h1>
@@ -466,15 +542,23 @@ def editing():
         <span>{TICK}Revisions included</span>
       </div>
     </div>
-    <div class="ed-mock reveal" style="--d:.4s" aria-hidden="true">
-      <div class="scr"><div class="ed-frame"><span class="ed-play"></span><span class="ed-cap"><b>Your</b> footage, <b>edited</b></span></div><span class="ed-tc">EDIT · 00:14:32</span></div>
-      <div class="tracks">
+    <div class="ed-mock reveal" style="--d:.4s" data-step="raw">
+      <div class="scr" aria-hidden="true">
+        {scene}
+        <div class="grain"></div>
+        <span class="ed-hook">Why most people give up too early</span>
+        <div class="ed-words">{wspans}</div>
+      </div>
+      <div class="tracks" aria-hidden="true">
         <div class="trk v">{vtrack}</div>
         <div class="trk t">{ttrack}</div>
         <div class="trk a">{atrack}</div>
         <span class="ph"></span>
       </div>
-      <div class="lbl"><span>V1 · cuts</span><span>T1 · text</span><span>A1 · audio</span></div>
+      <div class="ed-foot">
+        <div class="ed-steps" role="group" aria-label="Editing steps"><button type="button" aria-pressed="true">1 · Raw</button><button type="button" aria-pressed="false">2 · Cut</button><button type="button" aria-pressed="false">3 · Captions</button><button type="button" aria-pressed="false">4 · Colour &amp; sound</button></div>
+        <span class="ed-rt">Example edit · runtime <b>14:32</b></span>
+      </div>
     </div>
   </header>
 
@@ -519,6 +603,7 @@ def editing():
 </div>
 
 {editing_script()}
+{EDIT_JS}
 </body>
 </html>
 """
