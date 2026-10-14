@@ -455,7 +455,9 @@ def editing_script():
     sc = absolutize(SCRIPT)
     reps = [
         ("_subject:'New free-clips request'", "_subject:'New video-editing request'"),
-        ("lbl.textContent='Get my 5 free clips'", "lbl.textContent='Get my free quote'"),
+        ("'Send my proposal':'Get my 5 free clips'", "'Get my free quote':'Get my free quote'"),
+        ("'Send my proposal':'Get my 5 free clips'", "'Get my free quote':'Get my free quote'"),
+        (":'Which video to clip, your style, platforms you post on…'", ":'Type of video, length, style, deadline, an example you like…'"),
         ("'Add your channel link so we know what to clip.'", "'Add a link to your footage or channel.'"),
         ("'Add your email so we can send the clips.'", "'Add your email so we can send your quote.'"),
         ("'Your 5 free clips are on the way. We’ll send them to '+(em||'your email')+' within 48 hours.'",

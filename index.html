@@ -19,9 +19,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Clipline Studio","url":"https://cliplinestudio.com/","email":"cliplines.studio@gmail.com","image":"https://cliplinestudio.com/media/og.jpg","description":"Short-form clipping for YouTubers, podcasts and streamers: vertical clips with captions and hooks, posted to TikTok, Instagram Reels and YouTube Shorts.","areaServed":"Worldwide","serviceType":"Video clipping and short-form editing",
 "hasOfferCatalog":{"@type":"OfferCatalog","name":"Clipping plans","itemListElement":[
-{"@type":"Offer","name":"Starter","description":"20 clips a month, delivered as ready-to-post files","price":"299","priceCurrency":"USD"},
-{"@type":"Offer","name":"Growth","description":"60 clips a month, posted to TikTok, Reels and Shorts","price":"499","priceCurrency":"USD"},
-{"@type":"Offer","name":"Scale","description":"120 clips a month on all three platforms","price":"1099","priceCurrency":"USD"}]}}
+{"@type":"Offer","name":"Starter","description":"60 clips a month (2 a day), delivered as ready-to-post files","price":"299","priceCurrency":"USD"},
+{"@type":"Offer","name":"Growth","description":"150 clips a month (5 a day), posted to TikTok, Reels and Shorts","price":"499","priceCurrency":"USD"},
+{"@type":"Offer","name":"Scale","description":"300 to 360 clips a month (10 to 12 a day) on all three platforms","price":"1099","priceCurrency":"USD"}]}}
 </script>
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
@@ -182,7 +182,12 @@ section h2{font-size:clamp(26px,3.4vw,38px);font-weight:700;margin-bottom:8px}
 .list li:hover{background:var(--surface)}
 .list li svg{flex:none;color:var(--accent);background:var(--accent-soft);border-radius:7px;padding:4px;width:24px;height:24px;margin-top:-1px}
 
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:1180px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.plan.custom{border-style:dashed}
+.plan.custom .price{font-size:clamp(22px,2.2vw,28px)}
+.days.dense .ds{gap:2px}
+.days.dense .ds i{width:6px;height:6px;border-radius:2px}
 @media (max-width:860px){.plans{grid-template-columns:1fr}}
 .plan{padding:26px;display:flex;flex-direction:column;gap:14px}
 .plan.pick{border:2px solid transparent;background:
@@ -502,30 +507,36 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
       <div class="plan spot reveal">
         <h3>Starter</h3>
         <div class="price">$299 <small>/ month · €299</small></div>
-        <ul><li>20 clips a month</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul>
+        <ul><li>60 clips a month (2 a day)</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul>
         <a class="cta ghost" href="#trial" data-plan-pick="Starter">Start with 5 free clips</a>
       </div>
       <div class="plan spot pick beam reveal" style="--bw:2px;--beam-speed:5s">
         <span class="tag">Most popular</span>
         <h3>Growth</h3>
         <div class="price">$499 <small>/ month · €499</small></div>
-        <ul><li>60 clips a month (2 a day)</li><li>We post to TikTok, Reels and Shorts</li><li>Scheduled at your audience's peak times</li><li>Monthly performance report</li></ul>
+        <ul><li>150 clips a month (5 a day)</li><li>We post to TikTok, Reels and Shorts</li><li>Scheduled at your audience's peak times</li><li>Monthly performance report</li></ul>
         <a class="cta shimmer" href="#trial" data-plan-pick="Growth"><span class="spark" aria-hidden="true"><span></span></span>Start with 5 free clips</a>
       </div>
       <div class="plan spot reveal">
         <h3>Scale</h3>
         <div class="price">$1,099 <small>/ month · €1,099</small></div>
-        <ul><li>120 clips a month (4 a day)</li><li>All three platforms, posted for you</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul>
+        <ul><li>300–360 clips a month (10–12 a day)</li><li>All three platforms, posted for you</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul>
         <a class="cta ghost" href="#trial" data-plan-pick="Scale">Start with 5 free clips</a>
+      </div>
+      <div class="plan spot custom reveal">
+        <h3>Custom</h3>
+        <div class="price">Let's talk <small>/ your budget</small></div>
+        <ul><li>Any number of clips</li><li>Your platforms and posting schedule</li><li>Mix clipping and video editing</li><li>Tell us what you need and your budget</li></ul>
+        <a class="cta ghost" href="#trial" data-plan-pick="Custom">Send your proposal</a>
       </div>
     </div>
     <div class="month reveal" id="month">
       <div class="month-head">
-        <div><h3>What a month looks like</h3><p id="monthSum">60 clips · 2 a day · posted for you on TikTok, Reels and Shorts</p></div>
+        <div><h3>What a month looks like</h3><p id="monthSum">150 clips · 5 a day · posted for you on TikTok, Reels and Shorts</p></div>
         <div class="seg" role="group" aria-label="Choose a plan"><span class="pill" aria-hidden="true"></span><button type="button" data-plan="starter" aria-pressed="false">Starter</button><button type="button" data-plan="growth" aria-pressed="true">Growth</button><button type="button" data-plan="scale" aria-pressed="false">Scale</button></div>
       </div>
       <div class="days" id="days" aria-hidden="true"></div>
-      <div class="month-foot"><div><div class="total" id="monthTotal">60</div>clips in 30 days</div><div class="key"><span><i></i>Posted for you</span><span><i class="o"></i>Delivered as a file, you post</span></div></div>
+      <div class="month-foot"><div><div class="total" id="monthTotal">150</div>clips in 30 days</div><div class="key"><span><i></i>Posted for you</span><span><i class="o"></i>Delivered as a file, you post</span></div></div>
     </div>
     <p class="note reveal">Founding clients: the first three creators get 30% off for their first three months. Month-to-month, cancel anytime.</p>
   </section>
@@ -680,19 +691,19 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
   /* Month calendar per plan */
   var month=document.getElementById('month');
   if(month){
-    var plans={starter:{n:20,s:'20 clips · about 5 a week · delivered as ready-to-post files',files:true},growth:{n:60,s:'60 clips · 2 a day · posted for you on TikTok, Reels and Shorts'},scale:{n:120,s:'120 clips · 4 a day · posted for you on all three platforms'}};
+    var plans={starter:{n:60,s:'60 clips · 2 a day · delivered as ready-to-post files',files:true},growth:{n:150,s:'150 clips · 5 a day · posted for you on TikTok, Reels and Shorts'},scale:{lo:10,hi:12,s:'300–360 clips · 10–12 a day · posted for you on all three platforms'}};
     var days=document.getElementById('days'),sum=document.getElementById('monthSum'),tot=document.getElementById('monthTotal'),seg=month.querySelector('.seg'),pill=seg.querySelector('.pill'),btns=seg.querySelectorAll('button'),cur='',shown=0,tt=0;
     var movePill=function(){var b=seg.querySelector('[aria-pressed="true"]');if(!b)return;pill.style.width=b.offsetWidth+'px';pill.style.transform='translateX('+b.offsetLeft+'px)'};
     var render=function(key){
       if(key===cur)return;cur=key;var p=plans[key],h='';
-      for(var d=0;d<30;d++){var c=Math.floor((d+1)*p.n/30)-Math.floor(d*p.n/30),dots='';for(var k=0;k<c;k++)dots+='<i style="--dl:'+(d*0.022+k*0.06).toFixed(3)+'s"></i>';h+='<div class="day"><b>'+(d+1)+'</b><div class="ds">'+dots+'</div></div>'}
-      days.innerHTML=h;days.classList.toggle('files',!!p.files);sum.textContent=p.s;
+      var sumN=0;for(var d=0;d<30;d++){var c=p.lo!=null?p.lo+((d*5)%(p.hi-p.lo+1)):Math.floor((d+1)*p.n/30)-Math.floor(d*p.n/30),dots='';sumN+=c;for(var k=0;k<c;k++)dots+='<i style="--dl:'+(d*0.022+k*0.06).toFixed(3)+'s"></i>';h+='<div class="day"><b>'+(d+1)+'</b><div class="ds">'+dots+'</div></div>'}
+      days.innerHTML=h;days.classList.toggle('files',!!p.files);days.classList.toggle('dense',sumN>200);sum.textContent=p.s;
       [].forEach.call(btns,function(b){b.setAttribute('aria-pressed',b.dataset.plan===key?'true':'false')});movePill();
-      var from=shown,to=p.n,s0=null;cancelAnimationFrame(tt);
+      var from=shown,to=sumN,s0=null;cancelAnimationFrame(tt);
       if(reduce){tot.textContent=to;shown=to;return}
       tt=requestAnimationFrame(function st(t){if(!s0)s0=t;var q=Math.min((t-s0)/900,1),e=1-Math.pow(1-q,3);shown=Math.round(from+(to-from)*e);tot.textContent=shown;if(q<1)tt=requestAnimationFrame(st)})};
     [].forEach.call(btns,function(b){b.addEventListener('click',function(){render(b.dataset.plan)})});
-    if(matchMedia('(hover:hover)').matches){var keys=['starter','growth','scale'];document.querySelectorAll('.plans .plan').forEach(function(pl,i){pl.addEventListener('pointerenter',function(){render(keys[i])})})}
+    if(matchMedia('(hover:hover)').matches){var keys=['starter','growth','scale'];document.querySelectorAll('.plans .plan').forEach(function(pl,i){pl.addEventListener('pointerenter',function(){if(keys[i])render(keys[i])})})}
     shown=0;render('growth');addEventListener('resize',movePill);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(movePill);
   }
 
@@ -705,7 +716,7 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     if(!SRC){try{if(document.referrer){var rh=new URL(document.referrer).hostname;if(rh&&rh!==location.hostname)SRC='site: '+rh.replace(/^www\./,'')}}catch(e){}}
     var box=document.getElementById('leadForm'),st=document.getElementById('lfStatus'),done=document.getElementById('lfDone'),btn=lf.querySelector('.send'),lbl=btn.querySelector('.lbl');
     var planIn=document.getElementById('plan'),chip=document.getElementById('planChip'),planName=document.getElementById('planName');
-    function setPlan(p){planIn.value=p||'';chip.hidden=!p;if(p)planName.textContent=p}
+    function setPlan(p){planIn.value=p||'';chip.hidden=!p;if(p)planName.textContent=p;lbl.textContent=(p==='Custom')?'Send my proposal':'Get my 5 free clips';var mm=document.getElementById('message');if(mm)mm.placeholder=(p==='Custom')?'Your proposal: how many clips, which platforms, your budget…':'Which video to clip, your style, platforms you post on…'}
     document.querySelectorAll('[data-plan-pick]').forEach(function(a){a.addEventListener('click',function(){setPlan(a.getAttribute('data-plan-pick'));box.classList.remove('flash');void box.offsetWidth;box.classList.add('flash');setTimeout(function(){try{document.getElementById('channel').focus({preventScroll:true})}catch(e){}},700)})});
     document.getElementById('planClear').addEventListener('click',function(){setPlan('')});
     function fieldErr(id,msg){var f=document.getElementById(id),e=f.querySelector('.err');f.classList.toggle('bad',!!msg);if(e)e.textContent=msg||'';return !msg}
@@ -734,12 +745,12 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
         .then(function(r){return r.json().catch(function(){return {}}).then(function(j){return {ok:r.ok,j:j}})})
         .then(function(res){if(res.ok&&(res.j.success===true||res.j.success==='true')){showDone(name)}else{fail()}})
         .catch(fail)
-        .then(function(){clearTimeout(to);box.classList.remove('sending');btn.disabled=false;lbl.textContent='Get my 5 free clips'});
+        .then(function(){clearTimeout(to);box.classList.remove('sending');btn.disabled=false;lbl.textContent=(planIn.value==='Custom')?'Send my proposal':'Get my 5 free clips'});
     });
     function fail(){st.innerHTML='Your message didn’t go through. Check your connection and try again, or email us at <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a>.'}
     function showDone(name){
       document.getElementById('doneTitle').textContent=name?'Got it, '+name.split(' ')[0]+'!':'Got it, thanks!';
-      var em=lf.email.value.trim();document.getElementById('doneText').textContent='Your 5 free clips are on the way. We’ll send them to '+(em||'your email')+' within 48 hours.';
+      var em=lf.email.value.trim();document.getElementById('doneText').textContent=(planIn.value==='Custom')?'Thanks for your proposal. We’ll reply to '+(em||'your email')+' within 24 hours.':'Your 5 free clips are on the way. We’ll send them to '+(em||'your email')+' within 48 hours.';
       lf.hidden=true;done.hidden=false;try{done.focus({preventScroll:true})}catch(e){}}
     document.getElementById('lfAgain').addEventListener('click',function(){lf.reset();setPlan('');done.hidden=true;lf.hidden=false;try{lf.channel.focus()}catch(e){}});
   }
