@@ -592,8 +592,80 @@ def editing():
     print("wrote", out.relative_to(ROOT))
 
 
+# ---------------------------------------------------------------------------
+# Legal pages (Impressum, privacy). OWNER_NAME must be the full legal name.
+# ---------------------------------------------------------------------------
+OWNER_NAME = "__FULL_NAME__"
+OWNER_ADDR = ["Äußere Bayreuther Straße 160", "90411 Nürnberg", "Deutschland"]
+OWNER_MAIL = "cliplines.studio@gmail.com"
+
+LEGAL_CSS = """<style>
+.legal{max-width:760px;padding-block:40px 64px}
+.legal h1{font-size:clamp(30px,4vw,44px);margin:0 0 6px}
+.legal h2{font-size:20px;margin:30px 0 8px}
+.legal p,.legal li{color:var(--ink-2);line-height:1.65}
+.legal ul{padding-left:20px}
+.legal a{color:var(--accent)}
+.legal .upd{font-size:13px;color:var(--ink-3)}
+</style>"""
+
+
+def legal_page(slug, title, body_html):
+    addr = "<br>".join(OWNER_ADDR)
+    body_html = body_html.replace("{NAME}", html.escape(OWNER_NAME)).replace("{ADDR}", addr).replace("{MAIL}", OWNER_MAIL)
+    body = f"""
+<div class="wrap">
+  <main class="legal">
+{body_html}
+  </main>
+{FOOTER}
+</div>
+{absolutize(SCRIPT)}
+</body>
+</html>
+"""
+    page = head(f"{title} · Clipline Studio", f"{title} of Clipline Studio.", f"{SITE}/{slug}/", noindex=True,
+                active=None, cta_href="/#trial")
+    page = page.replace("</head>", LEGAL_CSS + "\n</head>", 1) + body
+    out = ROOT / slug / "index.html"
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(page)
+    print("wrote", out.relative_to(ROOT))
+
+
+IMPRESSUM = """    <h1>Impressum</h1>
+    <p class="upd">Angaben gemäß § 5 DDG</p>
+    <p>{NAME}<br>Clipline Studio<br>{ADDR}</p>
+    <h2>Kontakt</h2>
+    <p>E-Mail: <a href="mailto:{MAIL}">{MAIL}</a><br>Kontaktformular: <a href="/#trial">cliplinestudio.com</a></p>
+    <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+    <p>{NAME}<br>{ADDR}</p>
+    <h2>Verbraucherstreitbeilegung</h2>
+    <p>Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    <h2>Beispielmaterial</h2>
+    <p>Einige Videos auf dieser Website stammen aus öffentlich verfügbaren YouTube-Videos und Podcasts, die ich für meine eigenen Clip-Accounts geschnitten habe. Die gezeigten Personen sind keine Kunden von Clipline Studio und empfehlen Clipline Studio nicht. Wer hier zu sehen ist und die Entfernung eines Clips wünscht, schreibt bitte an <a href="mailto:{MAIL}">{MAIL}</a>; der Clip wird innerhalb von 24 Stunden entfernt.</p>
+"""
+
+PRIVACY = """    <h1>Privacy policy</h1>
+    <p class="upd">Datenschutzerklärung · last updated 14 October 2026</p>
+    <h2>Who is responsible</h2>
+    <p>{NAME}, Clipline Studio<br>{ADDR}<br>Email: <a href="mailto:{MAIL}">{MAIL}</a></p>
+    <h2>Hosting</h2>
+    <p>This website is hosted on GitHub Pages (GitHub Inc., USA). When you visit it, GitHub processes technical data such as your IP address, browser and the time of your visit to deliver the site and keep it secure. Legal basis: Art. 6(1)(f) GDPR (secure, reliable delivery of the website). GitHub is part of Microsoft, which is certified under the EU-US Data Privacy Framework.</p>
+    <h2>No cookies, no tracking</h2>
+    <p>This website sets no cookies and uses no analytics or advertising tools. Fonts and videos are loaded from this website itself, not from third parties. If you arrive through a link, the referring website or the link's source tag may be included with a form message so I know where the enquiry came from; it is not stored in your browser.</p>
+    <h2>Contact form and email</h2>
+    <p>If you use the contact form, the details you enter (channel or footage link, email address, name if given, message) plus the page you sent it from are sent via the form service FormSubmit (formsubmit.co) to my email inbox at Google Gmail. FormSubmit may process this data in the USA. If you email me directly, your message is processed in Gmail.</p>
+    <p>I use this data only to answer your enquiry and, if we work together, to carry out the work. Legal basis: Art. 6(1)(b) GDPR (steps before a contract, or the contract itself) and Art. 6(1)(f) GDPR (answering enquiries). I delete enquiries that don't lead to work after 12 months at the latest, unless the law requires me to keep them longer (e.g. tax records for invoices).</p>
+    <h2>Your rights</h2>
+    <p>You have the right to access, correct, delete or restrict the processing of your data, to data portability, and to object to processing based on Art. 6(1)(f) GDPR. Just email <a href="mailto:{MAIL}">{MAIL}</a>. You can also complain to a data protection supervisory authority, for example the Bavarian State Office for Data Protection Supervision (BayLDA).</p>
+"""
+
+
 if __name__ == "__main__":
     for p in PAGES:
         niche(p)
     editing()
+    legal_page("impressum", "Impressum", IMPRESSUM)
+    legal_page("privacy", "Privacy policy", PRIVACY)
     not_found()
