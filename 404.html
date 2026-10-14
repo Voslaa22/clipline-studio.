@@ -512,12 +512,12 @@ html.js .reveal.in.spot:hover{transform:translateY(-3px)}
     document.querySelectorAll('[data-plan-pick]').forEach(function(a){a.addEventListener('click',function(){setPlan(a.getAttribute('data-plan-pick'));box.classList.remove('flash');void box.offsetWidth;box.classList.add('flash');setTimeout(function(){try{document.getElementById('channel').focus({preventScroll:true})}catch(e){}},700)})});
     document.getElementById('planClear').addEventListener('click',function(){setPlan('')});
     function fieldErr(id,msg){var f=document.getElementById(id),e=f.querySelector('.err');f.classList.toggle('bad',!!msg);if(e)e.textContent=msg||'';return !msg}
-    function normChannel(v){v=v.trim();if(!v)return '';if(/^@[\w.\-]{2,}$/.test(v))return 'https://www.youtube.com/'+v;if(!/^https?:\/\//i.test(v))v='https://'+v;return v}
-    function validChannel(v){try{var u=new URL(v);return /\./.test(u.hostname)&&u.hostname.length>3}catch(e){return false}}
+    function normChannel(v){v=v.trim();if(!v)return '';if(/^@[\w.\-]{2,}$/.test(v))return v;if(!/^https?:\/\//i.test(v))v='https://'+v;return v}
+    function validChannel(v){if(/^@[\w.\-]{2,}$/.test(v))return true;try{var u=new URL(v);return /\./.test(u.hostname)&&u.hostname.length>3}catch(e){return false}}
     function validate(){
       var ch=normChannel(lf.channel.value),em=lf.email.value.trim(),ok=true;
       if(!lf.channel.value.trim())ok=fieldErr('f-channel','Add your channel link so we know what to clip.')&&ok;
-      else if(!validChannel(ch))ok=fieldErr('f-channel','That doesn’t look like a link. Try youtube.com/@yourchannel.')&&ok;
+      else if(!validChannel(ch))ok=fieldErr('f-channel','That doesn’t look like a link. Paste your channel or video link, e.g. twitch.tv/yourname.')&&ok;
       else fieldErr('f-channel','');
       if(!em)ok=fieldErr('f-email','Add your email so we can send the clips.')&&ok;
       else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em))ok=fieldErr('f-email','Check your email address for typos.')&&ok;
