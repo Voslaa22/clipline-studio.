@@ -239,6 +239,8 @@ def demo(num):
     morph = f"""<div class="morph" aria-hidden="true">
     <div class="pin">
       <div class="stage">
+        <div class="side l" data-a>{video("d2w", lazy=True)}<span class="cap">39:33 · reaction</span></div>
+        <div class="side r" data-a>{video("d3w", lazy=True)}<span class="cap">1:03:58 · story</span></div>
         <div class="src" data-a>{video("d1w")}<div class="box" data-a><span>9:16</span></div></div>
         <div class="fin" data-a>{video("d1v", lazy=True)}</div>
         <div class="out l" data-a><figure class="pol"><div class="scr">{video("d2v", lazy=True)}</div><figcaption class="cap">reaction · 39:33</figcaption></figure></div>

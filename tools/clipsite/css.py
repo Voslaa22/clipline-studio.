@@ -155,9 +155,10 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 
 /* polaroids */
 .pols{display:flex;justify-content:center;align-items:flex-end;gap:0;padding:64px 0 10px;min-height:380px;position:relative}
-.pol{--r:0deg;position:relative;background:var(--card);padding:9px 9px 32px;border:1px solid var(--rule-soft);box-shadow:3px 4px 0 var(--rule-soft);transform:rotate(var(--r));width:clamp(118px,13vw,164px);flex:none;transition:transform .35s cubic-bezier(.3,1.3,.5,1),z-index 0s}
+@media (min-width:1300px){.pols{min-height:440px}}
+.pol{--r:0deg;position:relative;background:var(--card);padding:9px 9px 32px;border:1px solid var(--rule-soft);box-shadow:3px 4px 0 var(--rule-soft);transform:rotate(var(--r));width:clamp(118px,13vw,196px);flex:none;transition:transform .35s cubic-bezier(.3,1.3,.5,1),z-index 0s}
 .pol:nth-of-type(1){--r:-7deg;margin-right:-18px;z-index:1}
-.pol:nth-of-type(2){--r:2deg;z-index:3;width:clamp(132px,14.5vw,184px);margin-bottom:22px}
+.pol:nth-of-type(2){--r:2deg;z-index:3;width:clamp(132px,14.5vw,220px);margin-bottom:22px}
 .pol:nth-of-type(3){--r:6deg;margin-left:-18px;z-index:2}
 .scene{position:relative}
 .scene .pol{--z:1;transform:rotate(var(--r)) translate(calc(var(--mx,0px)*var(--z)),calc(var(--my,0px)*var(--z)))}
@@ -261,16 +262,22 @@ section{scroll-margin-top:24px}
 @media (min-width:861px) and (prefers-reduced-motion:no-preference){
   .morph{display:block;height:230vh;margin-top:30px;view-timeline-name:--morph;view-timeline-axis:block}
   .stages{display:none}
-  .morph .pin{position:sticky;top:6vh;height:88vh;display:grid;grid-template-rows:1fr auto;gap:14px}
-  .morph .stage{position:relative;display:grid;place-items:center;overflow:hidden}
-  .morph .src{position:relative;width:min(560px,52vw);aspect-ratio:16/9;border:1.5px solid var(--ink);background:#0b0d12;transform-origin:50% 50%;will-change:transform,clip-path}
+  .morph{--sw:min(640px,54vw,70vh)}
+  .morph .pin{position:sticky;top:max(2vh,calc((100vh - var(--sw)*1.14 - 80px)/2));height:auto;display:grid;grid-template-rows:auto auto;gap:14px}
+  .morph .stage{position:relative;height:calc(var(--sw)*1.14);display:grid;place-items:center;overflow:hidden}
+  .morph .src{position:relative;width:var(--sw);aspect-ratio:16/9;z-index:2;border:1.5px solid var(--ink);background:#0b0d12;transform-origin:50% 50%;will-change:transform,clip-path}
   .morph .src video{width:100%;height:100%;object-fit:cover}
   .morph .box{position:absolute;top:0;bottom:0;left:35%;width:30%;border:2px dashed var(--mark);box-shadow:0 0 0 999px rgba(0,0,0,0);opacity:0}
   .morph .box span{position:absolute;left:50%;top:8px;transform:translateX(-50%);font:700 15px/1 var(--hand);color:var(--mark)}
-  .morph .fin{position:absolute;left:50%;top:50%;height:min(78vh,560px);aspect-ratio:9/16;transform:translate(-50%,-50%);border:1.5px solid var(--ink);background:#0b0d12;opacity:0;overflow:hidden}
+  .morph .fin{position:absolute;left:50%;top:50%;height:calc(var(--sw)*1.08);aspect-ratio:9/16;transform:translate(-50%,-50%);border:1.5px solid var(--ink);background:#0b0d12;opacity:0;overflow:hidden;z-index:3}
   .morph .fin video{width:100%;height:100%;object-fit:cover}
-  .morph .out{position:absolute;top:50%;width:150px;transform:translateY(-50%);opacity:0;--r:0deg}
-  .morph .out.l{left:calc(50% - 320px)}.morph .out.r{right:calc(50% - 320px)}
+  .morph .out{position:absolute;top:50%;width:calc(var(--sw)*.27);transform:translateY(-50%);opacity:0;--r:0deg;z-index:4}
+  .morph .out.l{left:calc(50% - var(--sw)*.56)}.morph .out.r{right:calc(50% - var(--sw)*.56)}
+  .morph .side{position:absolute;top:50%;width:calc(var(--sw)*.42);aspect-ratio:16/9;border:1.5px solid var(--ink);background:#0b0d12;transform:translateY(-50%) rotate(var(--r));z-index:1;opacity:.9}
+  .morph .side video{width:100%;height:100%;object-fit:cover}
+  .morph .side.l{left:calc(50% - var(--sw)*.78);--r:-3deg}.morph .side.r{right:calc(50% - var(--sw)*.78);--r:3deg}
+  .morph .side .cap{position:absolute;left:8px;bottom:-26px;font:700 16px/1 var(--hand);color:var(--ink-2);white-space:nowrap}
+  .morph .side::before{content:"";position:absolute;top:-10px;left:50%;width:64px;height:20px;background:var(--tape);transform:translateX(-50%) rotate(-3deg)}
   .morph .out .pol{margin:0;display:block}
   .morph .tl2{position:relative;height:46px;border:1.5px solid var(--ink);border-radius:var(--wob);background:var(--card);padding:0 14px}
   .morph .tl2 .bar{position:absolute;left:14px;right:14px;top:22px;height:2px;background:var(--rule-soft)}
@@ -282,7 +289,7 @@ section{scroll-margin-top:24px}
   .morph .tl2 .t{position:absolute;right:14px;top:6px;font:400 10px/1 var(--mono);color:var(--ink-3)}
   .morph [data-a]{animation:1s linear both paused;animation-delay:calc(var(--p,0)*-1s)}
   .morph .src{animation-name:m-src}.morph .box{animation-name:m-box}.morph .fin{animation-name:m-fin}
-  .morph .out.l{animation-name:m-outl}.morph .out.r{animation-name:m-outr}.morph .fill{animation-name:m-fill}.morph .tl2 .ph{animation-name:m-ph}
+  .morph .out.l{animation-name:m-outl}.morph .out.r{animation-name:m-outr}.morph .side{animation-name:m-side}.morph .fill{animation-name:m-fill}.morph .tl2 .ph{animation-name:m-ph}
   .morph .lab.l1{animation-name:m-l1}.morph .lab.l2{animation-name:m-l2}.morph .lab.l3{animation-name:m-l3}.morph .lab.l4{animation-name:m-l4}.morph .lab.l5{animation-name:m-l5}
   @supports (animation-timeline:view()){
     .morph [data-a]{animation-timeline:--morph;animation-range:cover 27% cover 68%;animation-delay:0s;animation-play-state:running}
@@ -291,6 +298,7 @@ section{scroll-margin-top:24px}
 @keyframes m-src{0%,38%{clip-path:inset(0 0 0 0);transform:scale(1)}58%,100%{clip-path:inset(0 35% 0 35%);transform:scale(1.92)}}
 @keyframes m-box{0%{opacity:0;box-shadow:0 0 0 999px rgba(0,0,0,0)}14%{opacity:1;box-shadow:0 0 0 999px rgba(0,0,0,0)}36%{opacity:1;box-shadow:0 0 0 999px rgba(0,0,0,.55)}58%,100%{opacity:0;box-shadow:0 0 0 999px rgba(0,0,0,.55)}}
 @keyframes m-fin{0%,58%{opacity:0}72%,100%{opacity:1}}
+@keyframes m-side{0%,30%{opacity:.9}46%,100%{opacity:0}}
 @keyframes m-outl{0%,76%{opacity:0;transform:translateY(-50%) translateX(60px) rotate(0deg)}100%{opacity:1;transform:translateY(-50%) translateX(0) rotate(-6deg)}}
 @keyframes m-outr{0%,80%{opacity:0;transform:translateY(-50%) translateX(-60px) rotate(0deg)}100%{opacity:1;transform:translateY(-50%) translateX(0) rotate(6deg)}}
 @keyframes m-fill{from{width:0}to{width:calc(100% - 28px)}}
