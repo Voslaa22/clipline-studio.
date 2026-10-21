@@ -299,8 +299,8 @@ def demo(num):
   {compare}
   <p class="fig"><b>Fig. 3</b> The wide recording against the finished vertical clip, same moment.</p>
   <div class="player wob2 rv">
-    <video controls playsinline preload="none" poster="/media/d3v.jpg" aria-label="Finished clip: a story moment, vertical with captions, with sound"><source src="/media/d3v.mp4" type="video/mp4"></video>
-    <div><h3>Watch a finished clip with sound</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post. Press play; it won’t start on its own.</p><span class="hand ac">← press play, sound is on</span></div>
+    {video("d3v", lazy=True)}
+    <div><h3>A finished clip</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post.</p><span class="hand ac">← the whole edit, start to finish</span></div>
   </div>
 </section>
 """
@@ -588,14 +588,20 @@ SCRIPT = r"""<script>
     document.addEventListener('click',function(e){if(!e.target.closest('nav.top'))setMenu(false)});
   }
 
-  /* looping preview videos: muted, and only running while on screen */
+  /* clip videos: muted loops that keep playing for the whole visit (they are the product, so they run even with
+     reduced motion). Lazy ones start downloading as they come near the viewport; nothing pauses them again. */
   var loops=[].slice.call(document.querySelectorAll('video[autoplay]'));
-  loops.forEach(function(v){v.removeAttribute('autoplay');v.muted=true});
-  function playV(v){if(reduce)return;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  function playV(v){v.muted=true;if(!v.paused)return;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  loops.forEach(function(v){v.muted=true;v.loop=true;if(v.preload==='none')v.removeAttribute('autoplay');
+    v.addEventListener('ended',function(){v.currentTime=0;playV(v)});
+    v.addEventListener('pause',function(){if(!document.hidden)setTimeout(function(){playV(v)},250)})});
   if('IntersectionObserver' in window){
-    var vio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)playV(e.target);else e.target.pause()})},{threshold:0.15});
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){playV(e.target);vio.unobserve(e.target)}})},{rootMargin:'300px 0px'});
     loops.forEach(function(v){vio.observe(v)});
   }else{loops.forEach(playV)}
+  function wake(){loops.forEach(function(v){if(v.preload!=='none'||v.readyState>0)playV(v)})}
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)wake()});
+  ['touchstart','pointerdown','scroll','keydown'].forEach(function(ev){addEventListener(ev,wake,{passive:true,once:true})});
 
   /* motion bookkeeping: hover transitions on the hero clips only after they have settled */
   setTimeout(function(){document.documentElement.classList.add('settled')},1400);
@@ -638,7 +644,7 @@ SCRIPT = r"""<script>
       mi=k;var b=mbtns[k];mbtns.forEach(function(x,j){x.setAttribute('aria-pressed',j===k?'true':'false')});
       mph.style.setProperty('--x',b.parentNode.style.getPropertyValue('--x'));
       var name=b.dataset.v;if(mvid.dataset.name===name)return;mvid.dataset.name=name;
-      var swap=function(){mvid.poster='/media/'+name+'.jpg';mvid.innerHTML='<source src="/media/'+name+'.mp4" type="video/mp4">';mvid.load();mcap.textContent=b.dataset.cap;mpol.classList.remove('sw');playV(mvid)};
+      var swap=function(){mvid.poster='/media/'+name+'.jpg';mvid.innerHTML='<source src="/media/'+name+'.webm" type="video/webm"><source src="/media/'+name+'.mp4" type="video/mp4">';mvid.load();mcap.textContent=b.dataset.cap;mpol.classList.remove('sw');playV(mvid)};
       if(reduce){swap()}else{mpol.classList.add('sw');setTimeout(swap,300)}
       if(byUser){muser=true;clearInterval(mtimer);mtimer=null}
     }
@@ -653,7 +659,7 @@ SCRIPT = r"""<script>
   if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')});
     /* keep the raw and finished clips on the same frame */
     var cva=cmp.querySelector(':scope > video'),cvb=cmp.querySelector('.before video');
-    if(cva&&cvb){cva.addEventListener('timeupdate',function(){if(Math.abs(cva.currentTime-cvb.currentTime)>.2&&cvb.readyState>1)cvb.currentTime=cva.currentTime});cva.addEventListener('play',function(){playV(cvb)});cva.addEventListener('pause',function(){cvb.pause()})}}
+    if(cva&&cvb){cva.addEventListener('timeupdate',function(){if(Math.abs(cva.currentTime-cvb.currentTime)>.2&&cvb.readyState>1)cvb.currentTime=cva.currentTime});cva.addEventListener('play',function(){playV(cvb)})}}
 
   /* one clip, three feeds */
   var dist=document.querySelector('.dist');
@@ -778,7 +784,7 @@ SCRIPT = r"""<script>
     function set(k){i=k;m.setAttribute('data-step',S[k]);rt.textContent=RT[k];for(var j=0;j<chips.length;j++)chips[j].setAttribute('aria-pressed',j===k?'true':'false')}
     function loop(){if(t)clearInterval(t);if(!reduce)t=setInterval(function(){set((i+1)%S.length)},2600)}
     for(var c=0;c<chips.length;c++)(function(k){chips[k].addEventListener('click',function(){set(k);loop()})})(c);
-    if('IntersectionObserver' in window&&!reduce){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){loop();if(v&&v.paused)v.play().catch(function(){})}else{if(t){clearInterval(t);t=null}if(v)v.pause()}})}).observe(m)}else{loop()}
+    if('IntersectionObserver' in window&&!reduce){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){loop();if(v&&v.paused)v.play().catch(function(){})}else{if(t){clearInterval(t);t=null}}})}).observe(m)}else{loop()}
     set(reduce?3:0);
   }
 })();
