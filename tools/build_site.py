@@ -9,6 +9,7 @@ Edit those, run this, commit the generated HTML. No build tools, no dependencies
 """
 import html
 import json
+import re
 import pathlib
 import sys
 
@@ -588,12 +589,21 @@ def not_found():
     return head("Page not found · Clipline Studio", "This page doesn't exist.", SITE + "/404.html", noindex=True) + body
 
 
-def to_preview(page):
-    """Flat copy with relative links, for a preview that isn't served from a domain root."""
+def to_preview(page, main=False):
+    """Flat copy with relative links, for a preview that isn't served from a domain root.
+
+    main=True strips the document skeleton (the preview host wraps the entry page itself) and gives it a short title.
+    """
     page = page.replace('href="/"', 'href="index.html"').replace('href="/#', 'href="index.html#')
     for h, _, slug in NAV_LINKS:
         page = page.replace(f'href="{h}"', f'href="{slug}.html"')
-    return page.replace('"/media/', '"media/').replace('"/fonts/', '"fonts/').replace("url(/fonts/", "url(fonts/")
+    page = page.replace('"/media/', '"media/').replace('"/fonts/', '"fonts/').replace("url(/fonts/", "url(fonts/")
+    if main:
+        for tag in ('<!doctype html>', '<html lang="en">', '<head>', '</head>', '<body>', '</body>', '</html>'):
+            page = page.replace(tag, "", 1)
+        page = re.sub(r"<title>.*?</title>", "<title>Clipline Studio Redesign</title>", page, count=1)
+        page = page.lstrip()
+    return page
 
 
 def main():
@@ -612,7 +622,7 @@ def main():
         print("wrote", rel, f"{len(page.encode()) // 1024} KB")
         if preview:
             name = "index.html" if rel == "index.html" else rel.replace("/index.html", ".html")
-            (preview / name).write_text(to_preview(page), encoding="utf-8")
+            (preview / name).write_text(to_preview(page, main=(rel == "index.html")), encoding="utf-8")
 
 
 if __name__ == "__main__":

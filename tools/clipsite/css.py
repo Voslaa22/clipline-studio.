@@ -14,6 +14,10 @@ GRAIN = ("url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wid
          "%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/%3E%3C/filter%3E"
          "%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")")
 
+DARK = ("--paper:#0a0b0f;--card:#13151b;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;"
+        "--rule:rgba(243,245,249,.34);--rule-soft:rgba(243,245,249,.14);--rule-faint:rgba(243,245,249,.07);"
+        "--accent:#4d8dff;--accent-soft:#16213a;--good:#4cc27a;--tape:rgba(255,210,63,.32);color-scheme:dark")
+
 CSS = r"""
 @font-face{font-family:"Instrument Serif";src:url(/fonts/instrument-serif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Serif";src:url(/fonts/instrument-serif-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
@@ -36,18 +40,16 @@ CSS = r"""
   --wrap:1120px;--pad:clamp(18px,4vw,40px);
   color-scheme:light dark;
 }
-@media (prefers-color-scheme:dark){:root{
-  --paper:#0a0b0f;--card:#13151b;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;
-  --rule:rgba(243,245,249,.34);--rule-soft:rgba(243,245,249,.14);--rule-faint:rgba(243,245,249,.07);
-  --accent:#4d8dff;--accent-soft:#16213a;--good:#4cc27a;--tape:rgba(255,210,63,.32);
-}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){DARK}}
+:root[data-theme="dark"]{DARK}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:16px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.08;background-image:GRAIN;mix-blend-mode:multiply}
-@media (prefers-color-scheme:dark){body::before{opacity:.06;mix-blend-mode:screen}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{opacity:.06;mix-blend-mode:screen}}
+:root[data-theme="dark"] body::before{opacity:.06;mix-blend-mode:screen}
 a{color:inherit}
 img,video,svg{max-width:100%;display:block}
 figure{margin:0}
@@ -352,4 +354,4 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 /* ---- 404 ---- */
 .nf{padding:clamp(40px,8vw,100px) 0}
 .nf .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-""".replace("GRAIN", GRAIN)
+""".replace("GRAIN", GRAIN).replace("DARK", DARK)
