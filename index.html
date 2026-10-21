@@ -341,7 +341,7 @@ section{scroll-margin-top:24px}
 .cmp{position:relative;width:300px;max-width:100%;aspect-ratio:9/16;margin:30px auto 0;border:1.5px solid var(--ink);overflow:hidden;background:#0b0d12;--c:50%;user-select:none}
 .cmp video,.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cmp .before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--c)) 0 0);background:#0b0d12}
-.cmp .before img{width:333.3%;height:auto;max-width:none;left:-116.7%;top:0;right:auto;bottom:auto;filter:grayscale(.9) brightness(.72) contrast(.85)}
+.cmp .before video{width:333.3%;height:auto;max-width:none;left:-116.7%;top:0;right:auto;bottom:auto;aspect-ratio:16/9;filter:brightness(.85)}
 .cmp .line{position:absolute;top:0;bottom:0;left:var(--c);width:2px;background:var(--mark);transform:translateX(-50%);pointer-events:none}
 .cmp .knob{position:absolute;top:50%;left:var(--c);width:36px;height:36px;border-radius:50%;background:var(--mark);border:1.5px solid #0b0d12;transform:translate(-50%,-50%);display:grid;place-items:center;pointer-events:none;font:700 15px/1 var(--hand);color:#0b0d12}
 .cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
@@ -668,18 +668,18 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
   <div class="cmpwrap rv">
     <div class="cmp" id="cmp">
       <video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video>
-      <div class="before"><img src="/media/d1w.jpg" alt="" loading="lazy" width="1280" height="720"></div>
-      <span class="tag l">raw source</span><span class="tag r">finished clip</span>
-      <input type="range" min="0" max="100" value="50" aria-label="Compare the raw source frame with the finished clip; left is raw, right is finished">
+      <div class="before"><video poster="/media/d1w.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1w.mp4" type="video/mp4"></video></div>
+      <span class="tag l">wide 16:9</span><span class="tag r">vertical clip</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare the wide recording with the finished vertical clip; left is wide, right is the clip">
       <span class="line" aria-hidden="true"></span><span class="knob" aria-hidden="true">↔</span>
     </div>
     <div>
       <h3>Before and after</h3>
-      <p>Left: the wide recording, cropped to the clip. Right: the finished clip with the hook title, word-by-word captions and colour. Drag the handle, or use the arrow keys.</p>
+      <p>Left: the wide recording, playing, before the reframe. Right: the finished 9:16 clip with the hook title and the crop following the speaker. Both run in sync; drag the handle, or use the arrow keys.</p>
       <span class="hand">same recording, same moment — only the edit changed</span>
     </div>
   </div>
-  <p class="fig"><b>Fig. 3</b> Raw source frame against the finished clip.</p>
+  <p class="fig"><b>Fig. 3</b> The wide recording against the finished vertical clip, same moment.</p>
   <div class="player wob2 rv">
     <video controls playsinline preload="none" poster="/media/d3v.jpg" aria-label="Finished clip: a story moment, vertical with captions, with sound"><source src="/media/d3v.mp4" type="video/mp4"></video>
     <div><h3>Watch a finished clip with sound</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post. Press play; it won’t start on its own.</p><span class="hand ac">← press play, sound is on</span></div>
@@ -890,7 +890,10 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 
   /* before / after slider */
   var cmp=document.getElementById('cmp');
-  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')})}
+  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')});
+    /* keep the raw and finished clips on the same frame */
+    var cva=cmp.querySelector(':scope > video'),cvb=cmp.querySelector('.before video');
+    if(cva&&cvb){cva.addEventListener('timeupdate',function(){if(Math.abs(cva.currentTime-cvb.currentTime)>.2&&cvb.readyState>1)cvb.currentTime=cva.currentTime});cva.addEventListener('play',function(){playV(cvb)});cva.addEventListener('pause',function(){cvb.pause()})}}
 
   /* one clip, three feeds */
   var dist=document.querySelector('.dist');
