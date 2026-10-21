@@ -157,9 +157,9 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .pols{display:flex;justify-content:center;align-items:flex-end;gap:0;padding:64px 0 10px;min-height:380px;position:relative}
 @media (min-width:1300px){.pols{min-height:440px}}
 .pol{--r:0deg;position:relative;background:var(--card);padding:9px 9px 32px;border:1px solid var(--rule-soft);box-shadow:3px 4px 0 var(--rule-soft);transform:rotate(var(--r));width:clamp(118px,13vw,196px);flex:none;transition:transform .35s cubic-bezier(.3,1.3,.5,1),z-index 0s}
-.pol:nth-of-type(1){--r:-7deg;margin-right:-18px;z-index:1}
+.pol:nth-of-type(1){--r:-6deg;margin-right:4px;z-index:1}
 .pol:nth-of-type(2){--r:2deg;z-index:3;width:clamp(132px,14.5vw,220px);margin-bottom:22px}
-.pol:nth-of-type(3){--r:6deg;margin-left:-18px;z-index:2}
+.pol:nth-of-type(3){--r:5deg;margin-left:4px;z-index:2}
 .scene{position:relative}
 .scene .pol{--z:1;transform:rotate(var(--r)) translate(calc(var(--mx,0px)*var(--z)),calc(var(--my,0px)*var(--z)))}
 .scene .pol:nth-of-type(2){--z:1.6}.scene .pol:nth-of-type(3){--z:.7}
@@ -174,6 +174,7 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .pol video{width:100%;height:100%;object-fit:cover}
 .pol .cap{position:absolute;left:12px;right:8px;bottom:6px;font:700 16px/1 var(--hand);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:860px){.pols{min-height:0;padding-top:64px}.pol{width:clamp(100px,26vw,150px)}.pol:nth-of-type(2){width:clamp(112px,29vw,168px)}}
+@media (max-width:400px){.pol{width:26vw}.pol:nth-of-type(2){width:28vw}.pol:nth-of-type(1){margin-right:0}.pol:nth-of-type(3){margin-left:0}}
 
 /* hero editing deck: three tracks, a playhead, caption segments that light up as it passes */
 .deck{position:relative;margin:4px 8px 0;padding:10px 10px 12px 36px;border:1.5px solid var(--ink);border-radius:var(--wob2);background:var(--card);--cycle:9s}
