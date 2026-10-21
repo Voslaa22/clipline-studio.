@@ -41,6 +41,22 @@ Self-hosted in `fonts/` (Fontsource latin subsets, SIL OFL; see `fonts/LICENSE.t
 The contact form posts to FormSubmit (AJAX) and lands in the studio inbox. Field ids and the payload are in
 `tools/build_site.py` (`trial()` and the script at the bottom).
 
+## Motion (Magic UI, ported)
+
+The site has no Node toolchain, so the Magic UI components that fit were ported as small vanilla equivalents inside
+`tools/clipsite/css.py` and the script in `tools/build_site.py`: BlurFade (section reveals, `.rv`), NumberTicker
+(proof figures, `[data-count]`), AnimatedBeam (the workflow diagram's connectors, SMIL gradient) and BorderBeam
+(the recommended plan, `.beam`, CSS motion path). All of them switch off under `prefers-reduced-motion`, and every
+number and section is readable without JavaScript.
+
+## QA
+
+```
+python3 -m http.server 8765        # serve the repo root
+npm i playwright                   # once; add CHROME=/path/to/chromium if Playwright has no browser
+node tools/qa/qa.js
+```
+
 ## Publishing
 
 Work on a branch, preview, then merge into `main` and publish by merging `main` into `gh-pages` and pushing.

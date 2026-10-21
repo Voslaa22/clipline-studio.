@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0b0f" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Cpath d='M12 7h7l-5 18H7z' fill='%231d5cff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%230b0d12'/%3E%3Cpath%20d='M12%207h7l-5%2018H7z'%20fill='%231d5cff'/%3E%3C/svg%3E">
 <title>Stream Clipping Service for Twitch, Kick and YouTube Live · Clipline Studio</title>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which platforms do you clip from?", "acceptedAnswer": {"@type": "Answer", "text": "Twitch, Kick and YouTube Live. If your VOD has a link I can open, I can clip it."}}, {"@type": "Question", "name": "Do you clip gameplay and IRL streams?", "acceptedAnswer": {"@type": "Answer", "text": "Both. Send me the stream and I'll pick the moments that work on their own for people who weren't watching live."}}, {"@type": "Question", "name": "How long are the clips?", "acceptedAnswer": {"@type": "Answer", "text": "Usually 20 to 60 seconds, long enough for the moment to land and short enough to keep people watching."}}, {"@type": "Question", "name": "Do you post to my accounts, or do I?", "acceptedAnswer": {"@type": "Answer", "text": "Either. On Growth and Scale I post for you with scheduling access you grant. On Starter I deliver finished files and captions, and you post."}}, {"@type": "Question", "name": "Who owns the clips?", "acceptedAnswer": {"@type": "Answer", "text": "You do. They're cut from your streams and delivered to you. I never post your clips anywhere except the accounts you choose."}}]}</script>
 <script>document.documentElement.classList.add('js')</script>
@@ -69,6 +69,7 @@ h1{font-size:clamp(42px,6.2vw,76px);line-height:.98;text-wrap:balance}
 h2{font-size:clamp(32px,4vw,50px);line-height:1.02;text-wrap:balance}
 h3{font-size:26px;line-height:1.1}
 h1 em,h2 em{font-style:italic;position:relative;white-space:nowrap}
+@media (max-width:700px){h1 em,h2 em,em.ul{white-space:normal}}
 em.ul{font-style:italic;position:relative;display:inline-block}
 em.ul svg{position:absolute;left:-2%;right:-2%;bottom:-.08em;width:104%;height:.32em;overflow:visible;pointer-events:none}
 em.ul path{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
@@ -109,7 +110,23 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .svc a{text-decoration:none;color:var(--ink-2);position:relative;padding:6px 0}
 .svc a[aria-current]{color:var(--ink)}
 .svc a[aria-current]::after{content:"";position:absolute;left:-2px;right:-2px;bottom:-1px;height:7px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5c20-4 40-3 60-1s25 1 36-2' fill='none' stroke='%231d5cff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/100% 100%}
-@media (max-width:720px){nav.top{flex-wrap:wrap}.navr{display:contents}.svc{order:3;flex-basis:100%;justify-content:flex-start;gap:16px;border-top:1px dashed var(--rule-soft);padding-top:10px;font-size:14px}.btn.top{padding:10px 13px;font-size:14px}}
+.svc a.sep{margin-left:6px;padding-left:16px;border-left:1px dashed var(--rule)}
+.menu-btn{display:none;width:42px;height:42px;border:1.5px solid var(--ink);border-radius:var(--wob);background:transparent;color:var(--ink);cursor:pointer;place-items:center}
+.menu-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.menu-btn .x{display:none}
+.menu-btn[aria-expanded="true"] .bars{display:none}.menu-btn[aria-expanded="true"] .x{display:block}
+@media (max-width:720px){
+  .menu-btn{display:grid}
+  .navr{gap:10px}
+  .btn.top{padding:10px 13px;font-size:14px}
+  .svc{display:none;position:absolute;left:0;right:0;top:100%;z-index:40;flex-direction:column;gap:0;background:var(--card);border:1.5px solid var(--ink);border-radius:var(--wob2);padding:8px 6px;box-shadow:4px 4px 0 var(--accent);font-size:17px}
+  .svc.open{display:flex}
+  .svc a{padding:12px 14px;border-bottom:1px dashed var(--rule-soft)}
+  .svc a:last-child{border-bottom:0}
+  .svc a.sep{margin:0;padding-left:14px;border-left:0}
+  .svc a[aria-current]::after{left:14px;right:auto;width:70px}
+  nav.top{position:relative}
+}
 
 /* ---- hero ---- */
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,5vw,64px);align-items:center;padding:clamp(28px,5vw,64px) 0 10px;position:relative}
@@ -117,6 +134,7 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .hero .kicker{margin-bottom:14px}
 .hero .sub{font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);max-width:56ch;margin-top:22px}
 .hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center}
+@media (max-width:420px){.hero .actions .btn,.plan .btn,.send{white-space:normal;text-align:left;line-height:1.25}.hero .actions .btn{width:100%}}
 .trust{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:22px;font:700 20px/1.1 var(--hand);color:var(--ink-2)}
 .trust span{display:inline-flex;align-items:center;gap:7px}
 .trust svg{width:18px;height:18px;stroke:var(--good);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
@@ -175,6 +193,27 @@ section{scroll-margin-top:24px}
 .outs .pol:nth-of-type(2){--r:1deg;margin-bottom:14px;width:clamp(104px,11.5vw,144px)}
 .outs .pol:nth-of-type(3){--r:5deg;margin-left:-12px}
 @media (prefers-reduced-motion:reduce){.ep .scan{animation:none;left:47%}.pol{transition:none}}
+.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1.6vw,18px);margin-top:34px;align-items:start}
+@media (max-width:980px){.stages{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){.stages{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stage{padding:10px 10px 12px;transform:rotate(var(--r,0deg));min-width:0}
+.stage:nth-child(2n){--r:.5deg}.stage:nth-child(3n){--r:-.5deg}
+.stage .n{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.stage .pic{position:relative;margin-top:8px;overflow:hidden;background:#0b0d12;border:1.5px solid var(--ink)}
+.stage .pic.wide{aspect-ratio:16/9}.stage .pic.tall{aspect-ratio:9/16;max-height:240px;margin-inline:auto}
+.stage .pic img,.stage .pic video{width:100%;height:100%;object-fit:cover}
+.stage .pic .box{position:absolute;top:4%;bottom:4%;left:35%;width:30%;border:2px dashed var(--mark)}
+.stage .pic .mk{position:absolute;left:0;right:0;bottom:0;height:8px;background:rgba(255,255,255,.18)}
+.stage .pic .mk i{position:absolute;left:18%;width:3%;top:0;bottom:0;background:var(--mark)}
+.stage .pic .tag{position:absolute;left:6px;top:6px;background:var(--mark);color:#0b0d12;font:700 13px/1 var(--hand);padding:4px 7px}
+.stage h3{font-size:19px;margin-top:10px}
+.stage p{font-size:13.5px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+.stage video{display:block}
+.player{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;margin-top:30px;padding:16px;max-width:720px}
+@media (max-width:560px){.player{grid-template-columns:1fr}}
+.player video{width:200px;max-width:100%;aspect-ratio:9/16;background:#0b0d12;border:1.5px solid var(--ink)}
+.player h3{font-size:24px}.player p{color:var(--ink-2);font-size:15.5px;margin-top:6px}
+.player .hand{margin-top:10px;display:block}
 
 /* ---- process diagram ---- */
 .proc{margin-top:30px}
@@ -184,6 +223,8 @@ section{scroll-margin-top:24px}
 .proc .n.ac{fill:var(--accent-soft);stroke:var(--accent)}
 .proc .ar{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .proc .ar.ac{stroke:var(--accent)}
+.proc .bm{fill:none;stroke-width:3;stroke-linecap:round}
+@media (prefers-reduced-motion:reduce){.proc .bm{display:none}}
 .proc .t{font:400 22px var(--serif);fill:var(--ink)}
 .proc .t.i{font-style:italic}
 .proc .m{font:500 11px var(--mono);fill:var(--ink-3);letter-spacing:.1em}
@@ -202,7 +243,7 @@ section{scroll-margin-top:24px}
 @media (max-width:760px){.proof{grid-template-columns:1fr}}
 .stat{padding:22px 22px 20px;transform:rotate(var(--r,0deg))}
 .stat:nth-child(1){--r:-.7deg}.stat:nth-child(3){--r:.6deg}
-.stat .v{font:400 clamp(52px,6vw,74px)/1 var(--serif);letter-spacing:-.02em}
+.stat .v{font:400 clamp(52px,6vw,74px)/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stat .v small{font-size:.5em;font-style:italic}
 .stat .l{margin-top:10px;color:var(--ink-2);font-size:15.5px}
 .best{margin-top:22px;padding:22px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 32px;align-items:center;position:relative;background:var(--accent-soft);border-color:var(--accent)}
@@ -219,6 +260,19 @@ section{scroll-margin-top:24px}
 @media (max-width:700px){.list{grid-template-columns:1fr}}
 .list li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--rule-soft);font-size:16.5px}
 .list li svg{flex:none;width:22px;height:22px;margin-top:2px;stroke:var(--good);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.inc{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:clamp(20px,4vw,56px);align-items:start}
+@media (max-width:900px){.inc{grid-template-columns:1fr}}
+.inc .list{grid-template-columns:1fr;max-width:none;margin-top:22px}
+.anat{position:relative;margin:30px auto 0;width:min(100%,380px);padding:14px 0 0}
+.anat .pol{--r:1.5deg;width:170px;margin:0 auto;display:block}
+.anat .pol .scr img{width:100%;height:100%;object-fit:cover}
+.anat .call{position:absolute;z-index:2;font:700 17px/1.1 var(--hand);color:var(--accent);max-width:104px;white-space:normal}
+.anat .call svg{position:absolute;width:40px;height:28px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.anat .c1{left:0;top:30px}.anat .c1 svg{left:100%;top:2px}
+.anat .c2{right:0;top:44%;text-align:right}.anat .c2 svg{right:100%;top:-6px;transform:scaleX(-1)}
+.anat .c3{left:0;bottom:70px}.anat .c3 svg{left:100%;top:-20px}
+.anat .fig{text-align:center;max-width:none}
+@media (max-width:400px){.anat .call{font-size:15px;max-width:84px}.anat .pol{width:150px}}
 
 /* ---- pricing ---- */
 .plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,22px);margin-top:28px;align-items:start}
@@ -234,6 +288,13 @@ section{scroll-margin-top:24px}
 .plan li::before{content:"—";color:var(--ink-3);margin-right:8px}
 .plan .btn{align-self:flex-start;width:100%;justify-content:center;white-space:normal;text-align:center}
 .plan.pick{border-color:var(--accent);box-shadow:4px 4px 0 var(--accent)}
+.beam{position:absolute;inset:-1.5px;border-radius:inherit;pointer-events:none;border:1.5px solid transparent;display:none;overflow:hidden;
+  -webkit-mask:linear-gradient(transparent,transparent),linear-gradient(#000,#000);mask:linear-gradient(transparent,transparent),linear-gradient(#000,#000);
+  -webkit-mask-clip:padding-box,border-box;mask-clip:padding-box,border-box;-webkit-mask-composite:xor;mask-composite:intersect}
+.beam i{position:absolute;width:90px;aspect-ratio:1;background:linear-gradient(to left,var(--accent),var(--mark),transparent);offset-path:rect(0 auto auto 0 round 90px);offset-anchor:50% 50%;animation:beam 7s linear infinite}
+@keyframes beam{from{offset-distance:0%}to{offset-distance:100%}}
+@supports (offset-path:rect(0 auto auto 0 round 90px)){.beam{display:block}}
+@media (prefers-reduced-motion:reduce){.beam{display:none}}
 .plan .tag{position:absolute;right:14px;top:-14px;transform:rotate(3deg);background:var(--mark);color:#0b0d12;font:700 17px/1 var(--hand);padding:7px 12px;border-radius:var(--wob2);border:1.5px solid #0b0d12}
 .plan.custom{background:var(--mark);color:#0b0d12;border-color:#0b0d12;transform:rotate(1.2deg)}
 .plan.custom .price,.plan.custom ul,.plan.custom li::before,.plan.custom .price small{color:#0b0d12}
@@ -351,9 +412,14 @@ footer .by{font:700 20px/1.1 var(--hand);color:var(--ink-2)}
 footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 
 /* ---- reveal ---- */
-.js .rv{opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .55s ease}
-.js .rv.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+.js .rv{opacity:0;transform:translateY(6px);filter:blur(6px);transition:opacity .4s ease-out var(--d,0s),transform .4s ease-out var(--d,0s),filter .4s ease-out var(--d,0s)}
+.js .rv.in{opacity:1;transform:none;filter:none}
+.js.loaded .hero .rv{transition-duration:.6s}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;filter:none;transition:none}}
+/* hand-drawn underline draws itself on load */
+.js em.ul path{stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1s cubic-bezier(.3,.9,.3,1) .5s}
+.js.loaded em.ul path{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){.js em.ul path{stroke-dashoffset:0;transition:none}}
 
 /* ---- 404 ---- */
 .nf{padding:clamp(40px,8vw,100px) 0}
@@ -366,23 +432,24 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 <nav class="top" aria-label="Main">
   <a class="logo" href="/" aria-label="Clipline Studio, home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 6h7l-5 20H4z"/><path class="ac" d="M21 6h7l-5 20h-7z"/></svg>Clipline Studio</a>
   <div class="navr">
-    <div class="svc"><a href="/podcast-clipping/">Podcasts</a><a href="/stream-clipping/" aria-current="page">Streams</a><a href="/youtube-clipping/">YouTube</a><a href="/video-editing/">Editing</a></div>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="bars" d="M4 7h16M4 12h16M4 17h16"/><path class="x" d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="svc" id="menu"><a href="/podcast-clipping/">Podcasts</a><a href="/stream-clipping/" aria-current="page">Streams</a><a href="/youtube-clipping/">YouTube</a><a href="/video-editing/">Editing</a><a class="sep" href="/#demo">Examples</a><a href="/#pricing">Pricing</a></div>
     <a class="btn sm top" href="#trial">5 free clips</a>
   </div>
 </nav>
 <main id="main">
 <header class="hero" id="top">
   <div>
-    <span class="kicker">Sheet 03 · Clipping for Twitch, Kick &amp; YouTube Live</span>
-    <h1>Your stream&#x27;s best moments, <em class="ul">clipped and posted<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em> for you.</h1>
-    <p class="sub">I go through your VOD and cut the reactions, fails, clutches and chat moments, reframe them to vertical with captions, and post them to TikTok, Reels and Shorts. You stream. I keep you in the feed between streams.</p>
-    <div class="actions">
+    <span class="kicker rv">Sheet 03 · Clipping for Twitch, Kick &amp; YouTube Live</span>
+    <div class="rv" style="--d:.06s"><h1>Your stream&#x27;s best moments, <em class="ul">clipped and posted<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em> for you.</h1></div>
+    <p class="sub rv" style="--d:.16s">I go through your VOD and cut the reactions, fails, clutches and chat moments, reframe them to vertical with captions, and post them to TikTok, Reels and Shorts. You stream. I keep you in the feed between streams.</p>
+    <div class="actions rv" style="--d:.26s">
       <a class="btn" href="#trial">Get 5 free clips from your last stream <span class="arr" aria-hidden="true">→</span></a>
       <a class="btn alt" href="#pricing">See pricing</a>
     </div>
-    <div class="trust"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No call, no card</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Clips within 48 hours</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cancel anytime</span></div>
+    <div class="trust rv" style="--d:.36s"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No call, no card</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Clips within 48 hours</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cancel anytime</span></div>
   </div>
-  <div class="pols" aria-hidden="true"><span class="stamp">5 free clips<br>no card · 48 h</span><figure class="pol"><div class="scr"><video poster="/media/v2.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v2.webm" type="video/webm"><source src="/media/v2.mp4" type="video/mp4"></video></div><figcaption class="cap">the clutch</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v1.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v1.webm" type="video/webm"><source src="/media/v1.mp4" type="video/mp4"></video></div><figcaption class="cap">chat moment</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v3.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v3.webm" type="video/webm"><source src="/media/v3.mp4" type="video/mp4"></video></div><figcaption class="cap">the fail</figcaption></figure></div>
+  <div class="rv" style="--d:.2s"><div class="pols" aria-hidden="true"><span class="stamp">5 free clips<br>no card · 48 h</span><figure class="pol"><div class="scr"><video poster="/media/v2.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v2.webm" type="video/webm"><source src="/media/v2.mp4" type="video/mp4"></video></div><figcaption class="cap">the clutch</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v1.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v1.webm" type="video/webm"><source src="/media/v1.mp4" type="video/mp4"></video></div><figcaption class="cap">chat moment</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v3.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v3.webm" type="video/webm"><source src="/media/v3.mp4" type="video/mp4"></video></div><figcaption class="cap">the fail</figcaption></figure></div></div>
 </header>
 <div class="contents rv"><b>Included</b><span>Vertical 9:16 reframes</span><span>Word-by-word captions</span><span>Hook title in the first second</span><span>TikTok</span><span>Instagram Reels</span><span>YouTube Shorts</span><span>Posted on a schedule</span><span>Monthly performance report</span><span>You own every file</span></div>
 <section id="why">
@@ -393,38 +460,25 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 <section id="how">
   <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>02</i> How it works</div>
   <div class="sec-head rv"><h2>You create. I do the rest.</h2><p class="lead">Every clip is reframed to 9:16, captioned word by word, gets a hook title for the first second and your branding.</p></div>
-  <div class="proc rv"><svg viewBox="0 0 900 270" role="img" aria-label="Diagram: your upload goes into Clipline, where moments are found, cut and captioned, and comes out as daily posts on TikTok, Instagram Reels and YouTube Shorts.">
-  <g transform="rotate(-1 120 130)"><rect class="n" x="6" y="88" width="228" height="84" rx="9"/><text class="t" x="120" y="124" text-anchor="middle">Your long video</text><text class="m" x="120" y="150" text-anchor="middle">YOUTUBE · TWITCH · PODCAST</text></g>
-  <text class="h" x="120" y="206" text-anchor="middle">every new upload, automatically</text>
-  <path class="ar" d="M240 128c22-6 46 4 68 1"/><path class="ar" d="M298 121l12 8-12 8"/>
-  <g transform="rotate(.6 440 130)"><rect class="n ac" x="312" y="66" width="256" height="128" rx="11"/><text class="t i" x="440" y="108" text-anchor="middle">Clipline Studio</text><text class="m" x="440" y="134" text-anchor="middle">SCAN · SCORE · REFRAME</text><text class="m" x="440" y="154" text-anchor="middle">CAPTION · HOOK · SCHEDULE</text></g>
-  <text class="h ac" x="440" y="228" text-anchor="middle">one upload in, three platforms out</text>
-  <path class="ar ac" d="M570 124c28-24 52-50 84-58"/><path class="ar ac" d="M640 62l14 3-6 13"/>
-  <path class="ar ac" d="M570 130c28 2 56 2 84 0"/><path class="ar ac" d="M644 122l12 8-12 8"/>
-  <path class="ar ac" d="M570 138c28 22 52 48 84 58"/><path class="ar ac" d="M640 198l14-3-6-13"/>
-  <g transform="rotate(-.8 768 56)"><rect class="n" x="664" y="30" width="212" height="54" rx="8"/><text class="t" x="770" y="58" text-anchor="middle">TikTok</text><text class="m" x="770" y="76" text-anchor="middle">DAILY · PEAK TIME</text></g>
-  <g><rect class="n" x="664" y="102" width="212" height="54" rx="8"/><text class="t" x="770" y="130" text-anchor="middle">Instagram Reels</text><text class="m" x="770" y="148" text-anchor="middle">DAILY · PEAK TIME</text></g>
-  <g transform="rotate(.9 768 200)"><rect class="n" x="664" y="174" width="212" height="54" rx="8"/><text class="t" x="770" y="202" text-anchor="middle">YouTube Shorts</text><text class="m" x="770" y="220" text-anchor="middle">DAILY · PEAK TIME</text></g>
-  <text class="h" x="770" y="258" text-anchor="middle">or as files, if you post yourself</text>
-</svg></div>
-  <div class="steps rv"><div class="step wob"><span class="n">Step 1</span><h3>You upload as usual</h3><p>Every new long video or episode on your channel goes straight into my clipping pipeline. Nothing to send, no extra work.</p></div><div class="step wob"><span class="n">Step 2</span><h3>I cut the moments</h3><p>Hooks, reactions, stories and one-liners are picked, reframed to 9:16, captioned word by word and branded to your channel.</p></div><div class="step wob"><span class="n">Step 3</span><h3>They go out daily</h3><p>Clips are scheduled across TikTok, Reels and Shorts, or delivered as ready-to-post files if you&#x27;d rather post yourself.</p></div></div>
-  <p class="fig"><b>Fig. 1</b> The whole pipeline on one sheet. Clips are scheduled at your audience’s peak times, or delivered as files if you post yourself.</p>
+  <div class="proc rv"><svg viewBox="0 0 970 230" role="img" aria-label="Diagram: a long-form video goes through moment selection, vertical reframing and captions with hooks, then is scheduled and posted to TikTok, Reels and Shorts."><defs><linearGradient id="bm0" gradientUnits="userSpaceOnUse" x1="168" x2="168" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="138;214" dur="5s" begin="0.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="168;244" dur="5s" begin="0.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm1" gradientUnits="userSpaceOnUse" x1="368" x2="368" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="338;414" dur="5s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="368;444" dur="5s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm2" gradientUnits="userSpaceOnUse" x1="568" x2="568" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="538;614" dur="5s" begin="1.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="568;644" dur="5s" begin="1.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm3" gradientUnits="userSpaceOnUse" x1="768" x2="768" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="738;814" dur="5s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="768;844" dur="5s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient></defs><g transform="rotate(-1 86 110)"><rect class="n" x="6" y="70" width="160" height="80" rx="9"/><text class="t" x="86" y="104" text-anchor="middle" font-size="20">Long-form video</text><text class="m" x="86" y="130" text-anchor="middle" font-size="9">ANY LONG UPLOAD</text></g><path class="ar ac" d="M168 110c6 -4 10 4 36 0"/><g transform="rotate(0.6 286 110)"><rect class="n ac" x="206" y="70" width="160" height="80" rx="9"/><text class="t" x="286" y="104" text-anchor="middle" font-size="20">Moment selection</text><text class="m" x="286" y="130" text-anchor="middle" font-size="9">SCANNED · SCORED</text></g><path class="ar ac" d="M368 110c6 -4 10 4 36 0"/><g transform="rotate(-0.5 486 110)"><rect class="n ac" x="406" y="70" width="160" height="80" rx="9"/><text class="t" x="486" y="104" text-anchor="middle" font-size="20">Vertical reframe</text><text class="m" x="486" y="130" text-anchor="middle" font-size="9">9:16 · FACE IN FRAME</text></g><path class="ar ac" d="M568 110c6 -4 10 4 36 0"/><g transform="rotate(0.7 686 110)"><rect class="n ac" x="606" y="70" width="160" height="80" rx="9"/><text class="t" x="686" y="104" text-anchor="middle" font-size="20">Captions &amp; hooks</text><text class="m" x="686" y="130" text-anchor="middle" font-size="9">WORD BY WORD</text></g><path class="ar" d="M768 110c6 -4 10 4 36 0"/><g transform="rotate(-0.8 886 110)"><rect class="n" x="806" y="70" width="160" height="80" rx="9"/><text class="t" x="886" y="104" text-anchor="middle" font-size="20">Scheduled posting</text><text class="m" x="886" y="130" text-anchor="middle" font-size="9">TIKTOK · REELS · SHORTS</text></g><path class="bm" d="M168 110c6 -4 10 4 36 0" stroke="url(#bm0)"/><path class="bm" d="M368 110c6 -4 10 4 36 0" stroke="url(#bm1)"/><path class="bm" d="M568 110c6 -4 10 4 36 0" stroke="url(#bm2)"/><path class="bm" d="M768 110c6 -4 10 4 36 0" stroke="url(#bm3)"/><text class="h" x="10" y="190" text-anchor="start">every new upload</text><text class="h ac" x="486" y="190" text-anchor="middle">the part that takes judgment</text><text class="h" x="962" y="190" text-anchor="end">or as files, if you post yourself</text></svg></div>
+  <div class="steps"><div class="step wob rv" style="--d:0.0s"><span class="n">Step 1</span><h3>You upload as usual</h3><p>Every new long video or episode on your channel goes straight into my clipping pipeline. Nothing to send, no extra work.</p></div><div class="step wob rv" style="--d:0.1s"><span class="n">Step 2</span><h3>I cut the moments</h3><p>Hooks, reactions, stories and one-liners are picked, reframed to 9:16, captioned word by word and branded to your channel.</p></div><div class="step wob rv" style="--d:0.2s"><span class="n">Step 3</span><h3>They go out daily</h3><p>Clips are scheduled across TikTok, Reels and Shorts, or delivered as ready-to-post files if you&#x27;d rather post yourself.</p></div></div>
+  <p class="fig"><b>Fig. 1</b> The whole pipeline on one sheet. Posting for you needs access you grant on each platform; otherwise clips are delivered as files for you to post.</p>
 </section>
 <section id="proof">
   <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>03</i> Proof</div>
-  <div class="sec-head rv"><h2>What my own clip accounts did in September</h2><p class="lead">I run this exact pipeline on my own accounts first. If it stops working there, you’ll hear it from me before you see it in your numbers.</p></div>
-  <div class="proof rv"><div class="stat wob"><div class="v">3M+</div><div class="l">views in September across Instagram and TikTok, almost all from people who didn’t follow my accounts yet</div></div><div class="stat wob"><div class="v">500+</div><div class="l">clips posted in September across TikTok and Instagram</div></div><div class="stat wob"><div class="v">14.5K</div><div class="l">followers across my clip accounts</div></div></div>
+  <div class="sec-head rv"><h2>What my own clip accounts did in September</h2><p class="lead">These are my own clip accounts, not client accounts: I run this exact pipeline on them first. Your numbers depend on your content and audience.</p></div>
+  <div class="proof rv"><div class="stat wob rv" style="--d:0.0s"><div class="v" role="img" aria-label="3M+"><span aria-hidden="true" data-count="3" data-dec="0" data-suffix="M+">3M+</span></div><div class="l">views in September across Instagram and TikTok, almost all from people who didn’t follow my accounts yet</div></div><div class="stat wob rv" style="--d:0.1s"><div class="v" role="img" aria-label="500+"><span aria-hidden="true" data-count="500" data-dec="0" data-suffix="+">500+</span></div><div class="l">clips posted in September across TikTok and Instagram</div></div><div class="stat wob rv" style="--d:0.2s"><div class="v" role="img" aria-label="14.5K"><span aria-hidden="true" data-count="14.5" data-dec="1" data-suffix="K">14.5K</span></div><div class="l">followers across my clip accounts</div></div></div>
   <div class="best wob rv">
     <span class="hand ac note">← my best one</span>
     <div><span class="k">Best account in September</span><p>One outdoor clip account on Instagram, in a single month.</p></div>
-    <div class="nums"><div><div class="v">2.85M</div><div class="l">VIEWS</div></div><div><div class="v">700K</div><div class="l">PEOPLE REACHED</div></div></div>
+    <div class="nums"><div><div class="v" role="img" aria-label="2.85M"><span aria-hidden="true" data-count="2.85" data-dec="2" data-suffix="M">2.85M</span></div><div class="l">VIEWS</div></div><div><div class="v" role="img" aria-label="700K"><span aria-hidden="true" data-count="700" data-dec="0" data-suffix="K">700K</span></div><div class="l">PEOPLE REACHED</div></div></div>
   </div>
   <p class="fig"><b>Fig. 2</b> Numbers from my own clip accounts, read from Instagram Insights and TikTok on 28–29 Sep 2026. Your results depend on your content and audience.</p>
 </section>
 <section id="pricing">
   <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>04</i> Pricing</div>
   <div class="sec-head rv"><h2>Pick how many clips a day</h2><p class="lead">Month to month, cancel any time. Every plan starts with 5 free clips so you can see the work before you pay for it.</p></div>
-  <div class="plans rv"><div class="plan wob"><h3>Starter</h3><div class="price">$299<small>per month · €299</small></div><ul><li>60 clips a month (2 a day)</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul><a class="btn" href="#trial" data-plan-pick="Starter">Start with 5 free clips</a></div><div class="plan wob pick"><span class="tag">most popular</span><h3>Growth</h3><div class="price">$499<small>per month · €499</small></div><ul><li>150 clips a month (5 a day)</li><li>I post to TikTok, Reels and Shorts</li><li>Scheduled at your audience&#x27;s peak times</li><li>Monthly performance report</li></ul><a class="btn" href="#trial" data-plan-pick="Growth">Start with 5 free clips</a></div><div class="plan wob"><h3>Scale</h3><div class="price">$1,099<small>per month · €1,099</small></div><ul><li>300–360 clips a month (10–12 a day)</li><li>All three platforms, posted for you</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul><a class="btn" href="#trial" data-plan-pick="Scale">Start with 5 free clips</a></div><div class="plan wob custom"><h3>Custom</h3><div class="price">Let’s talk<small>your budget</small></div><ul><li>Any number of clips</li><li>Your platforms and posting schedule</li><li>Mix clipping and video editing</li><li>Tell me what you need and your budget</li></ul><a class="btn" href="#trial" data-plan-pick="Custom">Send your proposal</a></div></div>
+  <div class="plans"><div class="plan wob rv" style="--d:0.00s"><h3>Starter</h3><div class="price">$299<small>per month · €299</small></div><ul><li>60 clips a month (2 a day)</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul><a class="btn" href="#trial" data-plan-pick="Starter">Start with 5 free clips</a></div><div class="plan wob pick rv" style="--d:0.00s"><span class="beam" aria-hidden="true"><i></i></span><span class="tag">most popular</span><h3>Growth</h3><div class="price">$499<small>per month · €499</small></div><ul><li>150 clips a month (5 a day)</li><li>I post to TikTok, Reels and Shorts (with access you grant)</li><li>Scheduled at your audience&#x27;s peak times</li><li>Monthly performance report</li></ul><a class="btn" href="#trial" data-plan-pick="Growth">Start with 5 free clips</a></div><div class="plan wob rv" style="--d:0.01s"><h3>Scale</h3><div class="price">$1,099<small>per month · €1,099</small></div><ul><li>300–360 clips a month (10–12 a day)</li><li>All three platforms, posted for you (with access you grant)</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul><a class="btn" href="#trial" data-plan-pick="Scale">Start with 5 free clips</a></div><div class="plan wob custom rv" style="--d:0.03s"><h3>Custom</h3><div class="price">Let’s talk<small>your budget</small></div><ul><li>Any number of clips</li><li>Your platforms and posting schedule</li><li>Mix clipping and video editing</li><li>Tell me what you need and your budget</li></ul><a class="btn" href="#trial" data-plan-pick="Custom">Send your proposal</a></div></div>
   <div class="month wob2 rv" id="month">
     <div class="month-head">
       <div><h3>What a month looks like</h3><p id="monthSum">150 clips · 5 a day · posted for you on TikTok, Reels and Shorts</p></div>
@@ -436,7 +490,7 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
       <div class="key"><span><i></i> posted for you</span><span><i class="o"></i> delivered as files</span></div>
     </div>
   </div>
-  <p class="fig"><b>Fig. 3</b> Clips per day over a 30-day month, by plan. Prices in USD; EUR charged at the same number.</p>
+  <p class="fig"><b>Fig. 3</b> Clips per day over a 30-day month, by plan. Billed monthly, in USD or in EUR at the same number ($499 or €499), your choice. Posting for you needs access you grant to each platform; files are always yours.</p>
   <p class="hand founding">Founding clients: the first three creators get 30% off for their first three months. Month-to-month, cancel anytime.</p>
 </section>
 <section id="trial">
@@ -496,6 +550,7 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
   <div class="sheet">Sheet 03 of 5 · Clipline Studio · clipping and video editing for creators</div>
   <nav class="flinks" aria-label="Services"><a href="/podcast-clipping/">Podcast clipping</a><a href="/stream-clipping/">Stream clipping</a><a href="/youtube-clipping/">YouTube Shorts clipping</a><a href="/video-editing/">Video editing</a><a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a></nav>
   <p class="by">One person, not an agency. You email me, I answer.</p>
+  <p class="fnote">Clipline Studio is an independent one-person studio: the person who clips your videos is the person who replies to your email. Results shown are from my own clip accounts, not from paying clients, and don’t guarantee what your channel will get.</p>
   <p class="fnote">Example footage: some videos on this site come from public YouTube videos and podcasts that I clipped for my own clip accounts. The people shown are not clients of Clipline Studio and have not endorsed it. If you appear here and want a clip removed, email <a href="mailto:cliplines.studio@gmail.com?subject=Clip%20removal">cliplines.studio@gmail.com</a> and I’ll take it down within 24 hours.</p>
 </footer>
 </div>
@@ -503,11 +558,40 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* videos: respect reduced motion, otherwise make sure they play */
-  document.querySelectorAll('video[autoplay]').forEach(function(v){
-    if(reduce){v.removeAttribute('autoplay');v.pause();return}
-    var p=v.play&&v.play();if(p&&p.catch)p.catch(function(){});
-  });
+  requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.add('loaded')})});
+
+  /* mobile menu */
+  var mb=document.querySelector('.menu-btn'),menu=document.getElementById('menu');
+  if(mb&&menu){
+    function setMenu(open){menu.classList.toggle('open',open);mb.setAttribute('aria-expanded',open?'true':'false')}
+    mb.addEventListener('click',function(){setMenu(mb.getAttribute('aria-expanded')!=='true')});
+    menu.addEventListener('click',function(e){if(e.target.tagName==='A')setMenu(false)});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mb.getAttribute('aria-expanded')==='true'){setMenu(false);mb.focus()}});
+    document.addEventListener('click',function(e){if(!e.target.closest('nav.top'))setMenu(false)});
+  }
+
+  /* looping preview videos: muted, and only running while on screen */
+  var loops=[].slice.call(document.querySelectorAll('video[autoplay]'));
+  loops.forEach(function(v){v.removeAttribute('autoplay');v.muted=true});
+  function playV(v){if(reduce)return;var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  if('IntersectionObserver' in window){
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)playV(e.target);else e.target.pause()})},{threshold:0.15});
+    loops.forEach(function(v){vio.observe(v)});
+  }else{loops.forEach(playV)}
+
+  /* number ticker (port of Magic UI NumberTicker): counts up once, when in view */
+  var counters=[].slice.call(document.querySelectorAll('[data-count]'));
+  function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}
+  function tick(c){
+    if(c.dataset.done)return;c.dataset.done=1;
+    var to=+c.dataset.count,d=+(c.dataset.dec||0),sfx=c.dataset.suffix||'',t0=null,dur=1600;
+    requestAnimationFrame(function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/dur,1),e=1-Math.pow(2,-10*p);c.textContent=fmt(p<1?to*e:to,d)+sfx;if(p<1)requestAnimationFrame(step)});
+  }
+  if(!reduce&&'IntersectionObserver' in window&&counters.length){
+    /* the real value stays in the markup; the count-up starts just before the number scrolls into view */
+    var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){tick(e.target);cio.unobserve(e.target)}})},{rootMargin:'0px 0px 120px 0px',threshold:0});
+    counters.forEach(function(c){cio.observe(c)});
+  }
 
   /* gentle reveal, once, when a block scrolls into view */
   var rv=[].slice.call(document.querySelectorAll('.rv'));
