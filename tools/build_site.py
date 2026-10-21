@@ -42,8 +42,26 @@ def ul(text):
             '<path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em>')
 
 
+def kinetic(text, start=0):
+    """Words of nowrap letter-spans. Each letter gets its entrance delay index."""
+    out, i = [], start
+    for word in text.split():
+        letters = ""
+        for ch in word:
+            letters += f'<span class="c" style="--dl:{i * 0.014:.3f}s">{esc(ch)}</span>'
+            i += 1
+        out.append(f'<span class="w">{letters}</span>')
+    return " ".join(out), i
+
+
 def h1(pre, em, post):
-    return f"<h1>{esc(pre)} {ul(em)} {esc(post)}</h1>"
+    a, i = kinetic(pre)
+    b, i = kinetic(em, i)
+    c, i = kinetic(post, i)
+    em_html = (f'<em class="ul w">{b}<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">'
+               '<path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em>')
+    return (f'<h1 class="kin"><span class="sr">{esc(pre)} {esc(em)} {esc(post)}</span>'
+            f'<span class="vis" aria-hidden="true" style="display:contents">{a} {em_html} {c}</span></h1>')
 
 
 def cut(num, label):
@@ -65,14 +83,33 @@ def video(name, cls="", autoplay=True, lazy=False):
     return (f'<video{c} poster="/media/{name}.jpg"{ap} muted loop playsinline preload="{pre}">{srcs}</video>')
 
 
-def polaroid(name, caption, lazy=False):
-    return (f'<figure class="pol"><div class="scr">{video(name, lazy=lazy)}</div>'
+def polaroid(name, caption, lazy=False, delay=None):
+    st = f' style="--pd:{delay}s"' if delay is not None else ""
+    return (f'<figure class="pol"{st}><div class="scr">{video(name, lazy=lazy)}</div>'
             f'<figcaption class="cap">{esc(caption)}</figcaption></figure>')
 
 
 def polaroids(names, captions, cls="pols", extra="", lazy=False):
     inner = "".join(polaroid(n, c, lazy) for n, c in zip(names, captions))
     return f'<div class="{cls}" aria-hidden="true">{extra}{inner}</div>'
+
+
+def deck():
+    """Mini editing timeline under the hero clips: clip boundaries, caption segments, an audio track and a playhead."""
+    clips = [(0, .33), (.345, .31), (.67, .33)]
+    caps = [.02, .11, .2, .37, .46, .55, .69, .8, .9]
+    bars = "".join(f'<b style="--h:{30 + abs(((k * 37) % 23) - 11) * 6}%"></b>' for k in range(60))
+    return ('<div class="deck" aria-hidden="true" data-live>'
+            '<div class="tc"><span>00:00</span><span>00:15</span><span>00:30</span></div>'
+            '<div class="trk v"><span class="lab">V1</span>' + "".join(f'<i style="--l:{l};--w:{w}"></i>' for l, w in clips) + '</div>'
+            '<div class="trk c"><span class="lab">CC</span>' + "".join(f'<i style="--l:{l};--w:.07"></i>' for l in caps) + '</div>'
+            f'<div class="trk a"><span class="lab">A1</span>{bars}</div>'
+            '<span class="ph"></span></div>')
+
+
+def scene(names, captions, extra=""):
+    pols = "".join(polaroid(n, c, delay=round(.25 + k * .09, 2)) for k, (n, c) in enumerate(zip(names, captions)))
+    return f'<div class="scene"><div class="pols" aria-hidden="true">{extra}{pols}</div>{deck()}</div>'
 
 
 def stamp(lines):
@@ -184,10 +221,6 @@ def contents():
 
 
 def demo(num):
-    pins = [("18%", "hook", "15:09"), ("47%", "reaction", "39:33"), ("76%", "story", "1:03:58")]
-    tl = "".join(f'<span class="pin" style="--x:{x}"></span><span class="lab" style="--x:{x}">{l} <em>{t}</em></span>'
-                 for x, l, t in pins)
-    outs = polaroids(["d1v", "d2v", "d3v"], ["hook · 15:09", "reaction · 39:33", "story · 1:03:58"], cls="outs", lazy=True)
     stages = [
         ("1 · Source", "wide", '<img src="/media/d1w.jpg" alt="Wide 16:9 frame of a podcast recording" loading="lazy" width="1280" height="720">',
          "The long recording", "The full episode, as uploaded. Nothing to prepare."),
@@ -203,29 +236,94 @@ def demo(num):
     stage_html = "".join(
         f'<div class="stage wob rv" style="--d:{i * .08:.2f}s"><span class="n">{esc(n)}</span><div class="pic {k}">{inner}</div><h3>{esc(h)}</h3><p>{esc(t)}</p></div>'
         for i, (n, k, inner, h, t) in enumerate(stages))
+    morph = f"""<div class="morph" aria-hidden="true">
+    <div class="pin">
+      <div class="stage">
+        <div class="src" data-a>{video("d1w")}<div class="box" data-a><span>9:16</span></div></div>
+        <div class="fin" data-a>{video("d1v", lazy=True)}</div>
+        <div class="out l" data-a><figure class="pol"><div class="scr">{video("d2v", lazy=True)}</div><figcaption class="cap">reaction · 39:33</figcaption></figure></div>
+        <div class="out r" data-a><figure class="pol"><div class="scr">{video("d3v", lazy=True)}</div><figcaption class="cap">story · 1:03:58</figcaption></figure></div>
+      </div>
+      <div class="tl2">
+        <span class="t">episode_142.mp4 · 1:24:10</span>
+        <div class="bar"></div><div class="fill" data-a></div>
+        <span class="mk" style="--x:.18"></span><span class="mk" style="--x:.47"></span><span class="mk" style="--x:.76"></span>
+        <span class="ph" data-a></span>
+        <span class="lab l1" data-a>1 · the long recording</span><span class="lab l2" data-a>2 · moment found at 15:09</span><span class="lab l3" data-a>3 · reframed to 9:16 on the speaker</span><span class="lab l4" data-a>4 · hook title + captions</span><span class="lab l5" data-a>5 · three clips, ready to post</span>
+      </div>
+    </div>
+  </div>"""
+    moments = f"""<div class="moments wob2 rv" id="moments" data-live>
+    <div>
+      <h3>Three moments from one episode</h3>
+      <p class="lead2">Pick a marker to see the clip it became. The labels are what I look for: a hook, a reaction, a story.</p>
+      <div class="mtl">
+        <div class="track"></div>
+        <span class="dot" style="--x:18%"></span><span class="dot" style="--x:47%"></span><span class="dot" style="--x:76%"></span>
+        <span class="mph" style="--x:18%"></span>
+        <span class="mk" style="--x:18%;--d:.1s"><button type="button" aria-pressed="true" data-v="d1v" data-cap="hook · 15:09">Hook<em>15:09</em></button></span>
+        <span class="mk" style="--x:47%;--d:.25s"><button type="button" aria-pressed="false" data-v="d2v" data-cap="reaction · 39:33">Reaction<em>39:33</em></button></span>
+        <span class="mk" style="--x:76%;--d:.4s"><button type="button" aria-pressed="false" data-v="d3v" data-cap="story · 1:03:58">Story<em>1:03:58</em></button></span>
+        <div class="tc"><span>0:00</span><span>1:24:10</span></div>
+      </div>
+    </div>
+    <div class="mprev" aria-live="polite"><figure class="pol"><div class="scr">{video("d1v", lazy=True)}</div><figcaption class="cap">hook · 15:09</figcaption></figure></div>
+  </div>"""
+    compare = f"""<div class="cmpwrap rv">
+    <div class="cmp" id="cmp">
+      {video("d1v", lazy=True)}
+      <div class="before"><img src="/media/d1w.jpg" alt="" loading="lazy" width="1280" height="720"></div>
+      <span class="tag l">raw source</span><span class="tag r">finished clip</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare the raw source frame with the finished clip; left is raw, right is finished">
+      <span class="line" aria-hidden="true"></span><span class="knob" aria-hidden="true">↔</span>
+    </div>
+    <div>
+      <h3>Before and after</h3>
+      <p>Left: the wide recording, cropped to the clip. Right: the finished clip with the hook title, word-by-word captions and colour. Drag the handle, or use the arrow keys.</p>
+      <span class="hand">same recording, same moment — only the edit changed</span>
+    </div>
+  </div>"""
     return f"""<section id="demo">
   {cut(num, "See it work")}
   <div class="sec-head rv">
     <h2>One episode in, a week of clips out</h2>
-    <p class="lead">My pipeline scans the whole video, scores the moments, reframes each one to 9:16 on whoever is talking, and adds word-by-word captions.</p>
+    <p class="lead">My pipeline scans the whole video, scores the moments, reframes each one to 9:16 on whoever is talking, and adds word-by-word captions. Scroll, and watch one recording become a clip.</p>
   </div>
-  <div class="board rv">
-    <div class="ep wob">
-      <div class="top"><span><i class="rec"></i><b>episode_142.mp4</b></span><span>1:24:10 · 16:9</span></div>
-      <div class="frame" aria-hidden="true">{video("d1w")}<div class="crop"><span>9:16</span></div><div class="scan"></div></div>
-      <div class="tl" aria-hidden="true">{tl}<span class="t0">0:00</span><span class="t1">1:24:10</span></div>
-      <p class="log">→ 3 moments found, cut, captioned, scheduled</p>
-    </div>
-    {ARROW}
-    {outs}
-  </div>
-  <p class="fig"><b>Fig. 1</b> How one episode becomes three clips. Footage from my own clip accounts; the file name and timestamps are examples.</p>
+  {morph}
   <div class="stages">{stage_html}</div>
-  <p class="fig"><b>Fig. 2</b> The same clip, stage by stage. Every clip on every plan goes through all five.</p>
+  <p class="fig"><b>Fig. 1</b> One recording becoming one clip, stage by stage. Footage from my own clip accounts; the file name and timestamps are examples.</p>
+  {moments}
+  <p class="fig"><b>Fig. 2</b> Moment selection. The three markers are real clips from this episode; the timeline is an illustration, not a live process.</p>
+  {compare}
+  <p class="fig"><b>Fig. 3</b> Raw source frame against the finished clip.</p>
   <div class="player wob2 rv">
     <video controls playsinline preload="none" poster="/media/d3v.jpg" aria-label="Finished clip: a story moment, vertical with captions, with sound"><source src="/media/d3v.mp4" type="video/mp4"></video>
     <div><h3>Watch a finished clip with sound</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post. Press play; it won’t start on its own.</p><span class="hand ac">← press play, sound is on</span></div>
   </div>
+</section>
+"""
+
+
+def distribution(num, fig):
+    rail = '<span class="rail"><i></i><i></i><i></i><i class="sq"></i></span>'
+    return f"""<section id="feeds">
+  {cut(num, "One clip, three feeds")}
+  <div class="sec-head rv"><h2>The same clip, dressed for each platform</h2><p class="lead">One clip is cut once. What changes per platform is the caption, the hashtags and the posting time, not the video.</p></div>
+  <div class="dist rv">
+    <div class="phone" data-p="tiktok" data-live aria-hidden="true">
+      {video("d2v", lazy=True)}
+      <div class="ui tiktok"><div class="top"><span>Following</span><span class="on">For You</span></div>{rail}<div class="meta"><b>@yourchannel</b>Her worst year started with a signature · #podcast #story</div></div>
+      <div class="ui reels"><div class="top">Reels</div>{rail}<div class="meta"><b>yourchannel<span class="pill">Follow</span></b>Her worst year started with a signature… more</div></div>
+      <div class="ui shorts"><div class="top">Shorts</div>{rail}<div class="meta"><b>Her worst year started with a signature</b>@yourchannel<span class="pill">Subscribe</span></div></div>
+    </div>
+    <div>
+      <h3>Cut once, posted three times</h3>
+      <p>Each platform gets its own caption and hashtags and its own slot in the schedule. The clip itself, the crop, the captions and the hook stay identical, so your channel looks the same everywhere.</p>
+      <div class="tabs" role="tablist" aria-label="Platform preview"><button type="button" role="tab" aria-selected="true" data-p="tiktok">TikTok</button><button type="button" role="tab" aria-selected="false" data-p="reels">Instagram Reels</button><button type="button" role="tab" aria-selected="false" data-p="shorts">YouTube Shorts</button></div>
+      <span class="hand">the layouts are sketches of each feed, not screenshots</span>
+    </div>
+  </div>
+  <p class="fig"><b>Fig. {fig}</b> One finished clip in three feed layouts. The handle and the feed chrome are illustrative; the clip is real.</p>
 </section>
 """
 
@@ -305,7 +403,7 @@ ANAT = """<figure class="anat rv" style="--d:.15s">
   <span class="call c1">hook title, first second<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 4c14 2 26 10 38 22M34 22l6 4-1-7"/></svg></span>
   <span class="call c2">9:16, face stays in frame<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 4c14 2 26 10 38 22M34 22l6 4-1-7"/></svg></span>
   <span class="call c3">captions, word by word<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 26C14 24 26 16 40 4M34 6l6-2-1 7"/></svg></span>
-  <figcaption class="fig"><b>Fig. 5</b> Anatomy of one clip (my own clip account).</figcaption>
+  <figcaption class="fig"><b>Fig. 7</b> Anatomy of one clip (my own clip account).</figcaption>
 </figure>"""
 
 
@@ -497,6 +595,74 @@ SCRIPT = r"""<script>
     loops.forEach(function(v){vio.observe(v)});
   }else{loops.forEach(playV)}
 
+  /* motion bookkeeping: hover transitions on the hero clips only after they have settled */
+  setTimeout(function(){document.documentElement.classList.add('settled')},1400);
+
+  /* decorative loops (hero deck, workflow beam, border beam, feed preview) run only while on screen */
+  var live=[].slice.call(document.querySelectorAll('[data-live],.proc svg,.plan.pick'));
+  function setLive(el,on){
+    el.classList.toggle('live',on);
+    if(el.tagName==='svg'){try{on?el.unpauseAnimations():el.pauseAnimations()}catch(e){}}
+    else{el.style.animationPlayState=on?'':'paused';[].forEach.call(el.querySelectorAll('.beam i'),function(i){i.style.animationPlayState=on?'':'paused'})}
+    if(el.dataset.cycle!=null){el._on=on;if(on)startCycle(el);else stopCycle(el)}
+  }
+  if('IntersectionObserver' in window){
+    var lio=new IntersectionObserver(function(es){es.forEach(function(e){setLive(e.target,e.isIntersecting)})},{threshold:0.1});
+    live.forEach(function(el){lio.observe(el)});
+  }else{live.forEach(function(el){setLive(el,true)})}
+
+  /* hero: tiny pointer parallax between the clip layers (desktop only) */
+  var sc=document.querySelector('.hero .scene');
+  if(sc&&!reduce&&matchMedia('(hover:hover) and (min-width:861px)').matches){
+    var pr=0,px=0,py=0;
+    sc.addEventListener('pointermove',function(e){var r=sc.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*10;py=((e.clientY-r.top)/r.height-.5)*8;if(!pr)pr=requestAnimationFrame(function(){sc.style.setProperty('--mx',px.toFixed(1)+'px');sc.style.setProperty('--my',py.toFixed(1)+'px');pr=0})});
+    sc.addEventListener('pointerleave',function(){sc.style.setProperty('--mx','0px');sc.style.setProperty('--my','0px')});
+  }
+
+  /* scroll-driven scene: CSS scroll timelines where supported, otherwise one passive scroll listener while it is on screen */
+  var morph=document.querySelector('.morph');
+  if(morph&&!(CSS.supports&&CSS.supports('animation-timeline: view()'))&&getComputedStyle(morph).display!=='none'){
+    var mraf=0,mon=false;
+    function mstep(){mraf=0;var r=morph.getBoundingClientRect(),vh=innerHeight,cover=(vh-r.top)/(r.height+vh),p=Math.min(Math.max((cover-.27)/.41,0),1);morph.style.setProperty('--p',p.toFixed(4))}
+    function onS(){if(mon&&!mraf)mraf=requestAnimationFrame(mstep)}
+    new IntersectionObserver(function(es){mon=es[0].isIntersecting;if(mon){addEventListener('scroll',onS,{passive:true});mstep()}else removeEventListener('scroll',onS)}).observe(morph);
+  }
+
+  /* moment selection: three real clips on one timeline; auto-advances until the visitor picks one */
+  var mo=document.getElementById('moments');
+  if(mo){
+    var mbtns=[].slice.call(mo.querySelectorAll('.mk button')),mph=mo.querySelector('.mph'),mpol=mo.querySelector('.mprev .pol'),mvid=mpol.querySelector('video'),mcap=mpol.querySelector('.cap'),mi=0,mtimer=null,muser=false;
+    function pick(k,byUser){
+      mi=k;var b=mbtns[k];mbtns.forEach(function(x,j){x.setAttribute('aria-pressed',j===k?'true':'false')});
+      mph.style.setProperty('--x',b.parentNode.style.getPropertyValue('--x'));
+      var name=b.dataset.v;if(mvid.dataset.name===name)return;mvid.dataset.name=name;
+      var swap=function(){mvid.poster='/media/'+name+'.jpg';mvid.innerHTML='<source src="/media/'+name+'.mp4" type="video/mp4">';mvid.load();mcap.textContent=b.dataset.cap;mpol.classList.remove('sw');playV(mvid)};
+      if(reduce){swap()}else{mpol.classList.add('sw');setTimeout(swap,300)}
+      if(byUser){muser=true;clearInterval(mtimer);mtimer=null}
+    }
+    mbtns.forEach(function(b,k){b.addEventListener('click',function(){pick(k,true)})});
+    mo.dataset.cycle='1';
+    mo._start=function(){if(reduce||muser||mtimer)return;mtimer=setInterval(function(){pick((mi+1)%mbtns.length,false)},3800)};
+    mo._stop=function(){clearInterval(mtimer);mtimer=null};
+  }
+
+  /* before / after slider */
+  var cmp=document.getElementById('cmp');
+  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')})}
+
+  /* one clip, three feeds */
+  var dist=document.querySelector('.dist');
+  if(dist){
+    var ph=dist.querySelector('.phone'),tabs=[].slice.call(dist.querySelectorAll('[role=tab]')),di=0,dtimer=null,duser=false;
+    function feed(k,byUser){di=k;ph.dataset.p=tabs[k].dataset.p;tabs.forEach(function(t,j){t.setAttribute('aria-selected',j===k?'true':'false')});if(byUser){duser=true;clearInterval(dtimer);dtimer=null}}
+    tabs.forEach(function(t,k){t.addEventListener('click',function(){feed(k,true)});t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();var n=(k+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;tabs[n].focus();feed(n,true)}})});
+    ph.dataset.cycle='1';
+    ph._start=function(){if(reduce||duser||dtimer)return;dtimer=setInterval(function(){feed((di+1)%tabs.length,false)},3200)};
+    ph._stop=function(){clearInterval(dtimer);dtimer=null};
+  }
+  function startCycle(el){if(el._start)el._start()}
+  function stopCycle(el){if(el._stop)el._stop()}
+
   /* number ticker (port of Magic UI NumberTicker): counts up once, when in view */
   var counters=[].slice.call(document.querySelectorAll('[data-count]'));
   function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d})}
@@ -624,15 +790,15 @@ def script():
 
 def home():
     d = C.HOME
-    right = polaroids(d["videos"], d["captions"], extra=stamp(["5 free clips", "no card · 48 h"]))
+    right = scene(d["videos"], d["captions"], extra=stamp(["5 free clips", "no card · 48 h"]))
     body = (nav() + hero(d, TRUST_CLIPS, right) + contents()
-            + demo(1) + how(2, C.STEPS, fig=3) + proof(3, fig=4) + included(4, C.INCLUDED, figure=True) + pricing(5, fig=6)
-            + trial(6) + faq(7, C.FAQ_HOME, add_other=False) + footer(1) + script() + "</body>\n</html>\n")
+            + demo(1) + distribution(2, fig=4) + how(3, C.STEPS, fig=5) + proof(4, fig=6) + included(5, C.INCLUDED, figure=True) + pricing(6, fig=8)
+            + trial(7) + faq(8, C.FAQ_HOME, add_other=False) + footer(1) + script() + "</body>\n</html>\n")
     return head(d["title"], d["desc"], SITE + "/", ld=HOME_LD, og_title=d["og_title"], og_desc=d["og_desc"]) + body
 
 
 def niche(p, sheet):
-    right = polaroids(p["videos"], p["captions"], extra=stamp(["5 free clips", "no card · 48 h"]))
+    right = scene(p["videos"], p["captions"], extra=stamp(["5 free clips", "no card · 48 h"]))
     steps = C.STEPS
     body = (nav(active=p["slug"]) + hero(p, TRUST_CLIPS, right) + contents()
             + why(1, p) + how(2, steps, fig=1, h2="You create. I do the rest.",

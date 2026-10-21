@@ -44,10 +44,21 @@ The contact form posts to FormSubmit (AJAX) and lands in the studio inbox. Field
 ## Motion (Magic UI, ported)
 
 The site has no Node toolchain, so the Magic UI components that fit were ported as small vanilla equivalents inside
-`tools/clipsite/css.py` and the script in `tools/build_site.py`: BlurFade (section reveals, `.rv`), NumberTicker
-(proof figures, `[data-count]`), AnimatedBeam (the workflow diagram's connectors, SMIL gradient) and BorderBeam
-(the recommended plan, `.beam`, CSS motion path). All of them switch off under `prefers-reduced-motion`, and every
-number and section is readable without JavaScript.
+`tools/clipsite/css.py` and the script in `tools/build_site.py`:
+
+- KineticText: the page headline (`h1.kin`), Figtree variable weight; letters bold up with a blue stroke on hover and
+  push their neighbours, with a staggered weight/opacity entrance
+- BlurFade: section reveals (`.rv`), NumberTicker: proof figures (`[data-count]`), AnimatedBeam: workflow connectors
+  (SMIL gradient), BorderBeam: the recommended plan (`.beam`, CSS motion path)
+
+Motion system (tokens on `:root`): one easing family (`--ease`, `--ease-out`), three durations (`--t-fast` 150 ms for
+feedback, `--t-med` 400 ms for section transitions, `--t-slow` 900 ms for the few cinematic moves) and one stagger.
+
+Scenes on the home page: the hero deck (editing timeline with a playhead and caption segments), the scroll-driven
+source-to-vertical scene (`.morph`, CSS scroll timelines with a passive-scroll fallback; replaced by the static stage
+strip under 861 px and with reduced motion), moment selection (`#moments`), the before/after slider (`#cmp`) and the
+three-feed preview (`.dist`). Decorative loops only run while on screen (`[data-live]`). Everything switches off under
+`prefers-reduced-motion`, and every number and section is readable without JavaScript.
 
 ## QA
 

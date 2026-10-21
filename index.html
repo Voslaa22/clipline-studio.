@@ -42,6 +42,8 @@
   --wob:255px 15px 225px 15px / 15px 225px 15px 255px;
   --wob2:15px 225px 15px 255px / 255px 15px 225px 15px;
   --wrap:1120px;--pad:clamp(18px,4vw,40px);
+  /* motion system: one easing family, three durations, one stagger */
+  --ease:cubic-bezier(.2,.7,.2,1);--ease-out:cubic-bezier(.16,1,.3,1);--t-fast:.15s;--t-med:.4s;--t-slow:.9s;--stagger:70ms;
   color-scheme:light dark;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0a0b0f;--card:#13151b;--ink:#f3f5f9;--ink-2:#b8bfcc;--ink-3:#8a92a2;--rule:rgba(243,245,249,.34);--rule-soft:rgba(243,245,249,.14);--rule-faint:rgba(243,245,249,.07);--accent:#4d8dff;--accent-soft:#16213a;--good:#4cc27a;--tape:rgba(255,210,63,.32);color-scheme:dark}}
@@ -69,6 +71,18 @@ h1{font-size:clamp(42px,6.2vw,76px);line-height:.98;text-wrap:balance}
 h2{font-size:clamp(32px,4vw,50px);line-height:1.02;text-wrap:balance}
 h3{font-size:26px;line-height:1.1}
 h1 em,h2 em{font-style:italic;position:relative;white-space:nowrap}
+h1.kin{font-family:var(--body);font-weight:440;font-size:clamp(38px,5.2vw,64px);letter-spacing:-.03em;line-height:1;display:flex;flex-wrap:wrap;column-gap:.24em;row-gap:.06em;--hp:calc(1em/16);--sw:calc(1em*125/6000)}
+.kin .w{display:inline-flex;white-space:nowrap}
+.kin .c{display:inline-block;-webkit-text-stroke:var(--sw) transparent;transition:font-weight var(--t-med) var(--ease),-webkit-text-stroke-color var(--t-med) var(--ease),padding var(--t-med) var(--ease),opacity .7s var(--ease-out) var(--dl,0s)}
+@media (hover:hover){
+  .kin .c:hover{font-weight:860;padding-inline:var(--hp);-webkit-text-stroke-color:var(--accent)}
+  .kin .c:hover+.c,.kin .c:has(+.c:hover){font-weight:660;padding-inline:calc(var(--hp)/2)}
+  .kin .c:hover+.c+.c,.kin .c:has(+.c+.c:hover){font-weight:540}
+}
+.kin em.ul{font-style:normal;color:var(--accent);display:inline-flex;flex-wrap:wrap;column-gap:.24em}
+.kin em.ul path{stroke:var(--ink)}
+.js:not(.loaded) .kin .c{opacity:0;font-weight:300}
+@media (prefers-reduced-motion:reduce){.js:not(.loaded) .kin .c{opacity:1;font-weight:440}.kin .c{transition:none}}
 @media (max-width:700px){h1 em,h2 em,em.ul{white-space:normal}}
 em.ul{font-style:italic;position:relative;display:inline-block}
 em.ul svg{position:absolute;left:-2%;right:-2%;bottom:-.08em;width:104%;height:.32em;overflow:visible;pointer-events:none}
@@ -120,7 +134,8 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
   .navr{gap:10px}
   .btn.top{padding:10px 13px;font-size:14px}
   .svc{display:none;position:absolute;left:0;right:0;top:100%;z-index:40;flex-direction:column;gap:0;background:var(--card);border:1.5px solid var(--ink);border-radius:var(--wob2);padding:8px 6px;box-shadow:4px 4px 0 var(--accent);font-size:17px}
-  .svc.open{display:flex}
+  .svc.open{display:flex;animation:menu var(--t-med) var(--ease-out)}
+  @keyframes menu{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
   .svc a{padding:12px 14px;border-bottom:1px dashed var(--rule-soft)}
   .svc a:last-child{border-bottom:0}
   .svc a.sep{margin:0;padding-left:14px;border-left:0}
@@ -148,6 +163,13 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .pol:nth-of-type(1){--r:-7deg;margin-right:-18px;z-index:1}
 .pol:nth-of-type(2){--r:2deg;z-index:3;width:clamp(132px,14.5vw,184px);margin-bottom:22px}
 .pol:nth-of-type(3){--r:6deg;margin-left:-18px;z-index:2}
+.scene{position:relative}
+.scene .pol{--z:1;transform:rotate(var(--r)) translate(calc(var(--mx,0px)*var(--z)),calc(var(--my,0px)*var(--z)))}
+.scene .pol:nth-of-type(2){--z:1.6}.scene .pol:nth-of-type(3){--z:.7}
+.js:not(.loaded) .scene .pol{opacity:0;transform:rotate(0deg) translateY(22px)}
+.js .scene .pol{transition:transform var(--t-slow) var(--ease-out) var(--pd,0s),opacity .6s var(--ease-out) var(--pd,0s)}
+.js .settled .scene .pol{transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+.scene .pol:hover{transform:rotate(0deg) translateY(-8px);z-index:4}
 .pol:hover{transform:rotate(0deg) translateY(-8px);z-index:4}
 .pol::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:24px;background:var(--tape);transform:translateX(-50%) rotate(-4deg);z-index:2;box-shadow:0 1px 1px rgba(0,0,0,.06)}
 .pol:nth-of-type(3)::before{transform:translateX(-50%) rotate(5deg)}
@@ -155,6 +177,28 @@ nav.top{display:flex;align-items:center;justify-content:space-between;gap:16px;p
 .pol video{width:100%;height:100%;object-fit:cover}
 .pol .cap{position:absolute;left:12px;right:8px;bottom:6px;font:700 16px/1 var(--hand);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:860px){.pols{min-height:0;padding-top:64px}.pol{width:clamp(100px,26vw,150px)}.pol:nth-of-type(2){width:clamp(112px,29vw,168px)}}
+
+/* hero editing deck: three tracks, a playhead, caption segments that light up as it passes */
+.deck{position:relative;margin:4px 8px 0;padding:10px 10px 12px 36px;border:1.5px solid var(--ink);border-radius:var(--wob2);background:var(--card);--cycle:9s}
+.deck .tc{display:flex;justify-content:space-between;font:400 10px/1 var(--mono);color:var(--ink-3);margin-bottom:6px}
+.deck .trk{position:relative;height:12px;margin-top:5px;background:var(--rule-faint);border-radius:2px}
+.deck .trk i{position:absolute;top:0;bottom:0;left:calc(var(--l)*100%);width:calc(var(--w)*100%);border-radius:2px;background:var(--ink);opacity:.85}
+.deck .trk.v i{background:var(--ink-2)}
+.deck .trk.v i::after{content:"";position:absolute;right:0;top:0;bottom:0;width:2px;background:var(--paper)}
+.deck .trk.c i{background:var(--accent);opacity:.3;animation:deckcap var(--cycle) linear infinite;animation-delay:calc((var(--l) - 1)*var(--cycle))}
+@keyframes deckcap{0%,1%{opacity:.3}2%,16%{opacity:1}17%,100%{opacity:.3}}
+.deck .trk.a{display:flex;align-items:flex-end;gap:2px;background:transparent;height:14px}
+.deck .trk.a b{flex:1;height:var(--h);background:var(--rule);border-radius:1px}
+.deck .lab{position:absolute;left:-26px;top:2px;font:500 8px/1 var(--mono);color:var(--ink-3);letter-spacing:.1em}
+.deck .ph{position:absolute;top:22px;bottom:10px;left:36px;width:2px;background:var(--rec);animation:deckph var(--cycle) linear infinite;z-index:2}
+.deck .ph::before{content:"";position:absolute;top:-6px;left:-4px;width:10px;height:6px;background:var(--rec);clip-path:polygon(0 0,100% 0,50% 100%)}
+@keyframes deckph{from{left:36px}to{left:calc(100% - 10px)}}
+.js .deck{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease-out) .55s,transform .6s var(--ease-out) .55s}
+.js.loaded .deck{opacity:1;transform:none}
+.deck .ph,.deck .trk.c i{animation-play-state:paused}
+.loaded .deck.live .ph,.loaded .deck.live .trk.c i{animation-play-state:running}
+@media (prefers-reduced-motion:reduce){.deck .ph{animation:none;left:46%}.deck .trk.c i{animation:none;opacity:.8}.js .deck{opacity:1;transform:none;transition:none}}
+@media (max-width:860px){.deck{margin:10px 0 0}}
 
 /* ---- contents line ---- */
 .contents{margin-top:clamp(34px,5vw,56px);padding:18px 0;border-top:2px dashed var(--rule);border-bottom:2px dashed var(--rule);display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline;font:500 13px/1.5 var(--mono);color:var(--ink-2)}
@@ -201,7 +245,8 @@ section{scroll-margin-top:24px}
 .stage .n{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .stage .pic{position:relative;margin-top:8px;overflow:hidden;background:#0b0d12;border:1.5px solid var(--ink)}
 .stage .pic.wide{aspect-ratio:16/9}.stage .pic.tall{aspect-ratio:9/16;max-height:240px;margin-inline:auto}
-.stage .pic img,.stage .pic video{width:100%;height:100%;object-fit:cover}
+.stage .pic img,.stage .pic video{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+@media (hover:hover){.stage:hover .pic img,.stage:hover .pic video{transform:scale(1.04)}}
 .stage .pic .box{position:absolute;top:4%;bottom:4%;left:35%;width:30%;border:2px dashed var(--mark)}
 .stage .pic .mk{position:absolute;left:0;right:0;bottom:0;height:8px;background:rgba(255,255,255,.18)}
 .stage .pic .mk i{position:absolute;left:18%;width:3%;top:0;bottom:0;background:var(--mark)}
@@ -214,6 +259,115 @@ section{scroll-margin-top:24px}
 .player video{width:200px;max-width:100%;aspect-ratio:9/16;background:#0b0d12;border:1.5px solid var(--ink)}
 .player h3{font-size:24px}.player p{color:var(--ink-2);font-size:15.5px;margin-top:6px}
 .player .hand{margin-top:10px;display:block}
+
+/* ---- Section A: scroll-driven source -> vertical clip (desktop; the stage strip is the static/mobile version) ---- */
+.morph{display:none}
+@media (min-width:861px) and (prefers-reduced-motion:no-preference){
+  .morph{display:block;height:230vh;margin-top:30px;view-timeline-name:--morph;view-timeline-axis:block}
+  .stages{display:none}
+  .morph .pin{position:sticky;top:6vh;height:88vh;display:grid;grid-template-rows:1fr auto;gap:14px}
+  .morph .stage{position:relative;display:grid;place-items:center;overflow:hidden}
+  .morph .src{position:relative;width:min(560px,52vw);aspect-ratio:16/9;border:1.5px solid var(--ink);background:#0b0d12;transform-origin:50% 50%;will-change:transform,clip-path}
+  .morph .src video{width:100%;height:100%;object-fit:cover}
+  .morph .box{position:absolute;top:0;bottom:0;left:35%;width:30%;border:2px dashed var(--mark);box-shadow:0 0 0 999px rgba(0,0,0,0);opacity:0}
+  .morph .box span{position:absolute;left:50%;top:8px;transform:translateX(-50%);font:700 15px/1 var(--hand);color:var(--mark)}
+  .morph .fin{position:absolute;left:50%;top:50%;height:min(78vh,560px);aspect-ratio:9/16;transform:translate(-50%,-50%);border:1.5px solid var(--ink);background:#0b0d12;opacity:0;overflow:hidden}
+  .morph .fin video{width:100%;height:100%;object-fit:cover}
+  .morph .out{position:absolute;top:50%;width:150px;transform:translateY(-50%);opacity:0;--r:0deg}
+  .morph .out.l{left:calc(50% - 320px)}.morph .out.r{right:calc(50% - 320px)}
+  .morph .out .pol{margin:0;display:block}
+  .morph .tl2{position:relative;height:46px;border:1.5px solid var(--ink);border-radius:var(--wob);background:var(--card);padding:0 14px}
+  .morph .tl2 .bar{position:absolute;left:14px;right:14px;top:22px;height:2px;background:var(--rule-soft)}
+  .morph .tl2 .fill{position:absolute;left:14px;top:22px;height:2px;width:0;background:var(--accent)}
+  .morph .tl2 .mk{position:absolute;top:18px;left:calc(14px + var(--x)*(100% - 28px));width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);transform:translateX(-50%)}
+  .morph .tl2 .ph{position:absolute;top:8px;bottom:8px;left:14px;width:2px;background:var(--rec)}
+  .morph .tl2 .lab{position:absolute;left:14px;top:30px;font:500 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);opacity:0}
+  .morph .tl2 .lab:first-of-type{opacity:1}
+  .morph .tl2 .t{position:absolute;right:14px;top:6px;font:400 10px/1 var(--mono);color:var(--ink-3)}
+  .morph [data-a]{animation:1s linear both paused;animation-delay:calc(var(--p,0)*-1s)}
+  .morph .src{animation-name:m-src}.morph .box{animation-name:m-box}.morph .fin{animation-name:m-fin}
+  .morph .out.l{animation-name:m-outl}.morph .out.r{animation-name:m-outr}.morph .fill{animation-name:m-fill}.morph .tl2 .ph{animation-name:m-ph}
+  .morph .lab.l1{animation-name:m-l1}.morph .lab.l2{animation-name:m-l2}.morph .lab.l3{animation-name:m-l3}.morph .lab.l4{animation-name:m-l4}.morph .lab.l5{animation-name:m-l5}
+  @supports (animation-timeline:view()){
+    .morph [data-a]{animation-timeline:--morph;animation-range:cover 27% cover 68%;animation-delay:0s;animation-play-state:running}
+  }
+}
+@keyframes m-src{0%,38%{clip-path:inset(0 0 0 0);transform:scale(1)}58%,100%{clip-path:inset(0 35% 0 35%);transform:scale(1.92)}}
+@keyframes m-box{0%{opacity:0;box-shadow:0 0 0 999px rgba(0,0,0,0)}14%{opacity:1;box-shadow:0 0 0 999px rgba(0,0,0,0)}36%{opacity:1;box-shadow:0 0 0 999px rgba(0,0,0,.55)}58%,100%{opacity:0;box-shadow:0 0 0 999px rgba(0,0,0,.55)}}
+@keyframes m-fin{0%,58%{opacity:0}72%,100%{opacity:1}}
+@keyframes m-outl{0%,76%{opacity:0;transform:translateY(-50%) translateX(60px) rotate(0deg)}100%{opacity:1;transform:translateY(-50%) translateX(0) rotate(-6deg)}}
+@keyframes m-outr{0%,80%{opacity:0;transform:translateY(-50%) translateX(-60px) rotate(0deg)}100%{opacity:1;transform:translateY(-50%) translateX(0) rotate(6deg)}}
+@keyframes m-fill{from{width:0}to{width:calc(100% - 28px)}}
+@keyframes m-ph{from{left:14px}to{left:calc(100% - 14px)}}
+@keyframes m-l1{0%,16%{opacity:1}22%,100%{opacity:0}}
+@keyframes m-l2{0%,20%{opacity:0}24%,38%{opacity:1}44%,100%{opacity:0}}
+@keyframes m-l3{0%,42%{opacity:0}46%,60%{opacity:1}66%,100%{opacity:0}}
+@keyframes m-l4{0%,64%{opacity:0}68%,78%{opacity:1}84%,100%{opacity:0}}
+@keyframes m-l5{0%,82%{opacity:0}88%,100%{opacity:1}}
+
+/* ---- Section B: moment selection ---- */
+.moments{display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:clamp(18px,3vw,40px);align-items:center;margin-top:34px;padding:22px 24px}
+@media (max-width:760px){.moments{grid-template-columns:1fr}}
+.moments h3{font-size:24px}
+.moments .lead2{color:var(--ink-2);font-size:15.5px;margin-top:6px}
+.mtl{position:relative;margin-top:28px;padding:36px 0 26px}
+.mtl .track{position:relative;height:2px;background:var(--ink)}
+.mtl .mk{position:absolute;left:var(--x);top:50%;transform:translate(-50%,-50%)}
+.js .mtl .mk,.js .mtl .dot{opacity:0;transition:opacity var(--t-med) var(--ease-out) var(--d,0s)}
+.js .moments.in .mtl .mk,.js .moments.in .mtl .dot{opacity:1}
+@media (prefers-reduced-motion:reduce){.js .mtl .mk,.js .mtl .dot{opacity:1;transition:none}}
+.mtl .mk button{font:700 16px/1 var(--hand);color:var(--ink-2);background:var(--card);border:1.5px solid var(--rule);border-radius:var(--wob);padding:6px 10px;cursor:pointer;white-space:nowrap;transition:color var(--t-fast),border-color var(--t-fast),transform var(--t-fast) var(--ease)}
+.mtl .mk button em{font-style:normal;font:400 11px/1 var(--mono);color:var(--ink-3);margin-left:6px}
+.mtl .mk button[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+.mtl .mk button:hover{border-color:var(--ink)}
+.mtl .dot{position:absolute;left:var(--x);top:50%;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);transform:translate(-50%,-50%)}
+.mtl .mph{position:absolute;left:var(--x);top:22px;bottom:14px;width:2px;background:var(--rec);transform:translateX(-50%);transition:left var(--t-slow) var(--ease)}
+.mtl .tc{display:flex;justify-content:space-between;margin-top:24px;font:400 11px/1 var(--mono);color:var(--ink-3)}
+.mprev .pol{--r:2deg;width:168px;margin:0 auto;display:block}
+.mprev .pol video{transition:opacity .35s var(--ease)}
+.mprev .pol.sw video{opacity:0}
+@media (max-width:760px){.mtl .mk button{font-size:14px;padding:5px 7px}.mtl .mk button em{display:none}}
+@media (prefers-reduced-motion:reduce){.mtl .mph{transition:none}.mprev .pol video{transition:none}}
+
+/* ---- Section C: before / after ---- */
+.cmp{position:relative;width:300px;max-width:100%;aspect-ratio:9/16;margin:30px auto 0;border:1.5px solid var(--ink);overflow:hidden;background:#0b0d12;--c:50%;user-select:none}
+.cmp video,.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cmp .before{position:absolute;inset:0;clip-path:inset(0 calc(100% - var(--c)) 0 0);background:#0b0d12}
+.cmp .before img{width:333.3%;height:auto;max-width:none;left:-116.7%;top:0;right:auto;bottom:auto;filter:grayscale(.9) brightness(.72) contrast(.85)}
+.cmp .line{position:absolute;top:0;bottom:0;left:var(--c);width:2px;background:var(--mark);transform:translateX(-50%);pointer-events:none}
+.cmp .knob{position:absolute;top:50%;left:var(--c);width:36px;height:36px;border-radius:50%;background:var(--mark);border:1.5px solid #0b0d12;transform:translate(-50%,-50%);display:grid;place-items:center;pointer-events:none;font:700 15px/1 var(--hand);color:#0b0d12}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.cmp input:focus-visible~.knob{outline:3px solid var(--accent);outline-offset:3px}
+.cmp .tag{position:absolute;top:8px;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:5px 7px;background:rgba(11,13,18,.7);color:#fff;pointer-events:none}
+.cmp .tag.l{left:8px}.cmp .tag.r{right:8px}
+.cmpwrap{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(18px,3vw,44px);align-items:center;margin-top:30px}
+@media (max-width:640px){.cmpwrap{grid-template-columns:1fr}}
+.cmpwrap h3{font-size:24px}.cmpwrap p{color:var(--ink-2);font-size:15.5px;margin-top:8px}
+.cmpwrap .hand{display:block;margin-top:12px}
+
+/* ---- Section D: one clip, three feeds ---- */
+.dist{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;margin-top:30px}
+@media (max-width:700px){.dist{grid-template-columns:1fr;justify-items:center}}
+.phone{position:relative;width:250px;max-width:100%;aspect-ratio:9/19;border:2px solid var(--ink);border-radius:28px;background:#0b0d12;overflow:hidden;box-shadow:5px 5px 0 var(--rule-soft)}
+.phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.phone .ui{position:absolute;inset:0;opacity:0;transition:opacity .35s var(--ease);pointer-events:none;color:#fff;font:600 10px/1.3 var(--body)}
+.phone[data-p="tiktok"] .ui.tiktok,.phone[data-p="reels"] .ui.reels,.phone[data-p="shorts"] .ui.shorts{opacity:1}
+.phone .rail{position:absolute;right:8px;bottom:70px;display:grid;gap:12px;justify-items:center}
+.phone .rail i{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.85)}
+.phone .rail i.sq{border-radius:6px}
+.phone .meta{position:absolute;left:10px;right:44px;bottom:16px;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+.phone .meta b{display:block;font-weight:800;margin-bottom:4px}
+.phone .meta .pill{display:inline-block;margin-left:6px;padding:2px 7px;border:1px solid #fff;border-radius:4px;font-weight:700;font-size:9px}
+.phone .top{position:absolute;left:0;right:0;top:12px;text-align:center;font-weight:700;letter-spacing:.04em;opacity:.9}
+.phone .ui.shorts .top{text-align:left;left:12px}
+.phone .ui.tiktok .top span{margin:0 8px;opacity:.6}.phone .ui.tiktok .top span.on{opacity:1;border-bottom:2px solid #fff;padding-bottom:3px}
+.phone .ui.reels .meta b::before{content:"";display:inline-block;width:18px;height:18px;border-radius:50%;background:#fff;vertical-align:middle;margin-right:6px}
+.phone .ui.shorts .meta .pill{background:#fff;color:#0b0d12;border-color:#fff}
+.dist .tabs{display:inline-flex;gap:6px;border:1.5px solid var(--ink);border-radius:var(--wob);padding:4px;margin-top:18px}
+.dist .tabs button{font:600 14px/1 var(--body);padding:8px 14px;border:0;background:transparent;color:var(--ink-2);cursor:pointer;border-radius:var(--wob);transition:background-color var(--t-fast),color var(--t-fast)}
+.dist .tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.dist h3{font-size:26px}.dist p{color:var(--ink-2);font-size:16px;margin-top:8px;max-width:48ch}
+.dist .hand{display:block;margin-top:14px}
 
 /* ---- process diagram ---- */
 .proc{margin-top:30px}
@@ -287,6 +441,8 @@ section{scroll-margin-top:24px}
 .plan li{padding:7px 0;border-top:1px dashed var(--rule-soft)}
 .plan li::before{content:"—";color:var(--ink-3);margin-right:8px}
 .plan .btn{align-self:flex-start;width:100%;justify-content:center;white-space:normal;text-align:center}
+.plan{transition:transform var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease)}
+@media (hover:hover){.plan:hover{transform:translate(-2px,-2px) rotate(0deg);box-shadow:4px 4px 0 var(--rule)}.plan.pick:hover{box-shadow:6px 6px 0 var(--accent)}}
 .plan.pick{border-color:var(--accent);box-shadow:4px 4px 0 var(--accent)}
 .beam{position:absolute;inset:-1.5px;border-radius:inherit;pointer-events:none;border:1.5px solid transparent;display:none;overflow:hidden;
   -webkit-mask:linear-gradient(transparent,transparent),linear-gradient(#000,#000);mask:linear-gradient(transparent,transparent),linear-gradient(#000,#000);
@@ -371,6 +527,8 @@ section{scroll-margin-top:24px}
 .faq summary::before{content:"+";font:700 26px/1 var(--hand);color:var(--accent);flex:none;width:18px;transition:transform .2s}
 .faq details[open] summary::before{content:"–"}
 .faq p{padding:0 0 18px 32px;color:var(--ink-2);max-width:66ch}
+.faq details[open] p{animation:dfade var(--t-med) var(--ease-out)}
+@keyframes dfade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 
 /* ---- why cards (niche pages) ---- */
 .why{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.4vw,28px);margin-top:26px}
@@ -412,7 +570,8 @@ footer .by{font:700 20px/1.1 var(--hand);color:var(--ink-2)}
 footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 
 /* ---- reveal ---- */
-.js .rv{opacity:0;transform:translateY(6px);filter:blur(6px);transition:opacity .4s ease-out var(--d,0s),transform .4s ease-out var(--d,0s),filter .4s ease-out var(--d,0s)}
+.js .rv{opacity:0;transform:translateY(6px);filter:blur(6px);transition:opacity var(--t-med) var(--ease-out) var(--d,0s),transform var(--t-med) var(--ease-out) var(--d,0s),filter var(--t-med) var(--ease-out) var(--d,0s)}
+.js .rv.x{transform:translateX(-10px)}.js .rv.x.in{transform:none}
 .js .rv.in{opacity:1;transform:none;filter:none}
 .js.loaded .hero .rv{transition-duration:.6s}
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;filter:none;transition:none}}
@@ -420,6 +579,8 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 .js em.ul path{stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1s cubic-bezier(.3,.9,.3,1) .5s}
 .js.loaded em.ul path{stroke-dashoffset:0}
 @media (prefers-reduced-motion:reduce){.js em.ul path{stroke-dashoffset:0;transition:none}}
+
+@media (prefers-reduced-motion:reduce){.faq details[open] p,.svc.open{animation:none}.plan,.stage .pic img,.stage .pic video,.phone .ui{transition:none}}
 
 /* ---- 404 ---- */
 .nf{padding:clamp(40px,8vw,100px) 0}
@@ -441,7 +602,7 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
 <header class="hero" id="top">
   <div>
     <span class="kicker rv">Sheet 01 · Short-form clipping for YouTubers, podcasts &amp; streamers</span>
-    <div class="rv" style="--d:.06s"><h1>Your long videos, cut into <em class="ul">daily Shorts<svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em> that bring viewers back.</h1></div>
+    <div class="rv" style="--d:.06s"><h1 class="kin"><span class="sr">Your long videos, cut into daily Shorts that bring viewers back.</span><span class="vis" aria-hidden="true" style="display:contents"><span class="w"><span class="c" style="--dl:0.000s">Y</span><span class="c" style="--dl:0.014s">o</span><span class="c" style="--dl:0.028s">u</span><span class="c" style="--dl:0.042s">r</span></span> <span class="w"><span class="c" style="--dl:0.056s">l</span><span class="c" style="--dl:0.070s">o</span><span class="c" style="--dl:0.084s">n</span><span class="c" style="--dl:0.098s">g</span></span> <span class="w"><span class="c" style="--dl:0.112s">v</span><span class="c" style="--dl:0.126s">i</span><span class="c" style="--dl:0.140s">d</span><span class="c" style="--dl:0.154s">e</span><span class="c" style="--dl:0.168s">o</span><span class="c" style="--dl:0.182s">s</span><span class="c" style="--dl:0.196s">,</span></span> <span class="w"><span class="c" style="--dl:0.210s">c</span><span class="c" style="--dl:0.224s">u</span><span class="c" style="--dl:0.238s">t</span></span> <span class="w"><span class="c" style="--dl:0.252s">i</span><span class="c" style="--dl:0.266s">n</span><span class="c" style="--dl:0.280s">t</span><span class="c" style="--dl:0.294s">o</span></span> <em class="ul w"><span class="w"><span class="c" style="--dl:0.308s">d</span><span class="c" style="--dl:0.322s">a</span><span class="c" style="--dl:0.336s">i</span><span class="c" style="--dl:0.350s">l</span><span class="c" style="--dl:0.364s">y</span></span> <span class="w"><span class="c" style="--dl:0.378s">S</span><span class="c" style="--dl:0.392s">h</span><span class="c" style="--dl:0.406s">o</span><span class="c" style="--dl:0.420s">r</span><span class="c" style="--dl:0.434s">t</span><span class="c" style="--dl:0.448s">s</span></span><svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M3 8c30-5 60-4 95-2s60 2 99-3"/></svg></em> <span class="w"><span class="c" style="--dl:0.462s">t</span><span class="c" style="--dl:0.476s">h</span><span class="c" style="--dl:0.490s">a</span><span class="c" style="--dl:0.504s">t</span></span> <span class="w"><span class="c" style="--dl:0.518s">b</span><span class="c" style="--dl:0.532s">r</span><span class="c" style="--dl:0.546s">i</span><span class="c" style="--dl:0.560s">n</span><span class="c" style="--dl:0.574s">g</span></span> <span class="w"><span class="c" style="--dl:0.588s">v</span><span class="c" style="--dl:0.602s">i</span><span class="c" style="--dl:0.616s">e</span><span class="c" style="--dl:0.630s">w</span><span class="c" style="--dl:0.644s">e</span><span class="c" style="--dl:0.658s">r</span><span class="c" style="--dl:0.672s">s</span></span> <span class="w"><span class="c" style="--dl:0.686s">b</span><span class="c" style="--dl:0.700s">a</span><span class="c" style="--dl:0.714s">c</span><span class="c" style="--dl:0.728s">k</span><span class="c" style="--dl:0.742s">.</span></span></span></h1></div>
     <p class="sub rv" style="--d:.16s">I find the best moments in every episode, cut them vertical with captions and a hook, and post them to TikTok, Instagram Reels and YouTube Shorts on a schedule. You keep filming. I keep your channel in the feed.</p>
     <div class="actions rv" style="--d:.26s">
       <a class="btn" href="#trial">Try it free: 5 clips from your latest video <span class="arr" aria-hidden="true">→</span></a>
@@ -449,42 +610,99 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
     </div>
     <div class="trust rv" style="--d:.36s"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No call, no card</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Clips within 48 hours</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cancel anytime</span></div>
   </div>
-  <div class="rv" style="--d:.2s"><div class="pols" aria-hidden="true"><span class="stamp">5 free clips<br>no card · 48 h</span><figure class="pol"><div class="scr"><video poster="/media/v1.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v1.webm" type="video/webm"><source src="/media/v1.mp4" type="video/mp4"></video></div><figcaption class="cap">hook · 0:15</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v2.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v2.webm" type="video/webm"><source src="/media/v2.mp4" type="video/mp4"></video></div><figcaption class="cap">reaction</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/v3.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v3.webm" type="video/webm"><source src="/media/v3.mp4" type="video/mp4"></video></div><figcaption class="cap">the story</figcaption></figure></div></div>
+  <div class="rv" style="--d:.2s"><div class="scene"><div class="pols" aria-hidden="true"><span class="stamp">5 free clips<br>no card · 48 h</span><figure class="pol" style="--pd:0.25s"><div class="scr"><video poster="/media/v1.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v1.webm" type="video/webm"><source src="/media/v1.mp4" type="video/mp4"></video></div><figcaption class="cap">hook · 0:15</figcaption></figure><figure class="pol" style="--pd:0.34s"><div class="scr"><video poster="/media/v2.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v2.webm" type="video/webm"><source src="/media/v2.mp4" type="video/mp4"></video></div><figcaption class="cap">reaction</figcaption></figure><figure class="pol" style="--pd:0.43s"><div class="scr"><video poster="/media/v3.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/v3.webm" type="video/webm"><source src="/media/v3.mp4" type="video/mp4"></video></div><figcaption class="cap">the story</figcaption></figure></div><div class="deck" aria-hidden="true" data-live><div class="tc"><span>00:00</span><span>00:15</span><span>00:30</span></div><div class="trk v"><span class="lab">V1</span><i style="--l:0;--w:0.33"></i><i style="--l:0.345;--w:0.31"></i><i style="--l:0.67;--w:0.33"></i></div><div class="trk c"><span class="lab">CC</span><i style="--l:0.02;--w:.07"></i><i style="--l:0.11;--w:.07"></i><i style="--l:0.2;--w:.07"></i><i style="--l:0.37;--w:.07"></i><i style="--l:0.46;--w:.07"></i><i style="--l:0.55;--w:.07"></i><i style="--l:0.69;--w:.07"></i><i style="--l:0.8;--w:.07"></i><i style="--l:0.9;--w:.07"></i></div><div class="trk a"><span class="lab">A1</span><b style="--h:96%"></b><b style="--h:48%"></b><b style="--h:66%"></b><b style="--h:78%"></b><b style="--h:36%"></b><b style="--h:90%"></b><b style="--h:54%"></b><b style="--h:60%"></b><b style="--h:84%"></b><b style="--h:30%"></b><b style="--h:84%"></b><b style="--h:60%"></b><b style="--h:54%"></b><b style="--h:90%"></b><b style="--h:36%"></b><b style="--h:78%"></b><b style="--h:66%"></b><b style="--h:48%"></b><b style="--h:96%"></b><b style="--h:42%"></b><b style="--h:72%"></b><b style="--h:72%"></b><b style="--h:42%"></b><b style="--h:96%"></b><b style="--h:48%"></b><b style="--h:66%"></b><b style="--h:78%"></b><b style="--h:36%"></b><b style="--h:90%"></b><b style="--h:54%"></b><b style="--h:60%"></b><b style="--h:84%"></b><b style="--h:30%"></b><b style="--h:84%"></b><b style="--h:60%"></b><b style="--h:54%"></b><b style="--h:90%"></b><b style="--h:36%"></b><b style="--h:78%"></b><b style="--h:66%"></b><b style="--h:48%"></b><b style="--h:96%"></b><b style="--h:42%"></b><b style="--h:72%"></b><b style="--h:72%"></b><b style="--h:42%"></b><b style="--h:96%"></b><b style="--h:48%"></b><b style="--h:66%"></b><b style="--h:78%"></b><b style="--h:36%"></b><b style="--h:90%"></b><b style="--h:54%"></b><b style="--h:60%"></b><b style="--h:84%"></b><b style="--h:30%"></b><b style="--h:84%"></b><b style="--h:60%"></b><b style="--h:54%"></b><b style="--h:90%"></b></div><span class="ph"></span></div></div></div>
 </header>
 <div class="contents rv"><b>Included</b><span>Vertical 9:16 reframes</span><span>Word-by-word captions</span><span>Hook title in the first second</span><span>TikTok</span><span>Instagram Reels</span><span>YouTube Shorts</span><span>Posted on a schedule</span><span>Monthly performance report</span><span>You own every file</span></div>
 <section id="demo">
   <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>01</i> See it work</div>
   <div class="sec-head rv">
     <h2>One episode in, a week of clips out</h2>
-    <p class="lead">My pipeline scans the whole video, scores the moments, reframes each one to 9:16 on whoever is talking, and adds word-by-word captions.</p>
+    <p class="lead">My pipeline scans the whole video, scores the moments, reframes each one to 9:16 on whoever is talking, and adds word-by-word captions. Scroll, and watch one recording become a clip.</p>
   </div>
-  <div class="board rv">
-    <div class="ep wob">
-      <div class="top"><span><i class="rec"></i><b>episode_142.mp4</b></span><span>1:24:10 · 16:9</span></div>
-      <div class="frame" aria-hidden="true"><video poster="/media/d1w.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/d1w.mp4" type="video/mp4"></video><div class="crop"><span>9:16</span></div><div class="scan"></div></div>
-      <div class="tl" aria-hidden="true"><span class="pin" style="--x:18%"></span><span class="lab" style="--x:18%">hook <em>15:09</em></span><span class="pin" style="--x:47%"></span><span class="lab" style="--x:47%">reaction <em>39:33</em></span><span class="pin" style="--x:76%"></span><span class="lab" style="--x:76%">story <em>1:03:58</em></span><span class="t0">0:00</span><span class="t1">1:24:10</span></div>
-      <p class="log">→ 3 moments found, cut, captioned, scheduled</p>
+  <div class="morph" aria-hidden="true">
+    <div class="pin">
+      <div class="stage">
+        <div class="src" data-a><video poster="/media/d1w.jpg" autoplay muted loop playsinline preload="metadata"><source src="/media/d1w.mp4" type="video/mp4"></video><div class="box" data-a><span>9:16</span></div></div>
+        <div class="fin" data-a><video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video></div>
+        <div class="out l" data-a><figure class="pol"><div class="scr"><video poster="/media/d2v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d2v.mp4" type="video/mp4"></video></div><figcaption class="cap">reaction · 39:33</figcaption></figure></div>
+        <div class="out r" data-a><figure class="pol"><div class="scr"><video poster="/media/d3v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d3v.mp4" type="video/mp4"></video></div><figcaption class="cap">story · 1:03:58</figcaption></figure></div>
+      </div>
+      <div class="tl2">
+        <span class="t">episode_142.mp4 · 1:24:10</span>
+        <div class="bar"></div><div class="fill" data-a></div>
+        <span class="mk" style="--x:.18"></span><span class="mk" style="--x:.47"></span><span class="mk" style="--x:.76"></span>
+        <span class="ph" data-a></span>
+        <span class="lab l1" data-a>1 · the long recording</span><span class="lab l2" data-a>2 · moment found at 15:09</span><span class="lab l3" data-a>3 · reframed to 9:16 on the speaker</span><span class="lab l4" data-a>4 · hook title + captions</span><span class="lab l5" data-a>5 · three clips, ready to post</span>
+      </div>
     </div>
-    <svg class="arrow" viewBox="0 0 84 40" aria-hidden="true"><path d="M3 24c22-9 42-11 72-7"/><path d="M63 8c6 4 10 7 13 10-5 2-9 5-13 9"/></svg>
-    <div class="outs" aria-hidden="true"><figure class="pol"><div class="scr"><video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video></div><figcaption class="cap">hook · 15:09</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/d2v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d2v.mp4" type="video/mp4"></video></div><figcaption class="cap">reaction · 39:33</figcaption></figure><figure class="pol"><div class="scr"><video poster="/media/d3v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d3v.mp4" type="video/mp4"></video></div><figcaption class="cap">story · 1:03:58</figcaption></figure></div>
   </div>
-  <p class="fig"><b>Fig. 1</b> How one episode becomes three clips. Footage from my own clip accounts; the file name and timestamps are examples.</p>
   <div class="stages"><div class="stage wob rv" style="--d:0.00s"><span class="n">1 · Source</span><div class="pic wide"><img src="/media/d1w.jpg" alt="Wide 16:9 frame of a podcast recording" loading="lazy" width="1280" height="720"></div><h3>The long recording</h3><p>The full episode, as uploaded. Nothing to prepare.</p></div><div class="stage wob rv" style="--d:0.08s"><span class="n">2 · Moment</span><div class="pic wide"><img src="/media/d1w.jpg" alt="The same frame with a marker on the timeline at 15:09" loading="lazy" width="1280" height="720"><span class="tag">15:09 → 15:41</span><span class="mk" aria-hidden="true"><i></i></span></div><h3>The moment picked</h3><p>Scored on hook, payoff and whether it works on its own.</p></div><div class="stage wob rv" style="--d:0.16s"><span class="n">3 · Reframe</span><div class="pic wide"><img src="/media/d1w.jpg" alt="The frame with a dashed 9:16 crop box around the speaker" loading="lazy" width="1280" height="720"><span class="box" aria-hidden="true"></span></div><h3>Vertical 9:16 crop</h3><p>The crop follows the speaker, so faces stay in frame.</p></div><div class="stage wob rv" style="--d:0.24s"><span class="n">4 · Captions &amp; hook</span><div class="pic tall"><img src="/media/d1v.jpg" alt="Vertical clip with a hook title at the top and burned-in captions" loading="lazy" width="1080" height="1920"></div><h3>Hook title + captions</h3><p>A hook for the first second, captions word by word.</p></div><div class="stage wob rv" style="--d:0.32s"><span class="n">5 · Posted</span><div class="pic tall"><video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video></div><h3>Scheduled and posted</h3><p>To TikTok, Reels and Shorts at your audience’s peak time.</p></div></div>
-  <p class="fig"><b>Fig. 2</b> The same clip, stage by stage. Every clip on every plan goes through all five.</p>
+  <p class="fig"><b>Fig. 1</b> One recording becoming one clip, stage by stage. Footage from my own clip accounts; the file name and timestamps are examples.</p>
+  <div class="moments wob2 rv" id="moments" data-live>
+    <div>
+      <h3>Three moments from one episode</h3>
+      <p class="lead2">Pick a marker to see the clip it became. The labels are what I look for: a hook, a reaction, a story.</p>
+      <div class="mtl">
+        <div class="track"></div>
+        <span class="dot" style="--x:18%"></span><span class="dot" style="--x:47%"></span><span class="dot" style="--x:76%"></span>
+        <span class="mph" style="--x:18%"></span>
+        <span class="mk" style="--x:18%;--d:.1s"><button type="button" aria-pressed="true" data-v="d1v" data-cap="hook · 15:09">Hook<em>15:09</em></button></span>
+        <span class="mk" style="--x:47%;--d:.25s"><button type="button" aria-pressed="false" data-v="d2v" data-cap="reaction · 39:33">Reaction<em>39:33</em></button></span>
+        <span class="mk" style="--x:76%;--d:.4s"><button type="button" aria-pressed="false" data-v="d3v" data-cap="story · 1:03:58">Story<em>1:03:58</em></button></span>
+        <div class="tc"><span>0:00</span><span>1:24:10</span></div>
+      </div>
+    </div>
+    <div class="mprev" aria-live="polite"><figure class="pol"><div class="scr"><video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video></div><figcaption class="cap">hook · 15:09</figcaption></figure></div>
+  </div>
+  <p class="fig"><b>Fig. 2</b> Moment selection. The three markers are real clips from this episode; the timeline is an illustration, not a live process.</p>
+  <div class="cmpwrap rv">
+    <div class="cmp" id="cmp">
+      <video poster="/media/d1v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d1v.mp4" type="video/mp4"></video>
+      <div class="before"><img src="/media/d1w.jpg" alt="" loading="lazy" width="1280" height="720"></div>
+      <span class="tag l">raw source</span><span class="tag r">finished clip</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare the raw source frame with the finished clip; left is raw, right is finished">
+      <span class="line" aria-hidden="true"></span><span class="knob" aria-hidden="true">↔</span>
+    </div>
+    <div>
+      <h3>Before and after</h3>
+      <p>Left: the wide recording, cropped to the clip. Right: the finished clip with the hook title, word-by-word captions and colour. Drag the handle, or use the arrow keys.</p>
+      <span class="hand">same recording, same moment — only the edit changed</span>
+    </div>
+  </div>
+  <p class="fig"><b>Fig. 3</b> Raw source frame against the finished clip.</p>
   <div class="player wob2 rv">
     <video controls playsinline preload="none" poster="/media/d3v.jpg" aria-label="Finished clip: a story moment, vertical with captions, with sound"><source src="/media/d3v.mp4" type="video/mp4"></video>
     <div><h3>Watch a finished clip with sound</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post. Press play; it won’t start on its own.</p><span class="hand ac">← press play, sound is on</span></div>
   </div>
 </section>
+<section id="feeds">
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>02</i> One clip, three feeds</div>
+  <div class="sec-head rv"><h2>The same clip, dressed for each platform</h2><p class="lead">One clip is cut once. What changes per platform is the caption, the hashtags and the posting time, not the video.</p></div>
+  <div class="dist rv">
+    <div class="phone" data-p="tiktok" data-live aria-hidden="true">
+      <video poster="/media/d2v.jpg" autoplay muted loop playsinline preload="none"><source src="/media/d2v.mp4" type="video/mp4"></video>
+      <div class="ui tiktok"><div class="top"><span>Following</span><span class="on">For You</span></div><span class="rail"><i></i><i></i><i></i><i class="sq"></i></span><div class="meta"><b>@yourchannel</b>Her worst year started with a signature · #podcast #story</div></div>
+      <div class="ui reels"><div class="top">Reels</div><span class="rail"><i></i><i></i><i></i><i class="sq"></i></span><div class="meta"><b>yourchannel<span class="pill">Follow</span></b>Her worst year started with a signature… more</div></div>
+      <div class="ui shorts"><div class="top">Shorts</div><span class="rail"><i></i><i></i><i></i><i class="sq"></i></span><div class="meta"><b>Her worst year started with a signature</b>@yourchannel<span class="pill">Subscribe</span></div></div>
+    </div>
+    <div>
+      <h3>Cut once, posted three times</h3>
+      <p>Each platform gets its own caption and hashtags and its own slot in the schedule. The clip itself, the crop, the captions and the hook stay identical, so your channel looks the same everywhere.</p>
+      <div class="tabs" role="tablist" aria-label="Platform preview"><button type="button" role="tab" aria-selected="true" data-p="tiktok">TikTok</button><button type="button" role="tab" aria-selected="false" data-p="reels">Instagram Reels</button><button type="button" role="tab" aria-selected="false" data-p="shorts">YouTube Shorts</button></div>
+      <span class="hand">the layouts are sketches of each feed, not screenshots</span>
+    </div>
+  </div>
+  <p class="fig"><b>Fig. 4</b> One finished clip in three feed layouts. The handle and the feed chrome are illustrative; the clip is real.</p>
+</section>
 <section id="how">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>02</i> How it works</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>03</i> How it works</div>
   <div class="sec-head rv"><h2>You film. I do the rest.</h2><p class="lead">Three steps, and only the first one is yours.</p></div>
   <div class="proc rv"><svg viewBox="0 0 970 230" role="img" aria-label="Diagram: a long-form video goes through moment selection, vertical reframing and captions with hooks, then is scheduled and posted to TikTok, Reels and Shorts."><defs><linearGradient id="bm0" gradientUnits="userSpaceOnUse" x1="168" x2="168" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="138;214" dur="5s" begin="0.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="168;244" dur="5s" begin="0.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm1" gradientUnits="userSpaceOnUse" x1="368" x2="368" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="338;414" dur="5s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="368;444" dur="5s" begin="0.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm2" gradientUnits="userSpaceOnUse" x1="568" x2="568" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="538;614" dur="5s" begin="1.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="568;644" dur="5s" begin="1.0s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient><linearGradient id="bm3" gradientUnits="userSpaceOnUse" x1="768" x2="768" y1="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0"/><stop offset=".5" stop-color="var(--mark)"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/><animate attributeName="x1" values="738;814" dur="5s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/><animate attributeName="x2" values="768;844" dur="5s" begin="1.5s" repeatCount="indefinite" calcMode="spline" keySplines=".16 1 .3 1"/></linearGradient></defs><g transform="rotate(-1 86 110)"><rect class="n" x="6" y="70" width="160" height="80" rx="9"/><text class="t" x="86" y="104" text-anchor="middle" font-size="20">Long-form video</text><text class="m" x="86" y="130" text-anchor="middle" font-size="9">ANY LONG UPLOAD</text></g><path class="ar ac" d="M168 110c6 -4 10 4 36 0"/><g transform="rotate(0.6 286 110)"><rect class="n ac" x="206" y="70" width="160" height="80" rx="9"/><text class="t" x="286" y="104" text-anchor="middle" font-size="20">Moment selection</text><text class="m" x="286" y="130" text-anchor="middle" font-size="9">SCANNED · SCORED</text></g><path class="ar ac" d="M368 110c6 -4 10 4 36 0"/><g transform="rotate(-0.5 486 110)"><rect class="n ac" x="406" y="70" width="160" height="80" rx="9"/><text class="t" x="486" y="104" text-anchor="middle" font-size="20">Vertical reframe</text><text class="m" x="486" y="130" text-anchor="middle" font-size="9">9:16 · FACE IN FRAME</text></g><path class="ar ac" d="M568 110c6 -4 10 4 36 0"/><g transform="rotate(0.7 686 110)"><rect class="n ac" x="606" y="70" width="160" height="80" rx="9"/><text class="t" x="686" y="104" text-anchor="middle" font-size="20">Captions &amp; hooks</text><text class="m" x="686" y="130" text-anchor="middle" font-size="9">WORD BY WORD</text></g><path class="ar" d="M768 110c6 -4 10 4 36 0"/><g transform="rotate(-0.8 886 110)"><rect class="n" x="806" y="70" width="160" height="80" rx="9"/><text class="t" x="886" y="104" text-anchor="middle" font-size="20">Scheduled posting</text><text class="m" x="886" y="130" text-anchor="middle" font-size="9">TIKTOK · REELS · SHORTS</text></g><path class="bm" d="M168 110c6 -4 10 4 36 0" stroke="url(#bm0)"/><path class="bm" d="M368 110c6 -4 10 4 36 0" stroke="url(#bm1)"/><path class="bm" d="M568 110c6 -4 10 4 36 0" stroke="url(#bm2)"/><path class="bm" d="M768 110c6 -4 10 4 36 0" stroke="url(#bm3)"/><text class="h" x="10" y="190" text-anchor="start">every new upload</text><text class="h ac" x="486" y="190" text-anchor="middle">the part that takes judgment</text><text class="h" x="962" y="190" text-anchor="end">or as files, if you post yourself</text></svg></div>
   <div class="steps"><div class="step wob rv" style="--d:0.0s"><span class="n">Step 1</span><h3>You upload as usual</h3><p>Every new long video or episode on your channel goes straight into my clipping pipeline. Nothing to send, no extra work.</p></div><div class="step wob rv" style="--d:0.1s"><span class="n">Step 2</span><h3>I cut the moments</h3><p>Hooks, reactions, stories and one-liners are picked, reframed to 9:16, captioned word by word and branded to your channel.</p></div><div class="step wob rv" style="--d:0.2s"><span class="n">Step 3</span><h3>They go out daily</h3><p>Clips are scheduled across TikTok, Reels and Shorts, or delivered as ready-to-post files if you&#x27;d rather post yourself.</p></div></div>
-  <p class="fig"><b>Fig. 3</b> The whole pipeline on one sheet. Posting for you needs access you grant on each platform; otherwise clips are delivered as files for you to post.</p>
+  <p class="fig"><b>Fig. 5</b> The whole pipeline on one sheet. Posting for you needs access you grant on each platform; otherwise clips are delivered as files for you to post.</p>
 </section>
 <section id="proof">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>03</i> Proof</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>04</i> Proof</div>
   <div class="sec-head rv"><h2>What my own clip accounts did in September</h2><p class="lead">These are my own clip accounts, not client accounts: I run this exact pipeline on them first. Your numbers depend on your content and audience.</p></div>
   <div class="proof rv"><div class="stat wob rv" style="--d:0.0s"><div class="v" role="img" aria-label="3M+"><span aria-hidden="true" data-count="3" data-dec="0" data-suffix="M+">3M+</span></div><div class="l">views in September across Instagram and TikTok, almost all from people who didn’t follow my accounts yet</div></div><div class="stat wob rv" style="--d:0.1s"><div class="v" role="img" aria-label="500+"><span aria-hidden="true" data-count="500" data-dec="0" data-suffix="+">500+</span></div><div class="l">clips posted in September across TikTok and Instagram</div></div><div class="stat wob rv" style="--d:0.2s"><div class="v" role="img" aria-label="14.5K"><span aria-hidden="true" data-count="14.5" data-dec="1" data-suffix="K">14.5K</span></div><div class="l">followers across my clip accounts</div></div></div>
   <div class="best wob rv">
@@ -492,21 +710,21 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
     <div><span class="k">Best account in September</span><p>One outdoor clip account on Instagram, in a single month.</p></div>
     <div class="nums"><div><div class="v" role="img" aria-label="2.85M"><span aria-hidden="true" data-count="2.85" data-dec="2" data-suffix="M">2.85M</span></div><div class="l">VIEWS</div></div><div><div class="v" role="img" aria-label="700K"><span aria-hidden="true" data-count="700" data-dec="0" data-suffix="K">700K</span></div><div class="l">PEOPLE REACHED</div></div></div>
   </div>
-  <p class="fig"><b>Fig. 4</b> Numbers from my own clip accounts, read from Instagram Insights and TikTok on 28–29 Sep 2026. Your results depend on your content and audience.</p>
+  <p class="fig"><b>Fig. 6</b> Numbers from my own clip accounts, read from Instagram Insights and TikTok on 28–29 Sep 2026. Your results depend on your content and audience.</p>
 </section>
 <section id="included">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>04</i> Included</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>05</i> Included</div>
   <div class="sec-head rv"><h2>Every clip includes</h2><p class="lead">Standard on every plan, every clip.</p></div>
   <div class="inc"><ul class="list rv"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Vertical 9:16 reframe that keeps faces and action in frame</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Word-by-word burned-in captions</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>An on-screen hook title written for the first second</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Your handle and branding, subtle and consistent</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Captions and hashtags written for each platform</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>No duplicate or near-duplicate posts</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>A monthly report: what got views and what to film more of</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>You own everything. Files are yours to keep.</li></ul><figure class="anat rv" style="--d:.15s">
   <div class="pol" aria-hidden="true"><div class="scr"><img src="/media/d2v.jpg" alt="" loading="lazy" width="1080" height="1920"></div></div>
   <span class="call c1">hook title, first second<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 4c14 2 26 10 38 22M34 22l6 4-1-7"/></svg></span>
   <span class="call c2">9:16, face stays in frame<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 4c14 2 26 10 38 22M34 22l6 4-1-7"/></svg></span>
   <span class="call c3">captions, word by word<svg viewBox="0 0 44 30" aria-hidden="true"><path d="M2 26C14 24 26 16 40 4M34 6l6-2-1 7"/></svg></span>
-  <figcaption class="fig"><b>Fig. 5</b> Anatomy of one clip (my own clip account).</figcaption>
+  <figcaption class="fig"><b>Fig. 7</b> Anatomy of one clip (my own clip account).</figcaption>
 </figure></div>
 </section>
 <section id="pricing">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>05</i> Pricing</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>06</i> Pricing</div>
   <div class="sec-head rv"><h2>Pick how many clips a day</h2><p class="lead">Month to month, cancel any time. Every plan starts with 5 free clips so you can see the work before you pay for it.</p></div>
   <div class="plans"><div class="plan wob rv" style="--d:0.00s"><h3>Starter</h3><div class="price">$299<small>per month · €299</small></div><ul><li>60 clips a month (2 a day)</li><li>Delivered as ready-to-post files</li><li>Captions + hashtags included</li><li>You post them</li></ul><a class="btn" href="#trial" data-plan-pick="Starter">Start with 5 free clips</a></div><div class="plan wob pick rv" style="--d:0.00s"><span class="beam" aria-hidden="true"><i></i></span><span class="tag">most popular</span><h3>Growth</h3><div class="price">$499<small>per month · €499</small></div><ul><li>150 clips a month (5 a day)</li><li>I post to TikTok, Reels and Shorts (with access you grant)</li><li>Scheduled at your audience&#x27;s peak times</li><li>Monthly performance report</li></ul><a class="btn" href="#trial" data-plan-pick="Growth">Start with 5 free clips</a></div><div class="plan wob rv" style="--d:0.01s"><h3>Scale</h3><div class="price">$1,099<small>per month · €1,099</small></div><ul><li>300–360 clips a month (10–12 a day)</li><li>All three platforms, posted for you (with access you grant)</li><li>Weekly report + content suggestions</li><li>Priority turnaround on new episodes</li></ul><a class="btn" href="#trial" data-plan-pick="Scale">Start with 5 free clips</a></div><div class="plan wob custom rv" style="--d:0.03s"><h3>Custom</h3><div class="price">Let’s talk<small>your budget</small></div><ul><li>Any number of clips</li><li>Your platforms and posting schedule</li><li>Mix clipping and video editing</li><li>Tell me what you need and your budget</li></ul><a class="btn" href="#trial" data-plan-pick="Custom">Send your proposal</a></div></div>
   <div class="month wob2 rv" id="month">
@@ -520,11 +738,11 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
       <div class="key"><span><i></i> posted for you</span><span><i class="o"></i> delivered as files</span></div>
     </div>
   </div>
-  <p class="fig"><b>Fig. 6</b> Clips per day over a 30-day month, by plan. Billed monthly, in USD or in EUR at the same number ($499 or €499), your choice. Posting for you needs access you grant to each platform; files are always yours.</p>
+  <p class="fig"><b>Fig. 8</b> Clips per day over a 30-day month, by plan. Billed monthly, in USD or in EUR at the same number ($499 or €499), your choice. Posting for you needs access you grant to each platform; files are always yours.</p>
   <p class="hand founding">Founding clients: the first three creators get 30% off for their first three months. Month-to-month, cancel anytime.</p>
 </section>
 <section id="trial">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>06</i> Start here</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>07</i> Start here</div>
   <div class="trial">
     <div class="rv">
       <h2>5 free clips from your latest video</h2>
@@ -571,7 +789,7 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
   </div>
 </section>
 <section id="faq">
-  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>07</i> Questions</div>
+  <div class="cut"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg><i>08</i> Questions</div>
   <div class="sec-head rv"><h2>Things people ask before they start</h2></div>
   <div class="faq rv"><details><summary>Do you post to my accounts, or do I?</summary><p>Either. On Growth and Scale I post for you with scheduling access you grant. On Starter I deliver finished files and captions, and you post.</p></details><details><summary>Who owns the clips?</summary><p>You do. They&#x27;re cut from your videos and delivered to you. I never post your clips anywhere except the accounts you choose.</p></details><details><summary>How do you pick the moments?</summary><p>My pipeline scans the whole video for hooks, reactions, stories and payoffs, then scores them. Each clip must make sense to someone who has never seen your channel.</p></details><details><summary>What if a video has nothing clip-worthy?</summary><p>I&#x27;d rather post fewer good clips than padding. Unused clips roll over to the next video.</p></details><details><summary>What access do you need to post for me?</summary><p>On Growth and Scale you connect your accounts through each platform’s own business or creator tools, the same way you’d add a scheduling app. I never ask for your password, and you can revoke the access at any time. On Starter nothing is connected: you get files.</p></details><details><summary>How fast do clips arrive?</summary><p>The 5 free clips within 48 hours of your request. On a plan, clips from a new upload are usually ready within 48 hours and go out on the daily schedule; Scale gets priority turnaround.</p></details><details><summary>Can I cancel?</summary><p>Yes, any time. Plans are month to month.</p></details><details><summary>I have another question</summary><p>Send it through the <a href="#trial">form above</a> or email <a href="mailto:cliplines.studio@gmail.com" target="_blank" rel="noopener">cliplines.studio@gmail.com</a> and I'll get back to you within 24 hours.</p></details></div>
 </section>
@@ -608,6 +826,74 @@ footer .fnote{font-size:13px;color:var(--ink-3);max-width:80ch;line-height:1.55}
     var vio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)playV(e.target);else e.target.pause()})},{threshold:0.15});
     loops.forEach(function(v){vio.observe(v)});
   }else{loops.forEach(playV)}
+
+  /* motion bookkeeping: hover transitions on the hero clips only after they have settled */
+  setTimeout(function(){document.documentElement.classList.add('settled')},1400);
+
+  /* decorative loops (hero deck, workflow beam, border beam, feed preview) run only while on screen */
+  var live=[].slice.call(document.querySelectorAll('[data-live],.proc svg,.plan.pick'));
+  function setLive(el,on){
+    el.classList.toggle('live',on);
+    if(el.tagName==='svg'){try{on?el.unpauseAnimations():el.pauseAnimations()}catch(e){}}
+    else{el.style.animationPlayState=on?'':'paused';[].forEach.call(el.querySelectorAll('.beam i'),function(i){i.style.animationPlayState=on?'':'paused'})}
+    if(el.dataset.cycle!=null){el._on=on;if(on)startCycle(el);else stopCycle(el)}
+  }
+  if('IntersectionObserver' in window){
+    var lio=new IntersectionObserver(function(es){es.forEach(function(e){setLive(e.target,e.isIntersecting)})},{threshold:0.1});
+    live.forEach(function(el){lio.observe(el)});
+  }else{live.forEach(function(el){setLive(el,true)})}
+
+  /* hero: tiny pointer parallax between the clip layers (desktop only) */
+  var sc=document.querySelector('.hero .scene');
+  if(sc&&!reduce&&matchMedia('(hover:hover) and (min-width:861px)').matches){
+    var pr=0,px=0,py=0;
+    sc.addEventListener('pointermove',function(e){var r=sc.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*10;py=((e.clientY-r.top)/r.height-.5)*8;if(!pr)pr=requestAnimationFrame(function(){sc.style.setProperty('--mx',px.toFixed(1)+'px');sc.style.setProperty('--my',py.toFixed(1)+'px');pr=0})});
+    sc.addEventListener('pointerleave',function(){sc.style.setProperty('--mx','0px');sc.style.setProperty('--my','0px')});
+  }
+
+  /* scroll-driven scene: CSS scroll timelines where supported, otherwise one passive scroll listener while it is on screen */
+  var morph=document.querySelector('.morph');
+  if(morph&&!(CSS.supports&&CSS.supports('animation-timeline: view()'))&&getComputedStyle(morph).display!=='none'){
+    var mraf=0,mon=false;
+    function mstep(){mraf=0;var r=morph.getBoundingClientRect(),vh=innerHeight,cover=(vh-r.top)/(r.height+vh),p=Math.min(Math.max((cover-.27)/.41,0),1);morph.style.setProperty('--p',p.toFixed(4))}
+    function onS(){if(mon&&!mraf)mraf=requestAnimationFrame(mstep)}
+    new IntersectionObserver(function(es){mon=es[0].isIntersecting;if(mon){addEventListener('scroll',onS,{passive:true});mstep()}else removeEventListener('scroll',onS)}).observe(morph);
+  }
+
+  /* moment selection: three real clips on one timeline; auto-advances until the visitor picks one */
+  var mo=document.getElementById('moments');
+  if(mo){
+    var mbtns=[].slice.call(mo.querySelectorAll('.mk button')),mph=mo.querySelector('.mph'),mpol=mo.querySelector('.mprev .pol'),mvid=mpol.querySelector('video'),mcap=mpol.querySelector('.cap'),mi=0,mtimer=null,muser=false;
+    function pick(k,byUser){
+      mi=k;var b=mbtns[k];mbtns.forEach(function(x,j){x.setAttribute('aria-pressed',j===k?'true':'false')});
+      mph.style.setProperty('--x',b.parentNode.style.getPropertyValue('--x'));
+      var name=b.dataset.v;if(mvid.dataset.name===name)return;mvid.dataset.name=name;
+      var swap=function(){mvid.poster='/media/'+name+'.jpg';mvid.innerHTML='<source src="/media/'+name+'.mp4" type="video/mp4">';mvid.load();mcap.textContent=b.dataset.cap;mpol.classList.remove('sw');playV(mvid)};
+      if(reduce){swap()}else{mpol.classList.add('sw');setTimeout(swap,300)}
+      if(byUser){muser=true;clearInterval(mtimer);mtimer=null}
+    }
+    mbtns.forEach(function(b,k){b.addEventListener('click',function(){pick(k,true)})});
+    mo.dataset.cycle='1';
+    mo._start=function(){if(reduce||muser||mtimer)return;mtimer=setInterval(function(){pick((mi+1)%mbtns.length,false)},3800)};
+    mo._stop=function(){clearInterval(mtimer);mtimer=null};
+  }
+
+  /* before / after slider */
+  var cmp=document.getElementById('cmp');
+  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')})}
+
+  /* one clip, three feeds */
+  var dist=document.querySelector('.dist');
+  if(dist){
+    var ph=dist.querySelector('.phone'),tabs=[].slice.call(dist.querySelectorAll('[role=tab]')),di=0,dtimer=null,duser=false;
+    function feed(k,byUser){di=k;ph.dataset.p=tabs[k].dataset.p;tabs.forEach(function(t,j){t.setAttribute('aria-selected',j===k?'true':'false')});if(byUser){duser=true;clearInterval(dtimer);dtimer=null}}
+    tabs.forEach(function(t,k){t.addEventListener('click',function(){feed(k,true)});t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();var n=(k+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;tabs[n].focus();feed(n,true)}})});
+    ph.dataset.cycle='1';
+    ph._start=function(){if(reduce||duser||dtimer)return;dtimer=setInterval(function(){feed((di+1)%tabs.length,false)},3200)};
+    ph._stop=function(){clearInterval(dtimer);dtimer=null};
+  }
+  function startCycle(el){if(el._start)el._start()}
+  function stopCycle(el){if(el._stop)el._stop()}
 
   /* number ticker (port of Magic UI NumberTicker): counts up once, when in view */
   var counters=[].slice.call(document.querySelectorAll('[data-count]'));

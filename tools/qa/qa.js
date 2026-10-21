@@ -21,7 +21,7 @@ const widths = [320,375,430,768,1024,1440,1920];
     const r = await p.evaluate(() => {
       const hs=[...document.querySelectorAll('h1,h2,h3')].map(h=>+h.tagName[1]); let bad=false; for(let i=1;i<hs.length;i++) if(hs[i]>hs[i-1]+1) bad=true;
       const links=[...document.querySelectorAll('a[href^="#"]')].map(a=>a.getAttribute('href')).filter(h=>h.length>1&&!document.querySelector(h));
-      const unl=[...document.querySelectorAll('input,textarea')].filter(i=>i.type!=='hidden'&&!document.querySelector('label[for="'+i.id+'"]')).map(i=>i.id);
+      const unl=[...document.querySelectorAll('input,textarea')].filter(i=>i.type!=='hidden'&&!i.getAttribute('aria-label')&&!document.querySelector('label[for="'+i.id+'"]')).map(i=>i.id||i.type);
       const noname=[...document.querySelectorAll('button')].filter(b=>!b.textContent.trim()&&!b.getAttribute('aria-label')).length;
       return {sw:document.documentElement.scrollWidth, W:document.documentElement.clientWidth, h1:document.querySelectorAll('h1').length, badH:bad, deadAnchors:links, unlabeled:unl, noname};
     });
@@ -62,6 +62,21 @@ const widths = [320,375,430,768,1024,1440,1920];
     mode='ok'; await p.locator('#lf .send').click(); await p.locator('#lf .send').click({force:true}).catch(()=>{}); await p.waitForTimeout(500);
     const done = await p.locator('#doneTitle').textContent(); const doneText = await p.locator('#doneText').textContent();
     console.log(label, '| empty:', !!e1, !!e2, '| invalid:', !!e3, !!e4, '| failure shown:', failMsg.slice(0,40), 'done hidden', doneHidden1, '| success:', done, '/', doneText.slice(0,60), '| posts:', posts);
+    await p.close();
+  }
+  // 3b. interactive demos: moments, compare, feeds, sticky scene end state
+  {
+    const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+    await p.goto(BASE + 'index.html');
+    await p.locator('#moments button[data-v="d3v"]').click(); await p.waitForTimeout(500);
+    const mo = await p.evaluate(()=>({pressed:document.querySelector('#moments button[data-v="d3v"]').getAttribute('aria-pressed'), src:(document.querySelector('#moments .mprev source')||{}).getAttribute('src'), cap:document.querySelector('#moments .cap').textContent, ph:document.querySelector('#moments .mph').style.getPropertyValue('--x')}));
+    await p.locator('#cmp input').focus(); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowRight');
+    const cv = await p.evaluate(()=>document.getElementById('cmp').style.getPropertyValue('--c'));
+    await p.locator('.dist [role=tab]').first().focus(); await p.keyboard.press('ArrowRight');
+    const fd = await p.evaluate(()=>({p:document.querySelector('.phone').dataset.p, sel:[...document.querySelectorAll('.dist [role=tab]')].map(t=>t.getAttribute('aria-selected')).join(',')}));
+    await p.evaluate(()=>{const m=document.querySelector('.morph');scrollTo(0,m.getBoundingClientRect().top+scrollY+m.offsetHeight-innerHeight-10)}); await p.waitForTimeout(400);
+    const end = await p.evaluate(()=>({fin:getComputedStyle(document.querySelector('.morph .fin')).opacity, outl:getComputedStyle(document.querySelector('.morph .out.l')).opacity, label:getComputedStyle(document.querySelector('.morph .lab.l5')).opacity}));
+    console.log('moments:', JSON.stringify(mo), '| compare --c:', cv, '| feeds:', JSON.stringify(fd), '| scene end:', JSON.stringify(end));
     await p.close();
   }
   // 4. reduced motion: content visible, no autoplay, counters final
