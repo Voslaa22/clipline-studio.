@@ -274,14 +274,14 @@ def demo(num):
     compare = f"""<div class="cmpwrap rv">
     <div class="cmp" id="cmp">
       {video("d1v", lazy=True)}
-      <div class="before"><img src="/media/d1w.jpg" alt="" loading="lazy" width="1280" height="720"></div>
-      <span class="tag l">raw source</span><span class="tag r">finished clip</span>
-      <input type="range" min="0" max="100" value="50" aria-label="Compare the raw source frame with the finished clip; left is raw, right is finished">
+      <div class="before">{video("d1w", lazy=True)}</div>
+      <span class="tag l">wide 16:9</span><span class="tag r">vertical clip</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare the wide recording with the finished vertical clip; left is wide, right is the clip">
       <span class="line" aria-hidden="true"></span><span class="knob" aria-hidden="true">↔</span>
     </div>
     <div>
       <h3>Before and after</h3>
-      <p>Left: the wide recording, cropped to the clip. Right: the finished clip with the hook title, word-by-word captions and colour. Drag the handle, or use the arrow keys.</p>
+      <p>Left: the wide recording, playing, before the reframe. Right: the finished 9:16 clip with the hook title and the crop following the speaker. Both run in sync; drag the handle, or use the arrow keys.</p>
       <span class="hand">same recording, same moment — only the edit changed</span>
     </div>
   </div>"""
@@ -297,7 +297,7 @@ def demo(num):
   {moments}
   <p class="fig"><b>Fig. 2</b> Moment selection. The three markers are real clips from this episode; the timeline is an illustration, not a live process.</p>
   {compare}
-  <p class="fig"><b>Fig. 3</b> Raw source frame against the finished clip.</p>
+  <p class="fig"><b>Fig. 3</b> The wide recording against the finished vertical clip, same moment.</p>
   <div class="player wob2 rv">
     <video controls playsinline preload="none" poster="/media/d3v.jpg" aria-label="Finished clip: a story moment, vertical with captions, with sound"><source src="/media/d3v.mp4" type="video/mp4"></video>
     <div><h3>Watch a finished clip with sound</h3><p>This is the file a client would get: 9:16, captions burned in, hook on screen, ready to post. Press play; it won’t start on its own.</p><span class="hand ac">← press play, sound is on</span></div>
@@ -650,7 +650,10 @@ SCRIPT = r"""<script>
 
   /* before / after slider */
   var cmp=document.getElementById('cmp');
-  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')})}
+  if(cmp){var rng=cmp.querySelector('input');rng.addEventListener('input',function(){cmp.style.setProperty('--c',rng.value+'%')});
+    /* keep the raw and finished clips on the same frame */
+    var cva=cmp.querySelector(':scope > video'),cvb=cmp.querySelector('.before video');
+    if(cva&&cvb){cva.addEventListener('timeupdate',function(){if(Math.abs(cva.currentTime-cvb.currentTime)>.2&&cvb.readyState>1)cvb.currentTime=cva.currentTime});cva.addEventListener('play',function(){playV(cvb)});cva.addEventListener('pause',function(){cvb.pause()})}}
 
   /* one clip, three feeds */
   var dist=document.querySelector('.dist');
