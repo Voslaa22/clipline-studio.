@@ -1,7 +1,8 @@
-Bricolage Grotesque, Figtree and JetBrains Mono are licensed under the SIL Open Font License 1.1.
+Figtree, JetBrains Mono, Instrument Serif and Caveat are licensed under the SIL Open Font License 1.1.
 Files taken from the Fontsource npm packages (latin subset).
 
-Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)
+Copyright 2022 The Instrument Serif Project Authors (https://github.com/Instrument/instrument-serif)
+Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
