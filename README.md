@@ -24,6 +24,8 @@ and commit the regenerated `index.html`, `404.html` and the four `*/index.html` 
 
 ## Design (October 2026 redesign)
 
+The full rules, tokens and the decision log are in `DESIGN.md`. Read it before any visual change.
+
 Paper, ink and one blue accent (`#1d5cff`, the Clipline colour). Instrument Serif for headings, Figtree for body text,
 JetBrains Mono for labels and figure captions, Caveat for the handwritten margin notes. Borders are drawn, not cast:
 uneven "wobbly" radii, tape strips on photos, a scissors cut-line between numbered sections, "Fig." captions under every
