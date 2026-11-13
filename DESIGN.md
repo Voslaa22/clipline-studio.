@@ -168,3 +168,4 @@ Newest at the bottom. A line is never edited or removed: a later line replaces i
 | 15 | 2026-11-13 | Motion uses one easing family, three durations (150, 400, 900 ms) and one 70 ms stagger. | Already the site's motion system; written down so new work matches. | Site stylesheet |
 | 16 | 2026-11-13 | Replaces 9. The clip safe area is the pipeline's own: text between x 60 and 990 and between y 150 and 1560 on a 1080 by 1920 frame. | Read from the renderer's style config. | Clip pipeline |
 | 17 | 2026-11-13 | Replaces 11. No timer-based visual changes. The pipeline's editorial style already ties graphics to spoken numbers and labels; whether to switch it on is the open question. | The renderer's own rule is "never on a timer". | Clip pipeline |
+| 18 | 2026-11-13 | Replaces the open question in 17. Clips keep the current v2 look; the editorial style stays off. | The owner does not like it. | Owner |
