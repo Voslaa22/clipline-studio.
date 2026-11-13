@@ -72,11 +72,12 @@ Use it as given. Do not redraw, recolour beyond the two tokens, or add effects.
 
 - Every clip is `clip-w` by `clip-h`, 9:16, reframed so faces stay in frame.
 - Word-by-word captions, a hook title inside the first second, branding kept subtle.
-- Captions and the hook title stay inside the frame: no line wider than `clip-text-max`, two lines at most, shrink the text before it touches an edge. Nothing in the top `clip-top-clear` or the bottom `clip-bottom-clear`.
+- Captions and the hook title stay inside the safe area: `clip-text-max` wide, starting 60px from the left edge, with the top `clip-top-clear` and the bottom `clip-bottom-clear` left free. Text shrinks before it touches an edge.
 - Each clip must make sense to someone who never saw the long video. No "as I said earlier".
 - Quality over quantity: pick and shape clips after the recent posts that performed best. Never post near-duplicates.
 - Only original footage or footage with the right to use it. Client clips are credited the way the client asks.
-- Caption font, colours and the cut style of the clips themselves live in the pipeline's style config. When that config changes, record it in the decision log.
+- Caption fonts, colours, graphics and the cut style of the clips themselves are defined in the clip pipeline's own DESIGN.md and style config, not here.
+- Framing and graphics follow what is said: changes at cuts and sentence starts, never on a timer.
 
 ## Never
 
@@ -140,9 +141,9 @@ Use it as given. Do not redraw, recolour beyond the two tokens, or add effects.
 |---|---|---|
 | `clip-w` | `1080px` | Clip width. Every clip is 9:16. |
 | `clip-h` | `1920px` | Clip height. |
-| `clip-text-max` | `900px` | Widest a caption line or the hook title may be, 90px clear of each edge. Set 2026-11-13. |
-| `clip-top-clear` | `154px` | Top 8% stays free of text. Set 2026-11-13. |
-| `clip-bottom-clear` | `346px` | Bottom 18% carries no caption or title, the apps cover it. Set 2026-11-13. |
+| `clip-text-max` | `930px` | Width of the safe area for captions and graphics: x from 60 to 990. The hook title is capped at 940. |
+| `clip-top-clear` | `150px` | Nothing above y 150, where the apps show their tabs. |
+| `clip-bottom-clear` | `360px` | Nothing below y 1560, where the apps show their caption block. |
 
 ## Decision log
 
@@ -165,3 +166,5 @@ Newest at the bottom. A line is never edited or removed: a later line replaces i
 | 13 | 2026-11-13 | Replaces 10. Type sizes are the site's own: display 76 (scales from 42), title 50 (from 32), subtitle 26, body 17, button 15.5, label 12 at 0.14em, caption 12.5, note 24 (from 19). | Read from the site's stylesheet. | Site stylesheet |
 | 14 | 2026-11-13 | Exception to 3: the moving beam on the recommended plan and on the workflow connectors stay. They are the only gradients. | Added with the motion work after the redesign and approved then. | Site README |
 | 15 | 2026-11-13 | Motion uses one easing family, three durations (150, 400, 900 ms) and one 70 ms stagger. | Already the site's motion system; written down so new work matches. | Site stylesheet |
+| 16 | 2026-11-13 | Replaces 9. The clip safe area is the pipeline's own: text between x 60 and 990 and between y 150 and 1560 on a 1080 by 1920 frame. | Read from the renderer's style config. | Clip pipeline |
+| 17 | 2026-11-13 | Replaces 11. No timer-based visual changes. The pipeline's editorial style already ties graphics to spoken numbers and labels; whether to switch it on is the open question. | The renderer's own rule is "never on a timer". | Clip pipeline |
